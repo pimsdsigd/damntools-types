@@ -1,6 +1,6 @@
 import {assert} from "chai"
-import {List} from "./List";
-import {InvalidRangeStartError} from "../exceptions";
+import {List} from "../../src/list/List";
+import {InvalidRangeStartError} from "../../src/exceptions";
 
 describe("List", () => {
 	describe("List.range", () => {
