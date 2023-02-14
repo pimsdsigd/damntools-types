@@ -1,5 +1,5 @@
 export class InvalidRangeEndError extends Error {
-	constructor() {
-		super("Invalid range end !");
-	}
+  constructor() {
+    super("Invalid range end !")
+  }
 }

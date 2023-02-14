@@ -1,5 +1,5 @@
 export class InvalidArrayError extends Error {
-	constructor() {
-		super("Array is invalid !")
-	}
+  constructor() {
+    super("Array is invalid !")
+  }
 }

@@ -1,14 +1,14 @@
 include:
-    -   project: 'cicd/gitlab-templates'
-        ref: main
-        file: 'node.gitlab-ci.template.yml'
+  - project: 'cicd/gitlab-templates'
+    ref: main
+    file: 'node.gitlab-ci.template.yml'
 
 variables:
-    BUILD_PROJECT: 'yes'
+  BUILD_PROJECT: 'yes'
 
 Publish:
-    needs:
-        - Build
-    dependencies:
-        - Build
+  needs:
+    - Build
+  dependencies:
+    - Build
 

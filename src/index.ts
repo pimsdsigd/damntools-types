@@ -1,6 +1,8 @@
 import {List} from "./list"
-import {InvalidArrayError, InvalidRangeStartError, InvalidRangeEndError} from "./exceptions"
+import {
+  InvalidArrayError,
+  InvalidRangeEndError,
+  InvalidRangeStartError
+} from "./exceptions"
 
-export {
-	List, InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError
-}
+export {List, InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError}
