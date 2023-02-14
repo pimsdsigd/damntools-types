@@ -60,15 +60,15 @@ export interface Streamable<T> {
 	): Streamable<T>;
 
 	map<U>(
-		action: (value: T, index?: number, arr?: Array<T>) => U | T | undefined
-	): Streamable<U | T>;
+		action: (value: T, index?: number, arr?: Array<T>) => U
+	): Streamable<U>;
 
-	mapPresent<U>(
-		action: (value: T, index?: number, arr?: Array<T>) => U | T | undefined
-	): Streamable<U | T>;
+	mapDefined<U>(
+		action: (value: T, index?: number, arr?: Array<T>) => U | undefined
+	): Streamable<U>;
 
-	mapNotPresent<U>(
-		action: (value: T, index?: number, array?: Array<T>) => U | T | undefined
+	mapUndefined<U>(
+		action: (value: T, index?: number, array?: Array<T>) => U | T
 	): Streamable<U | T>;
 
 	filter(
@@ -117,3 +117,4 @@ export interface Streamable<T> {
 		equalityPredicate: (a: O | T, b: O | T) => boolean
 	): boolean;
 }
+

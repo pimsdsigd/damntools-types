@@ -1,11 +1,10 @@
-import {Streamable} from "../Streamable";
-import {InvalidArrayError} from "../exceptions/InvalidArrayError";
-import {InvalidRangeStartError} from "../exceptions";
+import {AStreamable} from "../AStreamable";
+import {InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError} from "../exceptions";
 
-export class List<T> implements Streamable<T> {
+export class List<T> implements AStreamable<T> {
 	private readonly array: Array<T>
 
-	constructor(array?: Array<T>) {
+	constructor(array?: Array<T> | any) {
 		if (!!array && !Array.isArray(array)) throw new InvalidArrayError()
 		this.array = array || []
 	}
@@ -129,30 +128,28 @@ export class List<T> implements Streamable<T> {
 	}
 
 	map<U>(
-		action: (value: T, index?: number, arr?: Array<T>) => U | T | undefined
-	): List<U | T> {
-		return new List<U | T>(
+		action: (value: T, index?: number, arr?: Array<T>) => U
+	): List<U> {
+		return new List<U>(
 			this.array.map((value, index, arr) => action(value, index, arr))
 		)
 	}
 
-	mapPresent<U>(
-		action: (value: T, index?: number, arr?: Array<T>) => U | T | undefined
-	): List<U | T> {
-		return new List<U | T>(
+	mapDefined<U>(
+		action: (value: T, index?: number, arr?: Array<T>) => U
+	): List<U> {
+		return new List<U>(
 			this.array.map((value, index, arr) =>
-				value ? action(value, index, arr) : value
-			)
+				value !== undefined && value !== null ? action(value, index, arr) : undefined)
 		)
 	}
 
-	mapNotPresent<U>(
-		action: (value: T, index?: number, array?: Array<T>) => U | T | undefined
+	mapUndefined<U>(
+		action: (value: T, index?: number, array?: Array<T>) => U
 	): List<U | T> {
 		return new List<U | T>(
 			this.array.map((value, index, arr) =>
-				!value ? action(value, index, arr) : value
-			)
+				value === undefined || value === null ? action(value, index, arr) : value)
 		)
 	}
 
@@ -248,14 +245,17 @@ export class List<T> implements Streamable<T> {
 	}
 
 	static from<T>(array: Array<T>): List<T> {
-		return new List<T>(array);
+		if (Array.isArray(array))
+			return new List(array)
+		else
+			throw new InvalidArrayError()
 	}
 
 	static range(start: number, end: number): List<number> {
 		if (!start && start !== 0)
 			throw new InvalidRangeStartError()
 		if ((!end && end !== 0) || end < start)
-			throw new InvalidRangeStartError()
+			throw new InvalidRangeEndError()
 		const range = [...Array(end - start).keys()]
 			.map(i => i + start)
 		return new List<number>(range);
