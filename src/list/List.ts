@@ -1,8 +1,14 @@
 import {AStreamable} from "../AStreamable";
-import {InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError} from "../exceptions";
+import {
+	IndexOutOfBoundError,
+	InvalidArrayError,
+	InvalidIndexError,
+	InvalidRangeEndError,
+	InvalidRangeStartError
+} from "../exceptions";
 
 export class List<T> implements AStreamable<T> {
-	private readonly array: Array<T>
+	protected readonly array: Array<T>
 
 	constructor(array?: Array<T> | any) {
 		if (!!array && !Array.isArray(array)) throw new InvalidArrayError()
@@ -10,6 +16,10 @@ export class List<T> implements AStreamable<T> {
 	}
 
 	get(index: number): T | undefined {
+		if (!index && index !== 0)
+			throw new InvalidIndexError();
+		if (index < 0 || index >= this.array.length)
+			throw new IndexOutOfBoundError(index, this.array.length)
 		return this.array[index]
 	}
 

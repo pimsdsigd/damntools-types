@@ -1,10 +1,31 @@
 export interface Streamable<T> {
+	/**
+	 * Returns item at provided index.
+	 *  If index is superior to array length, will return last item
+	 *  If index is inferior to 0, will return item positioned at length array minus index
+	 *    > index=-1 will return the last item, index=-2 the item before
+	 * @throws if index is undefined
+	 * @param index
+	 */
 	get(index: number): T | undefined;
 
+	/**
+	 * Add items to the current array and returns the stream instance in order to chain calls
+	 * @param items
+	 */
 	push(...items: Array<T>): Streamable<T>;
 
+	/**
+	 * Add elements from every array items to the current instance and returns the instance
+	 * @param items
+	 */
 	concat(...items: Array<T>): Streamable<T>;
 
+	/**
+	 * Reduce the array and collect the reduced value
+	 * @param callbackFn
+	 * @param initialValue
+	 */
 	reduce<U>(
 		callbackFn: (
 			previousValue: U,
@@ -15,6 +36,11 @@ export interface Streamable<T> {
 		initialValue: U
 	): U;
 
+	/**
+	 * Reduce the array starting from last item to first and collect the value
+	 * @param callbackFn
+	 * @param initialValue
+	 */
 	reduceRight<U>(
 		callbackFn: (
 			previousValue: U,

@@ -1,3 +1,5 @@
 export {InvalidArrayError} from "./InvalidArrayError"
 export {InvalidRangeEndError} from "./InvalidRangeEndError"
 export {InvalidRangeStartError} from "./InvalidRangeStartError"
+export {InvalidIndexError} from "./InvalidIndexError"
+export {IndexOutOfBoundError} from "./IndexOutOfBoundError"
