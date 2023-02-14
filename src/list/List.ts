@@ -258,6 +258,10 @@ export class List<T> implements Streamable<T> {
     else throw new InvalidArrayError()
   }
 
+  static empty<T>(): List<T> {
+    return new List<T>()
+  }
+
   static range(start: number, end: number): List<number> {
     if (!start && start !== 0) throw new InvalidRangeStartError()
     if ((!end && end !== 0) || end < start) throw new InvalidRangeEndError()
