@@ -5,7 +5,6 @@ include:
 
 variables:
     BUILD_PROJECT: 'yes'
-    SONAR_SCANNER_FILE: sonar-scanner.js
 
 Publish:
     needs:
