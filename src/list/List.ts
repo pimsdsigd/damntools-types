@@ -27,7 +27,7 @@ export class List<T> implements Streamable<T> {
     return this
   }
 
-  concat(...items: Array<T>): List<T> {
+  concat(...items: Array<Array<T>>): List<T> {
     return new List<T>(this.array.concat(...items))
   }
 

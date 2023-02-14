@@ -19,7 +19,7 @@ export type Streamable<T> = {
    * Add elements from every array items to the current instance and returns the instance
    * @param items
    */
-  concat(...items: Array<T>): Streamable<T>
+  concat(...items: Array<Array<T>>): Streamable<T>
 
   /**
    * Reduce the array and collect the reduced value
