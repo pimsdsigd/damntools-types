@@ -1,0 +1,14 @@
+include:
+    -   project: 'cicd/gitlab-templates'
+        ref: main
+        file: '.gitlab-ci.template.yml'
+
+variables:
+    BUILD_PROJECT: 'yes'
+
+Publish:
+    needs:
+        - Build
+    dependencies:
+        - Build
+
