@@ -72,6 +72,15 @@ describe("List", () => {
     })
   })
 
+  describe("filterPresent", () => {
+    it("with undefined index throws", () => {
+      let stringList = List.of("sdfl", undefined);
+      expect(stringList.size()).to.equals(2)
+      stringList = stringList.filterPresent()
+      expect(stringList.size()).to.equals(1)
+    })
+  })
+
   describe("get", () => {
     it("with undefined index throws", () => {
       assert.throw(() => List.of().get(undefined), InvalidIndexError)

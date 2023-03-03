@@ -162,6 +162,10 @@ export class List<T> implements Streamable<T> {
     )
   }
 
+  flat(depth?: number){
+    return new List<T>(this.array.flat(depth))
+  }
+
   filter(
     predicate: (value: T, index: number, array: Array<T>) => boolean
   ): List<T> {
