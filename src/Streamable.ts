@@ -95,7 +95,8 @@ export type Streamable<T> = {
     action: (value: T, index?: number, array?: Array<T>) => U | T
   ): Streamable<U | T>
 
-  flat(depth?: number): Streamable<T>
+  flat<U>(depth?: number): Streamable<U>
+  flatMap<U>(action: (value: T, index?: number, arr?: Array<T>) => Streamable<U> | Array<U>, depth?: number) : Streamable<U>
 
   filter(
     predicate: (value: T, index: number, array: Array<T>) => boolean

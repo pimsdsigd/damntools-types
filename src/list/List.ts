@@ -162,15 +162,15 @@ export class List<T> implements Streamable<T> {
     )
   }
 
-  flat(depth?: number){
-    return new List<T>(this.array.map(item => {
+  flat<U>(depth?: number) : List<U>{
+    return new List<U>(this.array.map(item => {
       if( item instanceof List)
         return item.collect();
       return item;
     }).flat(depth))
   }
 
-  flatMap<U>(action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>, depth?: number){
+  flatMap<U>(action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>, depth?: number) : List<U>{
     return this.map(action).flat(depth)
   }
 
