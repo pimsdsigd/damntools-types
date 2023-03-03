@@ -181,11 +181,11 @@ export class List<T> implements Streamable<T> {
   }
 
   filterPresent(): List<T> {
-    return new List<T>(this.array.filter(e => !!e))
+    return new List<T>(this.array.filter(e => e !== undefined && e !== null))
   }
 
   filterNotPresent(): List<T> {
-    return new List<T>(this.array.filter(e => !e))
+    return new List<T>(this.array.filter(e => e === undefined || e === null))
   }
 
   every(
