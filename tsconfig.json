@@ -4,8 +4,5 @@
     "target": "es2015",
     "outDir": "./dist"
   },
-  "include": [
-    "./src/**/*",
-    "node_modules/@damntools.fr/performer/src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }

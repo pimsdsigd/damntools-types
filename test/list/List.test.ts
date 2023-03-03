@@ -1,5 +1,10 @@
 import {assert, expect} from "chai"
-import {InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError, List} from "../../src"
+import {
+  InvalidArrayError,
+  InvalidRangeEndError,
+  InvalidRangeStartError,
+  List
+} from "../../src"
 import {IndexOutOfBoundError, InvalidIndexError} from "../../src/exceptions"
 
 describe("List", () => {
@@ -139,12 +144,12 @@ describe("List", () => {
       expect(list.size()).to.equals(length)
     })
   })
-  
+
   describe("range", () => {
     it("with undefined as start throws", () => {
       assert.throw(
-          () => List.range(undefined, undefined),
-          InvalidRangeStartError
+        () => List.range(undefined, undefined),
+        InvalidRangeStartError
       )
     })
 
