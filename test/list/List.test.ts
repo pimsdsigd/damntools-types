@@ -1,9 +1,9 @@
 import {assert, expect} from "chai"
-import {InvalidArrayError, List} from "../../src"
+import {InvalidArrayError, InvalidRangeEndError, InvalidRangeStartError, List} from "../../src"
 import {IndexOutOfBoundError, InvalidIndexError} from "../../src/exceptions"
 
 describe("List", () => {
-  describe("List.constructor()", () => {
+  describe("constructor()", () => {
     it("with undefined array create new array", () => {
       expect(new List().collect().length).to.equals(0)
     })
@@ -25,7 +25,7 @@ describe("List", () => {
     })
   })
 
-  describe("List.from", () => {
+  describe("from", () => {
     it("with undefined array throws", () => {
       assert.throw(() => List.from(undefined), InvalidArrayError)
     })
@@ -41,7 +41,7 @@ describe("List", () => {
     })
   })
 
-  describe("List.of", () => {
+  describe("of", () => {
     it("with 0 item returns empty", () => {
       expect(List.of().collect().length).to.equals(0)
     })
@@ -67,7 +67,7 @@ describe("List", () => {
     })
   })
 
-  describe("List.get", () => {
+  describe("get", () => {
     it("with undefined index throws", () => {
       assert.throw(() => List.of().get(undefined), InvalidIndexError)
     })
@@ -95,7 +95,7 @@ describe("List", () => {
     })
   })
 
-  describe("List.push", () => {
+  describe("push", () => {
     it("with no items adds nothing", () => {
       const list = List.of().push()
       expect(list.size()).to.equals(0)
@@ -123,7 +123,7 @@ describe("List", () => {
     })
   })
 
-  describe("List.size", () => {
+  describe("size", () => {
     it("for empty list returns 0", () => {
       expect(List.of().size()).to.equals(0)
     })
@@ -137,6 +137,47 @@ describe("List", () => {
       const list = List.of()
       for (let i = 0; i < length; i++) list.push(i)
       expect(list.size()).to.equals(length)
+    })
+  })
+  
+  describe("range", () => {
+    it("with undefined as start throws", () => {
+      assert.throw(
+          () => List.range(undefined, undefined),
+          InvalidRangeStartError
+      )
+    })
+
+    it("with 0 as start does not throw", () => {
+      assert.doesNotThrow(() => List.range(0, 10))
+    })
+
+    it("with undefined as end throws", () => {
+      assert.throw(() => List.range(0, undefined), InvalidRangeEndError)
+    })
+
+    it("with end inferior to start throws", () => {
+      assert.throw(() => List.range(1, 0), InvalidRangeEndError)
+    })
+
+    it("with start as end does not throw", () => {
+      assert.doesNotThrow(() => List.range(0, 0))
+    })
+
+    it("with 0 as end does not throw", () => {
+      assert.doesNotThrow(() => List.range(-1, 0))
+    })
+
+    it("0 length returns correct array length", () => {
+      const length = 0
+      const range = List.range(0, length)
+      expect(range.collect().length).to.equals(length)
+    })
+
+    it("N length returns correct array length", () => {
+      const length = 2
+      const range = List.range(0, length)
+      expect(range.collect().length).to.equals(length)
     })
   })
 })
