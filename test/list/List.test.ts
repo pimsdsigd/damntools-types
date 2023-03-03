@@ -73,11 +73,51 @@ describe("List", () => {
   })
 
   describe("filterPresent", () => {
-    it("with undefined index throws", () => {
+    it("removes undefined and keeps present value", () => {
       let stringList = List.of("sdfl", undefined);
       expect(stringList.size()).to.equals(2)
       stringList = stringList.filterPresent()
       expect(stringList.size()).to.equals(1)
+    })
+  })
+
+  describe("flat", () => {
+    it("removes undefined and keeps present value", () => {
+      const array = [1, 2 , 3]
+      const list = List.from(array).map(item => List.range(0, item))
+          .flat()
+      expect(list.size()).to.equals(6)
+      expect(list.get(0)).to.equals(0)
+      expect(list.get(1)).to.equals(0)
+      expect(list.get(2)).to.equals(1)
+      expect(list.get(3)).to.equals(0)
+      expect(list.get(4)).to.equals(1)
+      expect(list.get(5)).to.equals(2)
+    })
+  })
+
+  describe("flatMap", () => {
+    it("returns correct if passed list", () => {
+      const array = [1, 2 , 3]
+      const list = List.from(array).flatMap(item => List.range(0, item))
+      expect(list.size()).to.equals(6)
+      expect(list.get(0)).to.equals(0)
+      expect(list.get(1)).to.equals(0)
+      expect(list.get(2)).to.equals(1)
+      expect(list.get(3)).to.equals(0)
+      expect(list.get(4)).to.equals(1)
+      expect(list.get(5)).to.equals(2)
+    })
+    it("returns correct if passed array", () => {
+      const array = [1, 2 , 3]
+      const list = List.from(array).flatMap(item => List.range(0, item).collect())
+      expect(list.size()).to.equals(6)
+      expect(list.get(0)).to.equals(0)
+      expect(list.get(1)).to.equals(0)
+      expect(list.get(2)).to.equals(1)
+      expect(list.get(3)).to.equals(0)
+      expect(list.get(4)).to.equals(1)
+      expect(list.get(5)).to.equals(2)
     })
   })
 
