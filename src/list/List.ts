@@ -5,12 +5,12 @@ import {
   InvalidRangeEndError,
   InvalidRangeStartError
 } from "../exceptions"
-import {Streamable} from "../Streamable"
+import {Collectable} from "../Collectable"
 
-export class List<T> implements Streamable<T> {
+export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
 
-  constructor(array?: Array<T> | any) {
+  private constructor(array?: Array<T> | any) {
     if (!!array && !Array.isArray(array)) throw new InvalidArrayError()
     this.array = array || []
   }
@@ -162,15 +162,21 @@ export class List<T> implements Streamable<T> {
     )
   }
 
-  flat<U>(depth?: number) : List<U>{
-    return new List<U>(this.array.map(item => {
-      if( item instanceof List)
-        return item.collect();
-      return item;
-    }).flat(depth))
+  flat<U>(depth?: number): List<U> {
+    return new List<U>(
+      this.array
+        .map(item => {
+          if (item instanceof List) return item.collect()
+          return item
+        })
+        .flat(depth)
+    )
   }
 
-  flatMap<U>(action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>, depth?: number) : List<U>{
+  flatMap<U>(
+    action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>,
+    depth?: number
+  ): List<U> {
     return this.map(action).flat(depth)
   }
 

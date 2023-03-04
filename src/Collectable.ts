@@ -1,4 +1,4 @@
-export type Streamable<T> = {
+export interface Collectable<T> {
   /**
    * Returns item at provided index.
    *  If index is superior to array length, will return last item
@@ -13,13 +13,13 @@ export type Streamable<T> = {
    * Add items to the current array and returns the stream instance in order to chain calls
    * @param items
    */
-  push(...items: Array<T>): Streamable<T>
+  push(...items: Array<T>): Collectable<T>
 
   /**
    * Add elements from every array items to the current instance and returns the instance
    * @param items
    */
-  concat(...items: Array<Array<T>>): Streamable<T>
+  concat(...items: Array<Array<T>>): Collectable<T>
 
   /**
    * Reduce the array and collect the reduced value
@@ -51,9 +51,9 @@ export type Streamable<T> = {
     initialValue: U
   ): U
 
-  reverse(): Streamable<T>
+  reverse(): Collectable<T>
 
-  sort(compareFn?: (a: T, b: T) => number): Streamable<T>
+  sort(compareFn?: (a: T, b: T) => number): Collectable<T>
 
   join(separator?: string): string
 
@@ -61,50 +61,60 @@ export type Streamable<T> = {
 
   last(): T | undefined
 
-  shift(): Streamable<T>
+  shift(): Collectable<T>
 
-  unshift(...items: Array<T>): Streamable<T>
+  unshift(...items: Array<T>): Collectable<T>
 
-  pop(): Streamable<T>
+  pop(): Collectable<T>
 
   collect(): Array<T>
 
-  slice(start: number, end: number): Streamable<T>
+  slice(start: number, end: number): Collectable<T>
 
-  splice(start: number, deleteCount?: number, ...items: T[]): Streamable<T>
+  splice(start: number, deleteCount?: number, ...items: T[]): Collectable<T>
 
   peek(
     action: (value: T, index?: number, array?: Array<T>) => void
-  ): Streamable<T>
+  ): Collectable<T>
 
   peekPresent(
     action: (value: T, index?: number, arr?: Array<T>) => void
-  ): Streamable<T>
+  ): Collectable<T>
 
   forEach(
     action: (value: T, index?: number, arr?: Array<T>) => void
-  ): Streamable<T>
+  ): Collectable<T>
 
-  map<U>(action: (value: T, index?: number, arr?: Array<T>) => U): Streamable<U>
+  map<U>(
+    action: (value: T, index?: number, arr?: Array<T>) => U
+  ): Collectable<U>
 
   mapDefined<U>(
     action: (value: T, index?: number, arr?: Array<T>) => U | undefined
-  ): Streamable<U>
+  ): Collectable<U>
 
   mapUndefined<U>(
     action: (value: T, index?: number, array?: Array<T>) => U | T
-  ): Streamable<U | T>
+  ): Collectable<U | T>
 
-  flat<U>(depth?: number): Streamable<U>
-  flatMap<U>(action: (value: T, index?: number, arr?: Array<T>) => Streamable<U> | Array<U>, depth?: number) : Streamable<U>
+  flat<U>(depth?: number): Collectable<U>
+
+  flatMap<U>(
+    action: (
+      value: T,
+      index?: number,
+      arr?: Array<T>
+    ) => Collectable<U> | Array<U>,
+    depth?: number
+  ): Collectable<U>
 
   filter(
     predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): Streamable<T>
+  ): Collectable<T>
 
-  filterPresent(): Streamable<T>
+  filterPresent(): Collectable<T>
 
-  filterNotPresent(): Streamable<T>
+  filterNotPresent(): Collectable<T>
 
   every(
     predicate: (value: T, index: number, array: Array<T>) => boolean
@@ -137,10 +147,10 @@ export type Streamable<T> = {
 
   size(): number
 
-  unique(equalityPredicate: (a: T, b: T) => boolean): Streamable<T>
+  unique(equalityPredicate: (a: T, b: T) => boolean): Collectable<T>
 
   equals<O>(
-    other: Array<O | T> | Streamable<O | T>,
+    other: Array<O | T> | Collectable<O | T>,
     equalityPredicate: (a: O | T, b: O | T) => boolean
   ): boolean
 }
