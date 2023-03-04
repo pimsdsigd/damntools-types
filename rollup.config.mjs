@@ -18,7 +18,7 @@ export default [
     external: ["uuid"]
   },
   {
-    input: "src/index.ts",
+    input: "src/index.types.ts",
     output: [{file: pkg.types, format: "es"}],
     plugins: [dts()]
   }
