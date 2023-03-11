@@ -25,9 +25,6 @@
     "registry": "https://nexus.dev.damntools.fr/repository/npm-private/"
   },
   "license": "ISC",
-  "dependencies": {
-    "optional-js": "^2.3.0"
-  },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
     "@types/chai": "^4.3.4",
