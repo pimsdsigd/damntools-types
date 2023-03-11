@@ -147,6 +147,8 @@ export interface Collectable<T> {
 
   size(): number
 
+  isEmpty(): boolean
+
   unique(equalityPredicate: (a: T, b: T) => boolean): Collectable<T>
 
   equals<O>(

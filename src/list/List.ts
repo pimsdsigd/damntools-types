@@ -243,6 +243,10 @@ export class List<T> implements Collectable<T> {
     return this.array.length
   }
 
+  isEmpty(): boolean {
+    return this.size() <= 0
+  }
+
   unique(equalityPredicate?: (a: T, b: T) => boolean): List<T> {
     const predicate = equalityPredicate || ((l: T, r: T) => l === r)
     return new List<T>(
