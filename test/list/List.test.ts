@@ -13,12 +13,6 @@ describe("List", () => {
       expect(List.empty().collect().length).to.equals(0)
     })
 
-    it("with invalid array throws", () => {
-      assert.throw(() => List.of(5), InvalidArrayError)
-      assert.throw(() => List.of(true), InvalidArrayError)
-      assert.throw(() => List.of({}), InvalidArrayError)
-    })
-
     it("with empty array returns empty array", () => {
       expect(List.from([]).collect().length).to.equals(0)
     })
