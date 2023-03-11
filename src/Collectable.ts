@@ -1,4 +1,4 @@
-import Optional from "optional-js";
+import {Optional} from "@damntools.fr/optional";
 
 export interface Collectable<T> {
   /**
