@@ -6,6 +6,7 @@ import {
   InvalidRangeStartError
 } from "../exceptions"
 import {Collectable} from "../Collectable"
+import Optional from "optional-js"
 
 export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
@@ -231,6 +232,12 @@ export class List<T> implements Collectable<T> {
     predicate: (value: T, index: number, array: Array<T>) => boolean
   ): number {
     return this.array.findIndex(predicate)
+  }
+
+  findOptional(
+    predicate: (value: T, index: number, array: Array<T>) => boolean
+  ): Optional<T> {
+    return Optional.ofNullable(this.find(predicate))
   }
 
   count(

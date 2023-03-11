@@ -1,5 +1,4 @@
 import {List} from "./list"
-import {Optional} from "./optional"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -8,7 +7,6 @@ import {
 
 export {
   List,
-  Optional,
   InvalidArrayError,
   InvalidRangeEndError,
   InvalidRangeStartError

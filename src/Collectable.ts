@@ -1,3 +1,5 @@
+import Optional from "optional-js";
+
 export interface Collectable<T> {
   /**
    * Returns item at provided index.
@@ -136,6 +138,10 @@ export interface Collectable<T> {
   find(
     predicate: (value: T, index: number, array: Array<T>) => boolean
   ): T | undefined
+
+  findOptional(
+    predicate: (value: T, index: number, array: Array<T>) => boolean
+  ): Optional<T>
 
   findIndex(
     predicate: (value: T, index: number, array: Array<T>) => boolean

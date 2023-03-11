@@ -15,7 +15,7 @@ export default [
       {file: pkg.main, format: "cjs"},
       {file: pkg.module, format: "es"}
     ],
-    external: ["uuid"]
+    external: ["optional-js"]
   },
   {
     input: "src/index.types.ts",
