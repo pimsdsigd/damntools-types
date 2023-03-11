@@ -6,7 +6,7 @@ import {
   InvalidRangeStartError
 } from "../exceptions"
 import {Collectable} from "../Collectable"
-import Optional from "optional-js"
+import {Optional} from "@damntools.fr/optional"
 
 export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
@@ -117,9 +117,7 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  peekPresent(
-    action: (value: T, index?: number, arr?: Array<T>) => void
-  ): List<T> {
+  peekPresent(action: (value: T, index?: number, arr?: Array<T>) => void): List<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
         if (value) action(value, index, arr)
@@ -134,19 +132,13 @@ export class List<T> implements Collectable<T> {
   }
 
   map<U>(action: (value: T, index?: number, arr?: Array<T>) => U): List<U> {
-    return new List<U>(
-      this.array.map((value, index, arr) => action(value, index, arr))
-    )
+    return new List<U>(this.array.map((value, index, arr) => action(value, index, arr)))
   }
 
-  mapDefined<U>(
-    action: (value: T, index?: number, arr?: Array<T>) => U
-  ): List<U> {
+  mapDefined<U>(action: (value: T, index?: number, arr?: Array<T>) => U): List<U> {
     return new List<U>(
       this.array.map((value, index, arr) =>
-        value !== undefined && value !== null
-          ? action(value, index, arr)
-          : undefined
+        value !== undefined && value !== null ? action(value, index, arr) : undefined
       )
     )
   }
@@ -156,9 +148,7 @@ export class List<T> implements Collectable<T> {
   ): List<U | T> {
     return new List<U | T>(
       this.array.map((value, index, arr) =>
-        value === undefined || value === null
-          ? action(value, index, arr)
-          : value
+        value === undefined || value === null ? action(value, index, arr) : value
       )
     )
   }
@@ -181,9 +171,7 @@ export class List<T> implements Collectable<T> {
     return this.map(action).flat(depth)
   }
 
-  filter(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): List<T> {
+  filter(predicate: (value: T, index: number, array: Array<T>) => boolean): List<T> {
     return new List<T>(this.array.filter(predicate))
   }
 
@@ -195,21 +183,15 @@ export class List<T> implements Collectable<T> {
     return new List<T>(this.array.filter(e => e === undefined || e === null))
   }
 
-  every(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): boolean {
+  every(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
     return this.array.every(predicate)
   }
 
-  some(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): boolean {
+  some(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
     return this.array.some(predicate)
   }
 
-  none(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): boolean {
+  none(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
     return !this.every(predicate)
   }
 
@@ -222,27 +204,21 @@ export class List<T> implements Collectable<T> {
     throw exception()
   }
 
-  find(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): T | undefined {
+  find(predicate: (value: T, index: number, array: Array<T>) => boolean): T | undefined {
     return this.array.find(predicate)
   }
 
-  findIndex(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): number {
+  findIndex(predicate: (value: T, index: number, array: Array<T>) => boolean): number {
     return this.array.findIndex(predicate)
   }
 
   findOptional(
     predicate: (value: T, index: number, array: Array<T>) => boolean
   ): Optional<T> {
-    return Optional.ofNullable(this.find(predicate))
+    return Optional.nullable(this.find(predicate))
   }
 
-  count(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
-  ): number {
+  count(predicate: (value: T, index: number, array: Array<T>) => boolean): number {
     return this.array.filter(predicate).length
   }
 

@@ -10,21 +10,21 @@ import {IndexOutOfBoundError, InvalidIndexError} from "../../src/exceptions"
 describe("List", () => {
   describe("constructor()", () => {
     it("with undefined array create new array", () => {
-      expect(new List().collect().length).to.equals(0)
+      expect(List.empty().collect().length).to.equals(0)
     })
 
     it("with invalid array throws", () => {
-      assert.throw(() => new List(5), InvalidArrayError)
-      assert.throw(() => new List(true), InvalidArrayError)
-      assert.throw(() => new List({}), InvalidArrayError)
+      assert.throw(() => List.of(5), InvalidArrayError)
+      assert.throw(() => List.of(true), InvalidArrayError)
+      assert.throw(() => List.of({}), InvalidArrayError)
     })
 
     it("with empty array returns empty array", () => {
-      expect(new List([]).collect().length).to.equals(0)
+      expect(List.from([]).collect().length).to.equals(0)
     })
 
     it("with array returns array", () => {
-      const list = new List([65])
+      const list = List.from([65])
       expect(list.collect().length).to.equals(1)
       expect(list.get(0)).to.equals(65)
     })
