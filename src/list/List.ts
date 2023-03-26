@@ -218,6 +218,11 @@ export class List<T> implements Collectable<T> {
     return Optional.nullable(this.find(predicate))
   }
 
+  findFirst(): Optional<T> {
+    if (this.isEmpty()) return Optional.empty()
+    return Optional.of(this.get(0))
+  }
+
   count(predicate: (value: T, index: number, array: Array<T>) => boolean): number {
     return this.array.filter(predicate).length
   }
