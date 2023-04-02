@@ -1,4 +1,5 @@
 import {Optional} from "@damntools.fr/optional";
+import {ClassType} from "@damntools.fr/utils-simple";
 
 export interface Collectable<T> {
   /**
@@ -99,7 +100,7 @@ export interface Collectable<T> {
     action: (value: T, index?: number, array?: Array<T>) => U | T
   ): Collectable<U | T>
 
-  flat<U>(depth?: number): Collectable<U>
+  flat<U>(depth?: number, castType?: ClassType<U>): Collectable<U>
 
   flatMap<U>(
     action: (
@@ -107,7 +108,8 @@ export interface Collectable<T> {
       index?: number,
       arr?: Array<T>
     ) => Collectable<U> | Array<U>,
-    depth?: number
+    depth?: number,
+    castType?: ClassType<U>
   ): Collectable<U>
 
   filter(

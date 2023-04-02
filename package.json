@@ -48,6 +48,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@damntools.fr/optional": "^1.0.1"
+    "@damntools.fr/optional": "^1.0.1",
+    "@damntools.fr/utils-simple": "^3.2.11"
   }
 }

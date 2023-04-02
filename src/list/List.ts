@@ -7,6 +7,7 @@ import {
 } from "../exceptions"
 import {Collectable} from "../Collectable"
 import {Optional} from "@damntools.fr/optional"
+import {ClassType} from "@damntools.fr/utils-simple";
 
 export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
@@ -153,7 +154,8 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  flat<U>(depth?: number): List<U> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  flat<U>(depth?: number, castType?: ClassType<U>): List<U> {
     return new List<U>(
       this.array
         .map(item => {
@@ -166,9 +168,10 @@ export class List<T> implements Collectable<T> {
 
   flatMap<U>(
     action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>,
-    depth?: number
+    depth?: number,
+    castType?: ClassType<U>
   ): List<U> {
-    return this.map(action).flat(depth)
+    return this.map(action).flat(depth, castType)
   }
 
   filter(predicate: (value: T, index: number, array: Array<T>) => boolean): List<T> {
