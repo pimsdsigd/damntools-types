@@ -7,7 +7,7 @@ import {
 } from "../exceptions"
 import {Collectable} from "../Collectable"
 import {Optional} from "@damntools.fr/optional"
-import {ClassType} from "@damntools.fr/utils-simple";
+import {ClassType} from "@damntools.fr/utils-simple"
 
 export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
@@ -109,47 +109,53 @@ export class List<T> implements Collectable<T> {
     return this
   }
 
-  peek(action: (value: T, index?: number, array?: Array<T>) => void): List<T> {
+  peek(action: (value: T, index?: number, array?: Collectable<T>) => void): List<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
-        action(value, index, arr)
+        action(value, index, List.from(arr))
         return value
       })
     )
   }
 
-  peekPresent(action: (value: T, index?: number, arr?: Array<T>) => void): List<T> {
+  peekPresent(action: (value: T, index?: number, arr?: Collectable<T>) => void): List<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
-        if (value) action(value, index, arr)
+        if (value) action(value, index, List.from(arr))
         return value
       })
     )
   }
 
-  forEach(action: (value: T, index?: number, arr?: Array<T>) => void): List<T> {
-    this.array.forEach((value, index, arr) => action(value, index, arr))
+  forEach(action: (value: T, index?: number, arr?: Collectable<T>) => void): List<T> {
+    this.array.forEach((value, index, arr) => action(value, index, List.from(arr)))
     return this
   }
 
-  map<U>(action: (value: T, index?: number, arr?: Array<T>) => U): List<U> {
-    return new List<U>(this.array.map((value, index, arr) => action(value, index, arr)))
+  map<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): List<U> {
+    return new List<U>(
+      this.array.map((value, index, arr) => action(value, index, List.from(arr)))
+    )
   }
 
-  mapDefined<U>(action: (value: T, index?: number, arr?: Array<T>) => U): List<U> {
+  mapDefined<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): List<U> {
     return new List<U>(
       this.array.map((value, index, arr) =>
-        value !== undefined && value !== null ? action(value, index, arr) : undefined
+        value !== undefined && value !== null
+          ? action(value, index, List.from(arr))
+          : undefined
       )
     )
   }
 
   mapUndefined<U>(
-    action: (value: T, index?: number, array?: Array<T>) => U
+    action: (value: T, index?: number, array?: Collectable<T>) => U
   ): List<U | T> {
     return new List<U | T>(
       this.array.map((value, index, arr) =>
-        value === undefined || value === null ? action(value, index, arr) : value
+        value === undefined || value === null
+          ? action(value, index, List.from(arr))
+          : value
       )
     )
   }
@@ -167,15 +173,17 @@ export class List<T> implements Collectable<T> {
   }
 
   flatMap<U>(
-    action: (value: T, index?: number, arr?: Array<T>) => List<U> | Array<U>,
+    action: (value: T, index?: number, arr?: Collectable<T>) => List<U> | Array<U>,
     depth?: number,
     castType?: ClassType<U>
   ): List<U> {
     return this.map(action).flat(depth, castType)
   }
 
-  filter(predicate: (value: T, index: number, array: Array<T>) => boolean): List<T> {
-    return new List<T>(this.array.filter(predicate))
+  filter(
+    predicate: (value: T, index: number, array: Collectable<T>) => boolean
+  ): List<T> {
+    return new List<T>(this.array.filter((v, i, a) => predicate(v, i, List.from(a))))
   }
 
   filterPresent(): List<T> {
@@ -186,37 +194,41 @@ export class List<T> implements Collectable<T> {
     return new List<T>(this.array.filter(e => e === undefined || e === null))
   }
 
-  every(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
-    return this.array.every(predicate)
+  every(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
+    return this.array.every((v, i, a) => predicate(v, i, List.from(a)))
   }
 
-  some(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
-    return this.array.some(predicate)
+  some(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
+    return this.array.some((v, i, a) => predicate(v, i, List.from(a)))
   }
 
-  none(predicate: (value: T, index: number, array: Array<T>) => boolean): boolean {
+  none(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
     return !this.every(predicate)
   }
 
   findOrThrow(
-    predicate: (value: T, index: number, array: Array<T>) => boolean,
+    predicate: (value: T, index: number, array: Collectable<T>) => boolean,
     exception: () => Error
   ): T {
-    const found = this.array.find(predicate)
+    const found = this.array.find((v, i, a) => predicate(v, i, List.from(a)))
     if (found !== undefined) return found
     throw exception()
   }
 
-  find(predicate: (value: T, index: number, array: Array<T>) => boolean): T | undefined {
-    return this.array.find(predicate)
+  find(
+    predicate: (value: T, index: number, array: Collectable<T>) => boolean
+  ): T | undefined {
+    return this.array.find((v, i, a) => predicate(v, i, List.from(a)))
   }
 
-  findIndex(predicate: (value: T, index: number, array: Array<T>) => boolean): number {
-    return this.array.findIndex(predicate)
+  findIndex(
+    predicate: (value: T, index: number, array: Collectable<T>) => boolean
+  ): number {
+    return this.array.findIndex((v, i, a) => predicate(v, i, List.from(a)))
   }
 
   findOptional(
-    predicate: (value: T, index: number, array: Array<T>) => boolean
+    predicate: (value: T, index: number, array: Collectable<T>) => boolean
   ): Optional<T> {
     return Optional.nullable(this.find(predicate))
   }
@@ -226,8 +238,8 @@ export class List<T> implements Collectable<T> {
     return Optional.of(this.get(0))
   }
 
-  count(predicate: (value: T, index: number, array: Array<T>) => boolean): number {
-    return this.array.filter(predicate).length
+  count(predicate: (value: T, index: number, array: Collectable<T>) => boolean): number {
+    return this.array.filter((v, i, a) => predicate(v, i, List.from(a))).length
   }
 
   size(): number {
