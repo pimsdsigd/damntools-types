@@ -24,12 +24,12 @@ export class List<T> implements Collectable<T> {
     return this.array[index]
   }
 
-  push(...items: Array<T>): List<T> {
+  push(...items: Array<T>): Collectable<T> {
     this.array.push(...items)
     return this
   }
 
-  concat(...items: Array<Array<T>>): List<T> {
+  concat(...items: Array<Array<T>>): Collectable<T> {
     return new List<T>(this.array.concat(...items))
   }
 
@@ -57,12 +57,12 @@ export class List<T> implements Collectable<T> {
     return this.array.reduceRight(callbackFn, initialValue)
   }
 
-  reverse(): List<T> {
+  reverse(): Collectable<T> {
     this.array.reverse()
     return this
   }
 
-  sort(compareFn?: (a: T, b: T) => number): List<T> {
+  sort(compareFn?: (a: T, b: T) => number): Collectable<T> {
     this.array.sort(compareFn)
     return this
   }
@@ -81,17 +81,17 @@ export class List<T> implements Collectable<T> {
     return undefined
   }
 
-  shift(): List<T> {
+  shift(): Collectable<T> {
     this.array.shift()
     return this
   }
 
-  unshift(...items: Array<T>): List<T> {
+  unshift(...items: Array<T>): Collectable<T> {
     this.array.unshift(...items)
     return this
   }
 
-  pop(): List<T> {
+  pop(): Collectable<T> {
     this.array.pop()
     return this
   }
@@ -100,16 +100,16 @@ export class List<T> implements Collectable<T> {
     return this.array
   }
 
-  slice(start: number, end: number): List<T> {
+  slice(start: number, end: number): Collectable<T> {
     return new List<T>(this.array.slice(start, end))
   }
 
-  splice(start: number, deleteCount?: number, ...items: T[]): List<T> {
+  splice(start: number, deleteCount?: number, ...items: T[]): Collectable<T> {
     this.array.splice(start, deleteCount, ...items)
     return this
   }
 
-  peek(action: (value: T, index?: number, array?: Collectable<T>) => void): List<T> {
+  peek(action: (value: T, index?: number, array?: Collectable<T>) => void): Collectable<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
         action(value, index, List.from(arr))
@@ -118,7 +118,7 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  peekPresent(action: (value: T, index?: number, arr?: Collectable<T>) => void): List<T> {
+  peekPresent(action: (value: T, index?: number, arr?: Collectable<T>) => void): Collectable<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
         if (value) action(value, index, List.from(arr))
@@ -127,18 +127,18 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  forEach(action: (value: T, index?: number, arr?: Collectable<T>) => void): List<T> {
+  forEach(action: (value: T, index?: number, arr?: Collectable<T>) => void): Collectable<T> {
     this.array.forEach((value, index, arr) => action(value, index, List.from(arr)))
     return this
   }
 
-  map<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): List<U> {
+  map<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): Collectable<U> {
     return new List<U>(
       this.array.map((value, index, arr) => action(value, index, List.from(arr)))
     )
   }
 
-  mapDefined<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): List<U> {
+  mapDefined<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): Collectable<U> {
     return new List<U>(
       this.array.map((value, index, arr) =>
         value !== undefined && value !== null
@@ -150,7 +150,7 @@ export class List<T> implements Collectable<T> {
 
   mapUndefined<U>(
     action: (value: T, index?: number, array?: Collectable<T>) => U
-  ): List<U | T> {
+  ): Collectable<U | T> {
     return new List<U | T>(
       this.array.map((value, index, arr) =>
         value === undefined || value === null
@@ -161,7 +161,7 @@ export class List<T> implements Collectable<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  flat<U>(depth?: number, castType?: ClassType<U>): List<U> {
+  flat<U>(depth?: number, castType?: ClassType<U>): Collectable<U> {
     return new List<U>(
       this.array
         .map(item => {
@@ -176,21 +176,21 @@ export class List<T> implements Collectable<T> {
     action: (value: T, index?: number, arr?: Collectable<T>) => List<U> | Array<U>,
     depth?: number,
     castType?: ClassType<U>
-  ): List<U> {
+  ): Collectable<U> {
     return this.map(action).flat(depth, castType)
   }
 
   filter(
     predicate: (value: T, index: number, array: Collectable<T>) => boolean
-  ): List<T> {
+  ): Collectable<T> {
     return new List<T>(this.array.filter((v, i, a) => predicate(v, i, List.from(a))))
   }
 
-  filterPresent(): List<T> {
+  filterPresent(): Collectable<T> {
     return new List<T>(this.array.filter(e => e !== undefined && e !== null))
   }
 
-  filterNotPresent(): List<T> {
+  filterNotPresent(): Collectable<T> {
     return new List<T>(this.array.filter(e => e === undefined || e === null))
   }
 
@@ -250,7 +250,7 @@ export class List<T> implements Collectable<T> {
     return this.size() <= 0
   }
 
-  unique(equalityPredicate?: (a: T, b: T) => boolean): List<T> {
+  unique(equalityPredicate?: (a: T, b: T) => boolean): Collectable<T> {
     const predicate = equalityPredicate || ((l: T, r: T) => l === r)
     return new List<T>(
       this.array.reduce(
@@ -272,22 +272,22 @@ export class List<T> implements Collectable<T> {
     })
   }
 
-  static of<T>(...items: Array<T>): List<T> {
+  static of<T>(...items: Array<T>): Collectable<T> {
     const list = new List<T>()
     list.push(...items)
     return list
   }
 
-  static from<T>(array: Array<T>): List<T> {
+  static from<T>(array: Array<T>): Collectable<T> {
     if (Array.isArray(array)) return new List(array)
     else throw new InvalidArrayError()
   }
 
-  static empty<T>(): List<T> {
+  static empty<T>(): Collectable<T> {
     return new List<T>()
   }
 
-  static range(start: number, end: number): List<number> {
+  static range(start: number, end: number): Collectable<number> {
     if (!start && start !== 0) throw new InvalidRangeStartError()
     if ((!end && end !== 0) || end < start) throw new InvalidRangeEndError()
     const range = [...Array(end - start).keys()].map(i => i + start)

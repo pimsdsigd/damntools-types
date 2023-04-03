@@ -15,7 +15,7 @@ export default [
       {file: pkg.main, format: "cjs"},
       {file: pkg.module, format: "es"}
     ],
-    external: ["optional-js"]
+    external: ["@damntools.fr/optional"]
   },
   {
     input: "src/index.types.ts",
