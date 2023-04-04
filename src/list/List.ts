@@ -7,7 +7,7 @@ import {
 } from "../exceptions"
 import {Collectable} from "../Collectable"
 import {Optional} from "@damntools.fr/optional"
-import {ClassType} from "@damntools.fr/utils-simple"
+import {ClassType, ObjectUtils} from "@damntools.fr/utils-simple"
 
 export class List<T> implements Collectable<T> {
   protected readonly array: Array<T>
@@ -265,7 +265,7 @@ export class List<T> implements Collectable<T> {
   }
 
   unique(equalityPredicate?: (a: T, b: T) => boolean): Collectable<T> {
-    const predicate = equalityPredicate || ((l: T, r: T) => l === r)
+    const predicate = equalityPredicate || ObjectUtils.equals
     return new List<T>(
       this.array.reduce(
         (acc, cur) =>
@@ -279,7 +279,7 @@ export class List<T> implements Collectable<T> {
     other: Array<O> | List<O | T>,
     equalityPredicate?: (a: O | T, b: O | T) => boolean
   ): boolean {
-    const predicate = equalityPredicate || ((l: O | T, r: O | T) => l === r)
+    const predicate = equalityPredicate || ObjectUtils.equals
     const otherArray = Array.isArray(other) ? other : other.collect()
     return this.array.every((value, index) => {
       return predicate(value, otherArray[index])

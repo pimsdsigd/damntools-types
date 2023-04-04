@@ -320,10 +320,10 @@ export interface Collectable<T> {
 
   isEmpty(): boolean
 
-  unique(equalityPredicate: (a: T, b: T) => boolean): Collectable<T>
+  unique(equalityPredicate?: (a: T, b: T) => boolean): Collectable<T>
 
   equals<O>(
     other: Array<O | T> | Collectable<O | T>,
-    equalityPredicate: (a: O | T, b: O | T) => boolean
+    equalityPredicate?: (a: O | T, b: O | T) => boolean
   ): boolean
 }
