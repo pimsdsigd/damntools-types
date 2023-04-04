@@ -24,32 +24,56 @@ export interface Collectable<T> {
    */
   concat(...items: Array<Array<T>>): Collectable<T>
 
-  /**
-   * Reduce the array and collect the reduced value
-   * @param callbackFn
-   * @param initialValue
-   */
   reduce<U>(
     callbackFn: (
       previousValue: U,
-      currentValue: T,
-      currentIndex?: number,
-      array?: T[]
+      currentValue: T
     ) => U,
     initialValue: U
   ): U
 
-  /**
-   * Reduce the array starting from last item to first and collect the value
-   * @param callbackFn
-   * @param initialValue
-   */
+  reduce<U>(
+    callbackFn: (
+      previousValue: U,
+      currentValue: T,
+      currentIndex: number,
+    ) => U,
+    initialValue: U
+  ): U
+
+  reduce<U>(
+    callbackFn: (
+      previousValue: U,
+      currentValue: T,
+      currentIndex: number,
+      array: Collectable<T>
+    ) => U,
+    initialValue: U
+  ): U
+
+  reduceRight<U>(
+    callbackFn: (
+      previousValue: U,
+      currentValue: T
+    ) => U,
+    initialValue: U
+  ): U
+
+  reduceRight<U>(
+    callbackFn: (
+      previousValue: U,
+      currentValue: T,
+      currentIndex?: number
+    ) => U,
+    initialValue: U
+  ): U
+
   reduceRight<U>(
     callbackFn: (
       previousValue: U,
       currentValue: T,
       currentIndex?: number,
-      array?: T[]
+      array?: Collectable<T>
     ) => U,
     initialValue: U
   ): U

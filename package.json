@@ -49,6 +49,6 @@
   },
   "dependencies": {
     "@damntools.fr/optional": "^1.0.1",
-    "@damntools.fr/utils-simple": "^3.2.11"
+    "@damntools.fr/utils-simple": "^3.2.12"
   }
 }

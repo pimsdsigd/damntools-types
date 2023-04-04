@@ -37,24 +37,30 @@ export class List<T> implements Collectable<T> {
     callbackFn: (
       previousValue: U,
       currentValue: T,
-      currentIndex?: number,
-      array?: T[]
+      currentIndex: number,
+      array: Collectable<T>
     ) => U,
     initialValue: U
   ): U {
-    return this.array.reduce(callbackFn, initialValue)
+    return this.array.reduce(
+      (p, c, i, a) => callbackFn(p, c, i, List.from(a)),
+      initialValue
+    )
   }
 
   reduceRight<U>(
     callbackFn: (
       previousValue: U,
       currentValue: T,
-      currentIndex?: number,
-      array?: T[]
+      currentIndex: number,
+      array: Collectable<T>
     ) => U,
     initialValue: U
   ): U {
-    return this.array.reduceRight(callbackFn, initialValue)
+    return this.array.reduceRight(
+      (p, c, i, a) => callbackFn(p, c, i, List.from(a)),
+      initialValue
+    )
   }
 
   reverse(): Collectable<T> {
@@ -109,7 +115,9 @@ export class List<T> implements Collectable<T> {
     return this
   }
 
-  peek(action: (value: T, index?: number, array?: Collectable<T>) => void): Collectable<T> {
+  peek(
+    action: (value: T, index?: number, array?: Collectable<T>) => void
+  ): Collectable<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
         action(value, index, List.from(arr))
@@ -118,7 +126,9 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  peekPresent(action: (value: T, index?: number, arr?: Collectable<T>) => void): Collectable<T> {
+  peekPresent(
+    action: (value: T, index?: number, arr?: Collectable<T>) => void
+  ): Collectable<T> {
     return new List<T>(
       this.array.map((value, index, arr) => {
         if (value) action(value, index, List.from(arr))
@@ -127,7 +137,9 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  forEach(action: (value: T, index?: number, arr?: Collectable<T>) => void): Collectable<T> {
+  forEach(
+    action: (value: T, index?: number, arr?: Collectable<T>) => void
+  ): Collectable<T> {
     this.array.forEach((value, index, arr) => action(value, index, List.from(arr)))
     return this
   }
@@ -138,7 +150,9 @@ export class List<T> implements Collectable<T> {
     )
   }
 
-  mapDefined<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): Collectable<U> {
+  mapDefined<U>(
+    action: (value: T, index?: number, arr?: Collectable<T>) => U
+  ): Collectable<U> {
     return new List<U>(
       this.array.map((value, index, arr) =>
         value !== undefined && value !== null
