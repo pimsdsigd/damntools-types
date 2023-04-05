@@ -18,6 +18,8 @@ export interface Collectable<T> {
    */
   push(...items: Array<T>): Collectable<T>
 
+  pushFirst(...items: Array<T>): Collectable<T>
+
   /**
    * Add elements from every array items to the current instance and returns the instance
    * @param items

@@ -29,6 +29,10 @@ export class List<T> implements Collectable<T> {
     return this
   }
 
+  pushFirst(...items: Array<T>): Collectable<T> {
+    return new List<T>([].concat(items, this.array))
+  }
+
   concat(...items: Array<Array<T>>): Collectable<T> {
     return new List<T>(this.array.concat(...items))
   }
