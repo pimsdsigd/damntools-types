@@ -144,6 +144,8 @@ export interface Collectable<T> {
     castType?: ClassType<U>
   ): Collectable<U>
 
+  filterClass<U extends T>(type: ClassType<U>): Collectable<U>
+
   filter(predicate: (value: T) => boolean): Collectable<T>
 
   filter(predicate: (value: T, index: number) => boolean): Collectable<T>

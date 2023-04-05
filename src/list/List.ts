@@ -198,6 +198,11 @@ export class List<T> implements Collectable<T> {
     return this.map(action).flat(depth, castType)
   }
 
+  filterClass<U extends T>(type: ClassType<U>): Collectable<U>{
+    return this.filter(value => value instanceof type)
+      .map(value => value as U)
+  }
+
   filter(
     predicate: (value: T, index: number, array: Collectable<T>) => boolean
   ): Collectable<T> {
