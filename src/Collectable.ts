@@ -235,4 +235,8 @@ export interface Collectable<T> {
     other: Array<O | T> | Collectable<O | T>,
     equalityPredicate?: (a: O | T, b: O | T) => boolean
   ): boolean
+
+  log(identifier?: string | number): Collectable<T>
+
+  log(identifier?: string | number, entryFormatter?: (entry: T) => string): Collectable<T>
 }

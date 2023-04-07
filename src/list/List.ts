@@ -34,14 +34,12 @@ export class List<T> implements Collectable<T> {
   }
 
   concat(...items: Array<Array<T> | Collectable<T>>): Collectable<T> {
-    let container: Array<Array<T>> = [];
+    let container: Array<Array<T>> = []
     if (items && ObjectUtils.containsMethod(items, "size"))
-      container = items.map(i => i as Collectable<T>).map(i => i.collect());
+      container = items.map(i => i as Collectable<T>).map(i => i.collect())
     else if (items && ObjectUtils.containsProperty(items, "length"))
-      container = items.map(i => i as Array<T>);
-    return new List<T>(
-      this.array.concat(...container)
-    )
+      container = items.map(i => i as Array<T>)
+    return new List<T>(this.array.concat(...container))
   }
 
   reduce<U>(
@@ -326,5 +324,20 @@ export class List<T> implements Collectable<T> {
     if ((!end && end !== 0) || end < start) throw new InvalidRangeEndError()
     const range = [...Array(end - start).keys()].map(i => i + start)
     return new List<number>(range)
+  }
+
+  log(
+    identifier?: string | number,
+    entryFormatter?: (entry: T, index: number, array: Collectable<T>) => string
+  ): Collectable<T> {
+    const id = identifier || "ListLog"
+    if (this.isEmpty()) console.debug(id, "Empty")
+    else if (entryFormatter)
+      console.debug(
+        id,
+        this.array.map((e, i, a) => entryFormatter(e, i, List.from(a)))
+      )
+    else console.debug(id, this.array)
+    return this
   }
 }
