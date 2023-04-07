@@ -33,8 +33,15 @@ export class List<T> implements Collectable<T> {
     return new List<T>([].concat(items, this.array))
   }
 
-  concat(...items: Array<Array<T>>): Collectable<T> {
-    return new List<T>(this.array.concat(...items))
+  concat(...items: Array<Array<T> | Collectable<T>>): Collectable<T> {
+    let container: Array<Array<T>> = [];
+    if (items && ObjectUtils.containsMethod(items, "size"))
+      container = items.map(i => i as Collectable<T>).map(i => i.collect());
+    else if (items && ObjectUtils.containsProperty(items, "length"))
+      container = items.map(i => i as Array<T>);
+    return new List<T>(
+      this.array.concat(...container)
+    )
   }
 
   reduce<U>(
@@ -198,9 +205,8 @@ export class List<T> implements Collectable<T> {
     return this.map(action).flat(depth, castType)
   }
 
-  filterClass<U extends T>(type: ClassType<U>): Collectable<U>{
-    return this.filter(value => value instanceof type)
-      .map(value => value as U)
+  filterClass<U extends T>(type: ClassType<U>): Collectable<U> {
+    return this.filter(value => value instanceof type).map(value => value as U)
   }
 
   filter(

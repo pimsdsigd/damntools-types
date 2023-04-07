@@ -26,6 +26,12 @@ export interface Collectable<T> {
    */
   concat(...items: Array<Array<T>>): Collectable<T>
 
+  /**
+   * Add elements from every array items to the current instance and returns the instance
+   * @param items
+   */
+  concat(...items: Array<Collectable<T>>): Collectable<T>
+
   reduce<U>(callbackFn: (previousValue: U, currentValue: T) => U, initialValue: U): U
 
   reduce<U>(
