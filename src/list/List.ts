@@ -304,7 +304,7 @@ export class List<T> implements Collectable<T> {
     })
   }
 
-  static of<T>(...items: Array<T>): Collectable<T> {
+  static of<T>(...items: Array<T | undefined>): Collectable<T> {
     const list = new List<T>()
     list.push(...items)
     return list
