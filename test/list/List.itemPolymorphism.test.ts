@@ -1,32 +1,34 @@
 import {List} from "../../src"
 import {expect} from "chai"
+import {Collectable} from "../../src/Collectable"
 
 abstract class ParentClass {
-    value: number
+  value: number
 
-    method() {
-        return null
-    }
+  method() {
+    return null
+  }
 }
 
 class ChildClass1 extends ParentClass {
-    yolo: number
+  yolo: number
 }
 
-class ChildClass2<T> extends ParentClass {
-    vdf: T
+function test(v?, p?):  undefined {
+  return v && p ?undefined : undefined
+}
 
-    constructor(v: T) {
-        super();
-        this.vdf = v
-    }
+function test2(): ChildClass1 {
+  return new ChildClass1()
 }
 
 describe("List.itemPolymorphism", () => {
-    describe("constructor()", () => {
-        it("with undefined array create new array", () => {
-            const list: List<ParentClass> = List.of(new ChildClass1(), new ChildClass2("v") as ParentClass)
-            expect(list.size()).to.be.equals(2)
-        })
+  describe("constructor()", () => {
+    it("with undefined array create new array", () => {
+      const a = test(),
+        b = test2()
+      const l = List.of(a, b)
+      expect(l.size()).to.equals(2)
     })
+  })
 })

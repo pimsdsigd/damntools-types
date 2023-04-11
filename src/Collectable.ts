@@ -16,9 +16,9 @@ export interface Collectable<T> {
    * Add items to the current array and returns the stream instance in order to chain calls
    * @param items
    */
-  push(...items: Array<T>): Collectable<T>
+  push(...items: Array<T | undefined>): Collectable<T>
 
-  pushFirst(...items: Array<T>): Collectable<T>
+  pushFirst(...items: Array<T | undefined>): Collectable<T>
 
   /**
    * Add elements from every array items to the current instance and returns the instance

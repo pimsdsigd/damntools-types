@@ -24,12 +24,12 @@ export class List<T> implements Collectable<T> {
     return this.array[index]
   }
 
-  push(...items: Array<T>): Collectable<T> {
+  push(...items: Array<T | undefined>): Collectable<T> {
     this.array.push(...items)
     return this
   }
 
-  pushFirst(...items: Array<T>): Collectable<T> {
+  pushFirst(...items: Array<T | undefined>): Collectable<T> {
     return new List<T>([].concat(items, this.array))
   }
 
