@@ -213,12 +213,12 @@ export class List<T> implements Collectable<T> {
     return new List<T>(this.array.filter((v, i, a) => predicate(v, i, List.from(a))))
   }
 
-  filterPresent(): Collectable<T> {
+  filterPresent(): Collectable<NonNullable<T>> {
     return new List<T>(this.array.filter(e => e !== undefined && e !== null))
   }
 
-  filterNotPresent(): Collectable<T> {
-    return new List<T>(this.array.filter(e => e === undefined || e === null))
+  filterNotPresent(): Collectable<undefined | null> {
+    return new List(this.array.filter(e => e === undefined || e === null))
   }
 
   every(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {

@@ -160,9 +160,9 @@ export interface Collectable<T> {
     predicate: (value: T, index: number, array: Collectable<T>) => boolean
   ): Collectable<T>
 
-  filterPresent(): Collectable<T>
+  filterPresent(): Collectable<NonNullable<T>>
 
-  filterNotPresent(): Collectable<T>
+  filterNotPresent(): Collectable<undefined | null>
 
   every(predicate: (value: T) => boolean): boolean
 

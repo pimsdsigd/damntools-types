@@ -28,6 +28,7 @@ describe("List.itemPolymorphism", () => {
       const a = test(),
         b = test2()
       const l = List.of(a, b)
+      l.filterPresent().map(r => r.yolo)
       expect(l.size()).to.equals(2)
     })
   })
