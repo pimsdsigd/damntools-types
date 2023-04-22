@@ -26,10 +26,10 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^1.0.4"
+    "@damntools.fr/ts-lib": "^2.0.6"
   },
   "dependencies": {
-    "@damntools.fr/optional": "^1.0.1",
-    "@damntools.fr/utils-simple": "^3.2.18"
+    "@damntools.fr/optional": "^1.0.6",
+    "@damntools.fr/utils-simple": "^3.2.22"
   }
 }

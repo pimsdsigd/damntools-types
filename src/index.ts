@@ -5,6 +5,14 @@ import {
   InvalidRangeStartError
 } from "./exceptions"
 
+Object.defineProperty(Array.prototype, 'toList', {
+  value: function () {
+    return List.from(this)
+  },
+  configurable: true
+});
+
+
 export {
   List,
   InvalidArrayError,
