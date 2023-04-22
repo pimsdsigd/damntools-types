@@ -29,7 +29,7 @@
     "@damntools.fr/ts-lib": "^2.0.6"
   },
   "dependencies": {
-    "@damntools.fr/optional": "^1.0.6",
-    "@damntools.fr/utils-simple": "^3.2.22"
+    "@damntools.fr/optional": "^1.0.7",
+    "@damntools.fr/utils-simple": "^4.0.0"
   }
 }
