@@ -21,6 +21,8 @@ describe("List", () => {
       const list = List.from([65])
       expect(list.collect().length).to.equals(1)
       expect(list.get(0)).to.equals(65)
+      // const a = new Array(6)
+      // a.toList()
     })
   })
 
