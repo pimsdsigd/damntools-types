@@ -1,21 +1,40 @@
-import {List} from "./list"
+import {ArrayList} from "./list"
 import {
+  EmptyOptionalAccessError,
+  IndexOutOfBoundError,
   InvalidArrayError,
+  InvalidIndexError,
   InvalidRangeEndError,
   InvalidRangeStartError
 } from "./exceptions"
+import {Optional} from "./optional"
+import {KeyValue, UnmodifiableKeyValue} from "./dict";
+import {DictUtils} from "./DictUtils";
 
-Object.defineProperty(Array.prototype, 'toList', {
+Object.defineProperty(Array.prototype, "toList", {
   value: function () {
-    return List.from(this)
+    return ArrayList.from(this)
   },
   configurable: true
-});
+})
 
+Object.defineProperty(Object.prototype, "toKeyValue", {
+  value: function () {
+    return KeyValue.from(this)
+  },
+  configurable: true
+})
 
 export {
-  List,
+  Optional,
+  ArrayList,
+  UnmodifiableKeyValue,
+  DictUtils,
+  KeyValue,
   InvalidArrayError,
   InvalidRangeEndError,
-  InvalidRangeStartError
+  InvalidRangeStartError,
+  InvalidIndexError,
+  IndexOutOfBoundError,
+  EmptyOptionalAccessError
 }

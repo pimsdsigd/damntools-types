@@ -1,6 +1,5 @@
-import {List} from "../../src"
+import {ArrayList} from "../../src"
 import {expect} from "chai"
-import {Collectable} from "../../src/Collectable"
 
 abstract class ParentClass {
   value: number
@@ -27,7 +26,7 @@ describe("List.itemPolymorphism", () => {
     it("with undefined array create new array", () => {
       const a = test(),
         b = test2()
-      const l = List.of(a, b)
+      const l = ArrayList.of(a, b)
       l.filterPresent().map(r => r.yolo)
       expect(l.size()).to.equals(2)
     })

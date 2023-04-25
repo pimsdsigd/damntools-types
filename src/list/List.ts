@@ -1,343 +1,243 @@
-import {
-  IndexOutOfBoundError,
-  InvalidArrayError,
-  InvalidIndexError,
-  InvalidRangeEndError,
-  InvalidRangeStartError
-} from "../exceptions"
-import {Collectable} from "../Collectable"
-import {Optional} from "@damntools.fr/optional"
-import {ClassType, ObjectUtils} from "@damntools.fr/utils-simple"
+import {ClassType} from "../Utils";
+import {Optional} from "../optional";
+import {Dict, DictKeyType} from "../dict";
 
-export class List<T> implements Collectable<T> {
-  protected readonly array: Array<T>
 
-  private constructor(array?: Array<T> | any) {
-    if (!!array && !Array.isArray(array)) throw new InvalidArrayError()
-    this.array = array || []
-  }
+export interface List<T> {
+  /**
+   * Returns item at provided index.
+   *  If index is superior to array length, will return last item
+   *  If index is inferior to 0, will return item positioned at length array minus index
+   *    > index=-1 will return the last item, index=-2 the item before
+   * @throws if index is undefined
+   * @param index
+   */
+  get(index: number): T | undefined
 
-  get(index: number): T | undefined {
-    if (!index && index !== 0) throw new InvalidIndexError()
-    if (index < 0 || index >= this.array.length)
-      throw new IndexOutOfBoundError(index, this.array.length)
-    return this.array[index]
-  }
+  /**
+   * Add items to the current array and returns the stream instance in order to chain calls
+   * @param items
+   */
+  push(...items: Array<T | undefined>): List<T>
 
-  push(...items: Array<T | undefined>): Collectable<T> {
-    this.array.push(...items)
-    return this
-  }
+  pushFirst(...items: Array<T | undefined>): List<T>
 
-  pushFirst(...items: Array<T | undefined>): Collectable<T> {
-    return new List<T>([].concat(items, this.array))
-  }
+  /**
+   * Add elements from every array items to the current instance and returns the instance
+   * @param items
+   */
+  concat(...items: Array<Array<T>>): List<T>
 
-  concat(...items: Array<Array<T> | Collectable<T>>): Collectable<T> {
-    let container: Array<Array<T>> = []
-    if (items && ObjectUtils.containsMethod(items, "size"))
-      container = items.map(i => i as Collectable<T>).map(i => i.collect())
-    else if (items && ObjectUtils.containsProperty(items, "length"))
-      container = items.map(i => i as Array<T>)
-    return new List<T>(this.array.concat(...container))
-  }
+  /**
+   * Add elements from every array items to the current instance and returns the instance
+   * @param items
+   */
+  concat(...items: Array<List<T>>): List<T>
+
+  reduce<U>(callbackFn: (previousValue: U, currentValue: T) => U, initialValue: U): U
+
+  reduce<U>(
+    callbackFn: (previousValue: U, currentValue: T, currentIndex: number) => U,
+    initialValue: U
+  ): U
 
   reduce<U>(
     callbackFn: (
       previousValue: U,
       currentValue: T,
       currentIndex: number,
-      array: Collectable<T>
+      array: List<T>
     ) => U,
     initialValue: U
-  ): U {
-    return this.array.reduce(
-      (p, c, i, a) => callbackFn(p, c, i, List.from(a)),
-      initialValue
-    )
-  }
+  ): U
+
+  reduceRight<U>(callbackFn: (previousValue: U, currentValue: T) => U, initialValue: U): U
+
+  reduceRight<U>(
+    callbackFn: (previousValue: U, currentValue: T, currentIndex?: number) => U,
+    initialValue: U
+  ): U
 
   reduceRight<U>(
     callbackFn: (
       previousValue: U,
       currentValue: T,
-      currentIndex: number,
-      array: Collectable<T>
+      currentIndex?: number,
+      array?: List<T>
     ) => U,
     initialValue: U
-  ): U {
-    return this.array.reduceRight(
-      (p, c, i, a) => callbackFn(p, c, i, List.from(a)),
-      initialValue
-    )
-  }
+  ): U
 
-  reverse(): Collectable<T> {
-    this.array.reverse()
-    return this
-  }
+  reverse(): List<T>
 
-  sort(compareFn?: (a: T, b: T) => number): Collectable<T> {
-    this.array.sort(compareFn)
-    return this
-  }
+  sort(compareFn?: (a: T, b: T) => number): List<T>
 
-  join(separator?: string): string {
-    return this.array.join(separator)
-  }
+  join(separator?: string): string
 
-  first(): T | undefined {
-    if (this.size() > 0) return this.get(0)
-    return undefined
-  }
+  first(): T | undefined
 
-  last() {
-    if (this.size() > 0) return this.get(-1)
-    return undefined
-  }
+  last(): T | undefined
 
-  shift(): Collectable<T> {
-    this.array.shift()
-    return this
-  }
+  shift(): List<T>
 
-  unshift(...items: Array<T>): Collectable<T> {
-    this.array.unshift(...items)
-    return this
-  }
+  unshift(...items: Array<T>): List<T>
 
-  pop(): Collectable<T> {
-    this.array.pop()
-    return this
-  }
+  pop(): List<T>
 
-  collect(): Array<T> {
-    return this.array
-  }
+  collect(): Array<T>
 
-  slice(start: number, end: number): Collectable<T> {
-    return new List<T>(this.array.slice(start, end))
-  }
+  slice(start: number, end: number): List<T>
 
-  splice(start: number, deleteCount?: number, ...items: T[]): Collectable<T> {
-    this.array.splice(start, deleteCount, ...items)
-    return this
-  }
+  splice(start: number, deleteCount?: number, ...items: T[]): List<T>
 
-  peek(
-    action: (value: T, index?: number, array?: Collectable<T>) => void
-  ): Collectable<T> {
-    return new List<T>(
-      this.array.map((value, index, arr) => {
-        action(value, index, List.from(arr))
-        return value
-      })
-    )
-  }
+  peek(action: (value: T) => void): List<T>
+
+  peek(action: (value: T, index: number) => void): List<T>
+
+  peek(action: (value: T, index: number, array: List<T>) => void): List<T>
+
+  peekPresent(action: (value: T) => void): List<T>
+
+  peekPresent(action: (value: T, index: number) => void): List<T>
 
   peekPresent(
-    action: (value: T, index?: number, arr?: Collectable<T>) => void
-  ): Collectable<T> {
-    return new List<T>(
-      this.array.map((value, index, arr) => {
-        if (value) action(value, index, List.from(arr))
-        return value
-      })
-    )
-  }
+    action: (value: T, index: number, arr: List<T>) => void
+  ): List<T>
 
-  forEach(
-    action: (value: T, index?: number, arr?: Collectable<T>) => void
-  ): Collectable<T> {
-    this.array.forEach((value, index, arr) => action(value, index, List.from(arr)))
-    return this
-  }
+  forEach(action: (value: T) => void): List<T>
 
-  map<U>(action: (value: T, index?: number, arr?: Collectable<T>) => U): Collectable<U> {
-    return new List<U>(
-      this.array.map((value, index, arr) => action(value, index, List.from(arr)))
-    )
-  }
+  forEach(action: (value: T, index: number) => void): List<T>
+
+  forEach(action: (value: T, index: number, arr: List<T>) => void): List<T>
+
+  map<U>(action: (value: T) => U): List<U>
+
+  map<U>(action: (value: T, index: number) => U): List<U>
+
+  map<U>(action: (value: T, index: number, arr: List<T>) => U): List<U>
+
+  mapDefined<U>(action: (value: T) => U | undefined): List<U>
+
+  mapDefined<U>(action: (value: T, index: number) => U | undefined): List<U>
 
   mapDefined<U>(
-    action: (value: T, index?: number, arr?: Collectable<T>) => U
-  ): Collectable<U> {
-    return new List<U>(
-      this.array.map((value, index, arr) =>
-        value !== undefined && value !== null
-          ? action(value, index, List.from(arr))
-          : undefined
-      )
-    )
-  }
+    action: (value: T, index: number, arr: List<T>) => U | undefined
+  ): List<U>
+
+  mapUndefined<U>(action: (value: T) => U | T): List<U | T>
+
+  mapUndefined<U>(action: (value: T, index: number) => U | T): List<U | T>
 
   mapUndefined<U>(
-    action: (value: T, index?: number, array?: Collectable<T>) => U
-  ): Collectable<U | T> {
-    return new List<U | T>(
-      this.array.map((value, index, arr) =>
-        value === undefined || value === null
-          ? action(value, index, List.from(arr))
-          : value
-      )
-    )
-  }
+    action: (value: T, index: number, array: List<T>) => U | T
+  ): List<U | T>
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  flat<U>(depth?: number, castType?: ClassType<U>): Collectable<U> {
-    return new List<U>(
-      this.array
-        .map(item => {
-          if (item instanceof List) return item.collect()
-          return item
-        })
-        .flat(depth)
-    )
-  }
+  flat<U>(depth?: number): List<U>
 
   flatMap<U>(
-    action: (value: T, index?: number, arr?: Collectable<T>) => List<U> | Array<U>,
-    depth?: number,
-    castType?: ClassType<U>
-  ): Collectable<U> {
-    return this.map(action).flat(depth, castType)
-  }
+    action: (value: T) => List<U> | Array<U>,
+    depth?: number
+  ): List<U>
 
-  filterClass<U extends T>(type: ClassType<U>): Collectable<U> {
-    return this.filter(value => value instanceof type).map(value => value as U)
-  }
+  flatMap<U>(
+    action: (value: T, index: number) => List<U> | Array<U>,
+    depth?: number
+  ): List<U>
+
+  flatMap<U>(
+    action: (value: T, index: number, arr: List<T>) => List<U> | Array<U>,
+    depth?: number
+  ): List<U>
+
+  filterClass<U extends T>(type: ClassType<U>): List<U>
+
+  filter(predicate: (value: T) => boolean): List<T>
+
+  filter(predicate: (value: T, index: number) => boolean): List<T>
 
   filter(
-    predicate: (value: T, index: number, array: Collectable<T>) => boolean
-  ): Collectable<T> {
-    return new List<T>(this.array.filter((v, i, a) => predicate(v, i, List.from(a))))
-  }
+    predicate: (value: T, index: number, array: List<T>) => boolean
+  ): List<T>
 
-  filterPresent(): Collectable<NonNullable<T>> {
-    return new List<T>(this.array.filter(e => e !== undefined && e !== null))
-  }
+  filterPresent(): List<NonNullable<T>>
 
-  filterNotPresent(): Collectable<undefined | null> {
-    return new List(this.array.filter(e => e === undefined || e === null))
-  }
+  filterNotPresent(): List<undefined | null>
 
-  every(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
-    return this.array.every((v, i, a) => predicate(v, i, List.from(a)))
-  }
+  every(predicate: (value: T) => boolean): boolean
 
-  some(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
-    return this.array.some((v, i, a) => predicate(v, i, List.from(a)))
-  }
+  every(predicate: (value: T, index: number) => boolean): boolean
 
-  none(predicate: (value: T, index: number, array: Collectable<T>) => boolean): boolean {
-    return !this.every(predicate)
-  }
+  every(predicate: (value: T, index: number, array: List<T>) => boolean): boolean
+
+  some(predicate: (value: T) => boolean): boolean
+
+  some(predicate: (value: T, index: number) => boolean): boolean
+
+  some(predicate: (value: T, index: number, array: List<T>) => boolean): boolean
+
+  none(predicate: (value: T) => boolean): boolean
+
+  none(predicate: (value: T, index: number) => boolean): boolean
+
+  none(predicate: (value: T, index: number, array: List<T>) => boolean): boolean
+
+  findOrThrow(predicate: (value: T) => boolean, exception: () => Error): T
+
+  findOrThrow(predicate: (value: T, index: number) => boolean, exception: () => Error): T
 
   findOrThrow(
-    predicate: (value: T, index: number, array: Collectable<T>) => boolean,
+    predicate: (value: T, index: number, array: List<T>) => boolean,
     exception: () => Error
-  ): T {
-    const found = this.array.find((v, i, a) => predicate(v, i, List.from(a)))
-    if (found !== undefined) return found
-    throw exception()
-  }
+  ): T
+
+  find(predicate: (value: T) => boolean): T | undefined
+
+  find(predicate: (value: T, index: number) => boolean): T | undefined
 
   find(
-    predicate: (value: T, index: number, array: Collectable<T>) => boolean
-  ): T | undefined {
-    return this.array.find((v, i, a) => predicate(v, i, List.from(a)))
-  }
+    predicate: (value: T, index: number, array: List<T>) => boolean
+  ): T | undefined
 
-  findIndex(
-    predicate: (value: T, index: number, array: Collectable<T>) => boolean
-  ): number {
-    return this.array.findIndex((v, i, a) => predicate(v, i, List.from(a)))
-  }
+  findOptional(predicate: (value: T) => boolean): Optional<T>
+
+  findOptional(predicate: (value: T, index: number) => boolean): Optional<T>
 
   findOptional(
-    predicate: (value: T, index: number, array: Collectable<T>) => boolean
-  ): Optional<T> {
-    return Optional.nullable(this.find(predicate))
-  }
+    predicate: (value: T, index: number, array: List<T>) => boolean
+  ): Optional<T>
 
-  findFirst(): Optional<T> {
-    if (this.isEmpty()) return Optional.empty()
-    return Optional.of(this.get(0))
-  }
+  findIndex(predicate: (value: T) => boolean): number
 
-  findLast(): Optional<T> {
-    if (this.isEmpty()) return Optional.empty()
-    return Optional.of(this.reverse().get(0))
-  }
+  findIndex(predicate: (value: T, index: number) => boolean): number
 
-  count(predicate: (value: T, index: number, array: Collectable<T>) => boolean): number {
-    return this.array.filter((v, i, a) => predicate(v, i, List.from(a))).length
-  }
+  findIndex(
+    predicate: (value: T, index: number, array: List<T>) => boolean
+  ): number
 
-  size(): number {
-    return this.array.length
-  }
+  findFirst(): Optional<T>
 
-  isEmpty(): boolean {
-    return this.size() <= 0
-  }
+  findLast(): Optional<T>
 
-  unique(equalityPredicate?: (a: T, b: T) => boolean): Collectable<T> {
-    const predicate = equalityPredicate || ObjectUtils.equals
-    return new List<T>(
-      this.array.reduce(
-        (acc, cur) =>
-          acc.findIndex(i => predicate(i, cur)) > -1 ? acc : acc.concat([cur]),
-        []
-      )
-    )
-  }
+  count(predicate: (value: T) => boolean): number
+
+  count(predicate: (value: T, index: number) => boolean): number
+
+  count(predicate: (value: T, index: number, array: List<T>) => boolean): number
+
+  size(): number
+
+  isEmpty(): boolean
+
+  unique(equalityPredicate?: (a: T, b: T) => boolean): List<T>
+
+  toDict<K extends DictKeyType>(): Dict<K, T>
 
   equals<O>(
-    other: Array<O> | List<O | T>,
+    other: Array<O | T> | List<O | T>,
     equalityPredicate?: (a: O | T, b: O | T) => boolean
-  ): boolean {
-    const predicate = equalityPredicate || ObjectUtils.equals
-    const otherArray = Array.isArray(other) ? other : other.collect()
-    return this.array.every((value, index) => {
-      return predicate(value, otherArray[index])
-    })
-  }
+  ): boolean
 
-  static of<T>(...items: Array<T | undefined>): Collectable<T> {
-    const list = new List<T>()
-    list.push(...items)
-    return list
-  }
+  log(identifier?: string | number): List<T>
 
-  static from<T>(array: Array<T>): Collectable<T> {
-    if (Array.isArray(array)) return new List(array)
-    else throw new InvalidArrayError()
-  }
-
-  static empty<T>(): Collectable<T> {
-    return new List<T>()
-  }
-
-  static range(start: number, end: number): Collectable<number> {
-    if (!start && start !== 0) throw new InvalidRangeStartError()
-    if ((!end && end !== 0) || end < start) throw new InvalidRangeEndError()
-    const range = [...Array(end - start).keys()].map(i => i + start)
-    return new List<number>(range)
-  }
-
-  log(
-    identifier?: string | number,
-    entryFormatter?: (entry: T, index: number, array: Collectable<T>) => string
-  ): Collectable<T> {
-    const id = identifier || "ListLog"
-    if (this.isEmpty()) console.debug(id, "Empty")
-    else if (entryFormatter)
-      console.debug(
-        id,
-        this.array.map((e, i, a) => entryFormatter(e, i, List.from(a)))
-      )
-    else console.debug(id, this.array)
-    return this
-  }
+  log(identifier?: string | number, entryFormatter?: (entry: T) => string): List<T>
 }
