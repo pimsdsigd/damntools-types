@@ -1,5 +1,5 @@
 import {Dict, DictKeyType, DictObject, DictObjectEntry} from "./Dict"
-import {List} from "../list";
+import {ArrayList, List} from "../list";
 import {containsProperty, equalsBetween} from "../Utils";
 import {DictUtils} from "../DictUtils";
 import {IllegalAccessError} from "../exceptions";
@@ -18,7 +18,7 @@ export class KeyValue<K extends DictKeyType, V> implements Dict<K, V> {
     if (map instanceof KeyValue) {
       const oKeyValue = (map as KeyValue<K, V>)._map
       this._map = {...oKeyValue}
-    } else if (this._map) {
+    } else if (map) {
       this._map = map as DictObject<K, V>
     } else this._map = {} as DictObject<K, V>
     this.setSize()
@@ -66,11 +66,11 @@ export class KeyValue<K extends DictKeyType, V> implements Dict<K, V> {
   }
 
   keys(): List<K> {
-    return (Object.keys(this._map) as Array<K>).toList()
+    return ArrayList.from(Object.keys(this._map) as Array<K>)
   }
 
   values(): List<V> {
-    return Object.values(this._map as object).toList()
+    return ArrayList.from(Object.values(this._map as object))
   }
 
   entries(): List<DictObjectEntry<K, V>> {

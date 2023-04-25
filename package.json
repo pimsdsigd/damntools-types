@@ -9,16 +9,16 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist/ && npm run build:dist && npm run build:types",
+    "build": "rimraf dist/ && npm run build:dist",
     "build:dist": "rollup -c",
-    "build:types": "copyfiles -u 1 src/**/*.d.ts dist/",
     "lint": "eslint --ext .js,.ts .",
     "lint:fix": "eslint --fix --ext .js,.ts .  && npm run format",
     "format": "prettier --write \"**/*.+(js|ts|json|jsx|tsx|mjs|cjs)\"",
     "test": "npm run lint && npm run test:coverage:report",
     "test:unit": "mocha",
     "test:coverage": "c8 --all --reporter=text --reporter=text-summary npm run test:unit",
-    "test:coverage:report": "c8 --all --reporter=lcov --reporter=text-summary --reporter cobertura --report-dir=coverage npm run test:unit"
+    "test:coverage:report": "c8 --all --reporter=lcov --reporter=text-summary --reporter cobertura --report-dir=coverage npm run test:unit",
+    "test:local": "ts-node test.ts"
   },
   "author": "flocastera",
   "publishConfig": {
