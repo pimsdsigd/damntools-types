@@ -1,4 +1,4 @@
-import {ClassType} from "../Utils";
+import {ClassType} from "../types";
 import {Optional} from "../optional";
 import {Dict, DictKeyType} from "../dict";
 

@@ -1,15 +1,10 @@
 import {ArrayList} from "./list"
-import {
-  EmptyOptionalAccessError,
-  IndexOutOfBoundError,
-  InvalidArrayError,
-  InvalidIndexError,
-  InvalidRangeEndError,
-  InvalidRangeStartError
-} from "./exceptions"
 import {Optional} from "./optional"
 import {KeyValue, UnmodifiableKeyValue} from "./dict";
 import {DictUtils} from "./DictUtils";
+import {TypeUtils} from "./types";
+import {Enum} from "./enum";
+
 
 Object.defineProperty(Array.prototype, "toList", {
   value: function () {
@@ -25,16 +20,14 @@ Object.defineProperty(Object.prototype, "toKeyValue", {
   configurable: true
 })
 
+export * from "./exceptions"
+
 export {
+  Enum,
   Optional,
   ArrayList,
+  KeyValue,
   UnmodifiableKeyValue,
   DictUtils,
-  KeyValue,
-  InvalidArrayError,
-  InvalidRangeEndError,
-  InvalidRangeStartError,
-  InvalidIndexError,
-  IndexOutOfBoundError,
-  EmptyOptionalAccessError
+  TypeUtils
 }

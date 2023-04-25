@@ -1,6 +1,7 @@
 import {Optionable} from "../Optionable"
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {ClassType, defined} from "../../Utils";
+import {defined} from "../../Utils";
+import {ClassType} from "../../types";
 
 export class Optional<T> implements Optionable<T> {
   protected readonly value: T | undefined

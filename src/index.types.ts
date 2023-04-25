@@ -12,7 +12,7 @@ declare global {
   }
 
   interface Object {
-    toList<K extends DictKeyType, V>(): Dict<K, V>;
+    toDict<K extends DictKeyType, V>(): Dict<K, V>;
   }
 
 }

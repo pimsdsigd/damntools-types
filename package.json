@@ -1,6 +1,6 @@
 {
-  "name": "@damntools.fr/streamable",
-  "version": "2.1.1",
+  "name": "@damntools.fr/types",
+  "version": "2.2.0",
   "description": "",
   "files": [
     "dist"

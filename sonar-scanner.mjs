@@ -5,8 +5,8 @@ scanner(
     serverUrl: "https://sonar.dev.damntools.fr",
     token: process.env.SONAR_TOKEN,
     options: {
-      "sonar.projectName": "fr.damntools.npm.streamable",
-      "sonar.projectKey": "fr.damntools.npm.streamable",
+      "sonar.projectName": "fr.damntools.npm.types",
+      "sonar.projectKey": "fr.damntools.npm.types",
       "sonar.sources": "./src",
       "sonar.tests": "./test",
       "sonar.javascript.lcov.reportPaths": "coverage/lcov.info"

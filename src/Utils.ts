@@ -15,9 +15,3 @@ export const defined = (variable: any): boolean =>  {
 export const equalsBetween = (a: any, b: any): boolean => {
   return !!a && !!a.equals && typeof a.equals === "function" ? !!a.equals(b) : a === b
 }
-
-export interface ClassType<T> {
-  name: string
-
-  new (...args: any[]): T
-}

@@ -6,10 +6,11 @@ import {
   InvalidRangeStartError
 } from "../exceptions"
 import {List} from "./List"
-import {ClassType, containsMethod, containsProperty, equalsBetween} from "../Utils"
+import { containsMethod, containsProperty, equalsBetween} from "../Utils"
 import {Optional} from "../optional"
 import {Dict, DictKeyType, KeyValue, KeyValueCtor} from "../dict"
 import {DictUtils} from "../DictUtils";
+import {ClassType} from "../types";
 
 export class ArrayList<T> implements List<T> {
   protected readonly array: Array<T>
