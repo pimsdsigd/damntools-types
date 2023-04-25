@@ -327,6 +327,11 @@ export class ArrayList<T> implements List<T> {
     return this
   }
 
+
+  clear(): void {
+    this.array.splice(0, this.array.length)
+  }
+
   toDict<K extends DictKeyType>(): Dict<K, T> {
     if (this.isEmpty()) return new KeyValue()
     const first = this.get(1)

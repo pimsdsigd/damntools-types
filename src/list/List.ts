@@ -224,6 +224,8 @@ export interface List<T> {
 
   count(predicate: (value: T, index: number, array: List<T>) => boolean): number
 
+  clear(): void
+
   size(): number
 
   isEmpty(): boolean
