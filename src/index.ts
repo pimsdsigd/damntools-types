@@ -4,6 +4,7 @@ import {KV, StaticKV} from "./dict"
 import {DictUtils} from "./DictUtils"
 import {TypeUtils} from "./types"
 import {Enum} from "./enum"
+
 export * from "./exceptions"
 
 export {Enum, Optional, ArrayList, KV, StaticKV, DictUtils, TypeUtils}
