@@ -13,8 +13,8 @@ class ChildClass1 extends ParentClass {
   yolo: number
 }
 
-function test(v?, p?):  undefined {
-  return v && p ?undefined : undefined
+function test(v?, p?): undefined {
+  return v && p ? undefined : undefined
 }
 
 function test2(): ChildClass1 {

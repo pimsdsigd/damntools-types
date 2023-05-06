@@ -1,8 +1,8 @@
-import {KeyValue} from "./src";
+import {KV} from "./src"
 
-export const PatternTableMap = KeyValue.from<string, number>({
-    "%black": 2,
-    "%blue": 6
+export const PatternTableMap = KV.from<string, number>({
+  "%black": 2,
+  "%blue": 6
 })
 
-console.log(PatternTableMap.keys())
+console.log(PatternTableMap.entries().stream().reverse().collect())

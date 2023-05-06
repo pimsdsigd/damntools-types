@@ -1,7 +1,7 @@
 import {Optionable} from "../Optionable"
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {defined} from "../../Utils";
-import {ClassType} from "../../types";
+import {defined} from "../../Utils"
+import {ClassType, TypeUtils} from "../../types"
 
 export class Optional<T> implements Optionable<T> {
   protected readonly value: T | undefined
@@ -127,6 +127,7 @@ export class Optional<T> implements Optionable<T> {
   }
 
   static of<U>(value: U): Optional<U> {
+    TypeUtils.requireDefined(value, "Value should be defined when using of()")
     return new Optional<U>(value)
   }
 

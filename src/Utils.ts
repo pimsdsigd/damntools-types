@@ -8,7 +8,7 @@ export const containsMethod = (obj: object, methodName: string): boolean => {
     typeof obj[methodName] === "function"
   )
 }
-export const defined = (variable: any): boolean =>  {
+export const defined = (variable: any): boolean => {
   return variable !== undefined && variable !== null
 }
 

@@ -1,4 +1,4 @@
-import {ClassType} from "../types";
+import {ClassType} from "../types"
 
 export interface Optionable<T> {
   get(): T

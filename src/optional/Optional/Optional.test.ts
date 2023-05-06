@@ -1,5 +1,4 @@
-
-import {Optional} from "./Optional";
+import {Optional} from "./Optional"
 
 describe("Optional", () => {
   describe("constructor()", () => {
@@ -11,7 +10,5 @@ describe("Optional", () => {
       const test = process.argv[0] ? tees : undefined
       Optional.nullable(test).map(t => t.te)
     })
-
   })
-
 })

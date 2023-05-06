@@ -42,7 +42,7 @@ export class TypeUtils {
     if (v instanceof Date && b instanceof Date) return v.getTime() - b.getTime()
     if (!!v && Array.isArray(v) && Array.isArray(b)) return TypeUtils.compareArray(v, b)
     if (!!v && v instanceof ArrayList && b instanceof ArrayList)
-      return TypeUtils.compareArray(v.collect(), b.collect())
+      return TypeUtils.compareArray(v.getInner(), b.getInner())
     if (!!v && typeof v === "object" && typeof b === "object")
       return TypeUtils.compareObject(v, b)
     if (typeof a === "string" && typeof b === "string") return v.localeCompare(b)
