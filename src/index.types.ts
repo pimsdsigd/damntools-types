@@ -5,6 +5,10 @@ export * from "./exceptions"
 export * from "./list"
 export * from "./optional"
 export * from "./dict"
+export * from "./types"
+export * from "./enum"
+export * from "./DictUtils"
+export * from "./ObjectUtils"
 
 declare global {
   interface Array<T> {
