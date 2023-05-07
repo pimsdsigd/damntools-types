@@ -5,7 +5,14 @@ import {DictUtils} from "./DictUtils"
 import {TypeUtils} from "./types"
 import {ObjectUtils} from "./ObjectUtils"
 import {Enum} from "./enum"
-import {containsMethod, containsProperty, defined, equals, notDefined} from "./Utils"
+import {
+  containsMethod,
+  containsProperty,
+  defined,
+  equals,
+  notDefined,
+  requireDefined
+} from "./Utils"
 
 export * from "./exceptions"
 
@@ -22,5 +29,6 @@ export {
   notDefined,
   equals,
   containsProperty,
-  containsMethod
+  containsMethod,
+  requireDefined
 }

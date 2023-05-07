@@ -1,7 +1,6 @@
 import {ArrayList} from "./list"
 import {Dict, DictKeyType} from "./dict"
 
-
 export * from "./exceptions"
 export * from "./list"
 export * from "./optional"
