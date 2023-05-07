@@ -2,7 +2,7 @@ import {ArrayList, peekFn} from "./ArrayList"
 import {ClassType, TypeUtils} from "../types"
 import {List, PeekFunction, SortFunction} from "./List"
 import {Optional} from "../optional"
-import {equalsBetween} from "../Utils"
+import {equals} from "../Utils"
 import {
   EqualityPredicate,
   FlatMapFunction,
@@ -109,7 +109,7 @@ export class ListStream<T> implements Stream<T> {
   }
 
   unique(equalityPredicate?: EqualityPredicate<T, T>): Stream<T> {
-    const predicate = equalityPredicate || equalsBetween
+    const predicate = equalityPredicate || equals
     return new ListStream<T>(
       this.array.reduce(
         (acc, cur) =>

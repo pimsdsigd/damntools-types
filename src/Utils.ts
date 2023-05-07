@@ -11,7 +11,8 @@ export const containsMethod = (obj: object, methodName: string): boolean => {
 export const defined = (variable: any): boolean => {
   return variable !== undefined && variable !== null
 }
+export const notDefined = (variable: any): boolean => !defined(variable)
 
-export const equalsBetween = (a: any, b: any): boolean => {
+export const equals = (a: any, b: any): boolean => {
   return !!a && !!a.equals && typeof a.equals === "function" ? !!a.equals(b) : a === b
 }
