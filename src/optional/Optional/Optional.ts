@@ -1,7 +1,8 @@
 import {Optionable} from "../Optionable"
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {defined, notDefined} from "../../Utils"
+import {defined, equals, notDefined} from "../../Utils"
 import {ClassType, TypeUtils} from "../../types"
+import {SortFunction} from "../../list"
 
 export class Optional<T> implements Optionable<T> {
   protected static EMPTY = new Optional()
@@ -80,12 +81,20 @@ export class Optional<T> implements Optionable<T> {
   }
 
   orElseThrow(errorSupplier: () => Error): T {
-    if (this.isEmpty()) throw errorSupplier()
+    if (this.isEmpty()) {
+      const error = errorSupplier()
+      if (error) throw error
+      throw new EmptyOptionalAccessError()
+    }
     return this._value
   }
 
   orElse(optionalSupplier: () => Optional<T>): Optional<T> {
-    if (this.isEmpty()) return optionalSupplier()
+    if (this.isEmpty()) {
+      const supplied = optionalSupplier()
+      if (supplied && supplied.isPresent()) return supplied
+      return Optional.empty()
+    }
     return Optional.of(this._value)
   }
 
@@ -121,24 +130,22 @@ export class Optional<T> implements Optionable<T> {
 
   equals<O>(
     other: Optional<T | O>,
-    equalityPredicate: (a: T | O, b: T | O) => boolean
+    equalityPredicate?: (a: T | O, b: T | O) => boolean
   ): boolean {
     if (this.isEmpty() && other.isEmpty()) return true
     if (this.isPresent() && other.isPresent()) {
+      if (!equalityPredicate) equalityPredicate = equals
       return equalityPredicate(this.get(), other.get())
     }
     return false
   }
 
-  compare<O>(
-    other: Optional<T | O>,
-    equalityPredicate: (a: T | O, b: T | O) => number
-  ): number {
+  compare<O>(other: Optional<T | O>, compareFn?: SortFunction<T | O>): number {
     if (this.isEmpty() && other.isEmpty()) return 0
     if (this.isPresent() && other.isPresent()) {
-      return equalityPredicate(this.get(), other.get())
+      if (!compareFn) compareFn = TypeUtils.compare
+      return compareFn(this.get(), other.get())
     }
-    return -1
+    return this.isEmpty() ? -1 : 1
   }
-
 }

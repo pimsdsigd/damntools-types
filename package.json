@@ -25,6 +25,6 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^2.0.9"
+    "@damntools.fr/ts-lib": "^2.1.0"
   }
 }

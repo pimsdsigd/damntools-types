@@ -1,6 +1,6 @@
 {
   "src": "src/",
-  "reporter": ["lcov", "cobertura"],
+  "reporter": ["lcov", "cobertura", "text-summary"],
   "report-dir": "coverage",
   "exclude": ["src/**/*.test.*"]
 }
