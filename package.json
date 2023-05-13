@@ -16,8 +16,7 @@
     "format": "prettier --write \"**/*.+(js|ts|json|jsx|tsx|mjs|cjs)\"",
     "test": "npm run lint && npm run test:coverage:report",
     "test:unit": "mocha",
-    "test:coverage": "c8 --all --reporter=text --reporter=text-summary npm run test:unit",
-    "test:coverage:report": "c8 --all --reporter=lcov --reporter=text-summary --reporter cobertura --report-dir=coverage npm run test:unit",
+    "test:coverage:report": "c8 npm run test:unit",
     "test:local": "ts-node test.ts"
   },
   "author": "flocastera",
@@ -26,6 +25,6 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^2.0.6"
+    "@damntools.fr/ts-lib": "^2.0.9"
   }
 }

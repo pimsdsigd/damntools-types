@@ -11,16 +11,16 @@ import {
 describe("List", () => {
   describe("constructor()", () => {
     it("with undefined array create new array", () => {
-      expect(ArrayList.empty().collect().length).to.equals(0)
+      expect(ArrayList.empty().getInner().length).to.equals(0)
     })
 
     it("with empty array returns empty array", () => {
-      expect(ArrayList.from([]).collect().length).to.equals(0)
+      expect(ArrayList.from([]).getInner().length).to.equals(0)
     })
 
     it("with array returns array", () => {
       const list = ArrayList.from([65])
-      expect(list.collect().length).to.equals(1)
+      expect(list.getInner().length).to.equals(1)
       expect(list.get(0)).to.equals(65)
       // const a = new Array(6)
       // a.toList()
@@ -33,37 +33,37 @@ describe("List", () => {
     })
 
     it("with empty array returns empty array", () => {
-      expect(ArrayList.from([]).collect().length).to.equals(0)
+      expect(ArrayList.from([]).getInner().length).to.equals(0)
     })
 
     it("with array returns array", () => {
       const list = ArrayList.from([65])
-      expect(list.collect().length).to.equals(1)
+      expect(list.getInner().length).to.equals(1)
       expect(list.get(0)).to.equals(65)
     })
   })
 
   describe("of", () => {
     it("with 0 item returns empty", () => {
-      expect(ArrayList.of().collect().length).to.equals(0)
+      expect(ArrayList.of().getInner().length).to.equals(0)
     })
 
     it("with 1 item returns correct array", () => {
       const list = ArrayList.of(65)
-      expect(list.collect().length).to.equals(1)
+      expect(list.getInner().length).to.equals(1)
       expect(list.get(0)).to.equals(65)
     })
 
     it("with N>1 item returns correct array", () => {
       const list = ArrayList.of(65, 66)
-      expect(list.collect().length).to.equals(2)
+      expect(list.getInner().length).to.equals(2)
       expect(list.get(0)).to.equals(65)
       expect(list.get(1)).to.equals(66)
     })
 
     it("with one item array returns correct array of array", () => {
       const list = ArrayList.of([65])
-      expect(list.collect().length).to.equals(1)
+      expect(list.getInner().length).to.equals(1)
       expect(list.get(0).length).to.equals(1)
       expect(list.get(0)[0]).to.equals(65)
     })
@@ -73,7 +73,7 @@ describe("List", () => {
     it("removes undefined and keeps present value", () => {
       let stringList = ArrayList.of("sdfl", undefined)
       expect(stringList.size()).to.equals(2)
-      stringList = stringList.filterPresent()
+      stringList = stringList.stream().filterPresent().collect()
       expect(stringList.size()).to.equals(1)
     })
   })
@@ -82,8 +82,10 @@ describe("List", () => {
     it("removes undefined and keeps present value", () => {
       const array = [1, 2, 3]
       const list = ArrayList.from(array)
+        .stream()
         .map(item => ArrayList.range(0, item))
         .flat()
+        .collect()
       expect(list.size()).to.equals(6)
       expect(list.get(0)).to.equals(0)
       expect(list.get(1)).to.equals(0)
@@ -97,9 +99,10 @@ describe("List", () => {
   describe("flatMap", () => {
     it("returns correct if passed list", () => {
       const array = [1, 2, 3]
-      const list = ArrayList.from(array).flatMap(item =>
-        ArrayList.range(0, item)
-      )
+      const list = ArrayList.from(array)
+        .stream()
+        .flatMap(item => ArrayList.range(0, item))
+        .collect()
       expect(list.size()).to.equals(6)
       expect(list.get(0)).to.equals(0)
       expect(list.get(1)).to.equals(0)
@@ -110,9 +113,10 @@ describe("List", () => {
     })
     it("returns correct if passed array", () => {
       const array = [1, 2, 3]
-      const list = ArrayList.from(array).flatMap(item =>
-        ArrayList.range(0, item).collect()
-      )
+      const list = ArrayList.from(array)
+        .stream()
+        .flatMap(item => ArrayList.range(0, item).getInner())
+        .collect()
       expect(list.size()).to.equals(6)
       expect(list.get(0)).to.equals(0)
       expect(list.get(1)).to.equals(0)
@@ -227,13 +231,13 @@ describe("List", () => {
     it("0 length returns correct array length", () => {
       const length = 0
       const range = ArrayList.range(0, length)
-      expect(range.collect().length).to.equals(length)
+      expect(range.getInner().length).to.equals(length)
     })
 
     it("N length returns correct array length", () => {
       const length = 2
       const range = ArrayList.range(0, length)
-      expect(range.collect().length).to.equals(length)
+      expect(range.getInner().length).to.equals(length)
     })
   })
 })

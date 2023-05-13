@@ -1,4 +1,4 @@
-import {List} from "./list"
+import {ArrayList, List} from "./list"
 
 export class ObjectUtils {
   /**
@@ -20,7 +20,7 @@ export class ObjectUtils {
   }
 
   static entries(obj: object): List<[string, any]> {
-    return Object.entries(obj).toList()
+    return ArrayList.from(Object.entries(obj))
   }
 
   static fromEntries(entries: List<[string, any]>): object {
@@ -28,15 +28,15 @@ export class ObjectUtils {
   }
 
   static keys(obj: object): List<string> {
-    return Object.keys(obj).toList()
+    return ArrayList.from(Object.keys(obj))
   }
 
   static values<T>(obj: object): List<T> {
-    return Object.values(obj).toList()
+    return ArrayList.from(Object.values(obj))
   }
 
   static sortEntries(obj: object): List<any> {
-    return Object.entries(obj).sort(this.entrySorter).toList()
+    return ArrayList.from(Object.entries(obj).sort(this.entrySorter))
   }
 
   static entrySorter(a: Array<any>, b: Array<any>): number {
