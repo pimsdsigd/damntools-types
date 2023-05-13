@@ -9,6 +9,7 @@ scanner(
       "sonar.projectKey": "fr.damntools.npm.types",
       "sonar.sources": "./src",
       // "sonar.tests": "./test",
+      "sonar.exclusions": "**/*.test.ts",
       "sonar.javascript.lcov.reportPaths": "coverage/lcov.info"
     }
   },
