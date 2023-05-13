@@ -1,36 +1,51 @@
 import {Optionable} from "../Optionable"
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {defined} from "../../Utils"
+import {defined, notDefined} from "../../Utils"
 import {ClassType, TypeUtils} from "../../types"
 
 export class Optional<T> implements Optionable<T> {
-  protected readonly value: T | undefined
+  protected static EMPTY = new Optional()
 
-  protected readonly empty: boolean
+  protected readonly _value: T | undefined
+
+  protected readonly _empty: boolean
 
   protected constructor(value?: T) {
-    this.empty = defined(value)
-    this.value = value
+    this._empty = notDefined(value)
+    this._value = value
+  }
+
+  static of<U>(value: U): Optional<U> {
+    TypeUtils.requireDefined(value, "Value should be defined when using of()")
+    return new Optional<U>(value)
+  }
+
+  static empty<U>(): Optional<U> {
+    return this.EMPTY as Optional<U>
+  }
+
+  static nullable<U>(value: U | undefined | null): Optional<U> {
+    return defined(value) ? this.of(value) : this.empty()
   }
 
   get(): T {
     if (this.isEmpty()) throw new EmptyOptionalAccessError()
-    return this.value
+    return this._value
   }
 
   filter(predicate: (value: T) => boolean): Optional<T> {
-    if (this.isEmpty() || !predicate(this.value)) return Optional.empty()
-    return Optional.of(this.value)
+    if (this.isEmpty() || !predicate(this._value)) return Optional.empty()
+    return Optional.of(this._value)
   }
 
-  filterClass<U>(type: ClassType<U>): Optional<U> {
-    if (this.isEmpty() || !(this.value instanceof type)) return Optional.empty()
-    return Optional.of(this.value)
+  filterClass<U extends T>(type: ClassType<U>): Optional<U> {
+    if (this.isEmpty() || !(this._value instanceof type)) return Optional.empty()
+    return Optional.of(this._value)
   }
 
   map<U>(action: (value: T) => U): Optional<U> {
     if (this.isEmpty()) return Optional.empty()
-    const value = action(this.value)
+    const value = action(this._value)
     if (defined(value)) return Optional.of(value)
     return Optional.empty()
   }
@@ -44,60 +59,60 @@ export class Optional<T> implements Optionable<T> {
 
   flatMap<U>(action: (value: T) => Optional<U>): Optional<U> {
     if (this.isEmpty()) return Optional.empty()
-    const value = action(this.value)
+    const value = action(this._value)
     if (defined(value) && value.isPresent()) return Optional.of(value.get())
     return Optional.empty()
   }
 
   orElseReturn(other: T): T {
     if (this.isEmpty()) return other
-    return this.value
+    return this._value
   }
 
   orElseUndefined(): T | undefined {
     if (this.isEmpty()) return undefined
-    return this.value
+    return this._value
   }
 
   orElseGet(supplier: () => T): T {
     if (this.isEmpty()) return supplier()
-    return this.value
+    return this._value
   }
 
   orElseThrow(errorSupplier: () => Error): T {
     if (this.isEmpty()) throw errorSupplier()
-    return this.value
+    return this._value
   }
 
   orElse(optionalSupplier: () => Optional<T>): Optional<T> {
     if (this.isEmpty()) return optionalSupplier()
-    return Optional.of(this.value)
+    return Optional.of(this._value)
   }
 
   ifPresentDo(action: (value: T) => void): void {
-    if (this.isPresent()) action(this.value)
+    if (this.isPresent()) action(this._value)
   }
 
   ifPresentOrElse(action: (value: T) => void, elseAction: () => void): void {
-    if (this.isPresent()) action(this.value)
+    if (this.isPresent()) action(this._value)
     else elseAction()
   }
 
   log(identifier?: string | number): this {
     const id = identifier || "OptionalLog"
     if (this.isEmpty()) console.debug(id, "Empty")
-    else console.debug(id, this.value)
+    else console.debug(id, this._value)
     return this
   }
 
   peek(action: (value: T) => void): Optional<T> {
     if (this.isEmpty()) return Optional.empty()
-    action(this.value)
-    return Optional.of(this.value)
+    action(this._value)
+    return this
   }
 
   isEmpty(): boolean {
-    return this.empty
+    return this._empty
   }
 
   isPresent(): boolean {
@@ -126,16 +141,4 @@ export class Optional<T> implements Optionable<T> {
     return -1
   }
 
-  static of<U>(value: U): Optional<U> {
-    TypeUtils.requireDefined(value, "Value should be defined when using of()")
-    return new Optional<U>(value)
-  }
-
-  static empty<U>(): Optional<U> {
-    return new Optional<U>()
-  }
-
-  static nullable<U>(value: U | undefined): Optional<U> {
-    return defined(value) ? this.of(value) : this.empty()
-  }
 }

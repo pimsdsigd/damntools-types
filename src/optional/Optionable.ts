@@ -5,7 +5,7 @@ export interface Optionable<T> {
 
   filter(predicate: (value: T) => boolean): Optionable<T>
 
-  filterClass<U>(type: ClassType<U>): Optionable<U>
+  filterClass<U extends T>(type: ClassType<U>): Optionable<U>
 
   map<U>(action: (value: T) => U | undefined | null): Optionable<U>
 
