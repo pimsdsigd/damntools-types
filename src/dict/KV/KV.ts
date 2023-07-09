@@ -11,17 +11,18 @@ import {
 import {Collectors, Lists} from "../../utils"
 import {Optional} from "../../optional"
 
-const fromEntryFn = <V>(entry: DictObjectEntry<V>): [string, any] => [
-  entry.key,
-  entry.value
-]
+const fromEntryFn = <K extends string, V>(
+  entry: DictObjectEntry<K, V>
+): [string, any] => [entry.key, entry.value]
 
-export const fromEntriesFn = <V>(entries: List<DictObjectEntry<V>>): Dict<V> => {
+export const fromEntriesFn = <K extends string, V>(
+  entries: List<DictObjectEntry<K, V>>
+): Dict<K, V> => {
   const obj = Object.fromEntries(entries.stream().map(fromEntryFn).collectArray())
   return KV.from(obj as DictObject<V>)
 }
 
-export class KV<V> implements Dict<V> {
+export class KV<K extends string, V> implements Dict<K, V> {
   protected _map: DictObject<V>
   private _size: number
 
@@ -35,23 +36,23 @@ export class KV<V> implements Dict<V> {
     }
   }
 
-  static from<V>(map: DictObject<V>): Dict<V> {
-    return new KV<V>(map)
+  static from<K extends string, V>(map: DictObject<V>): Dict<K, V> {
+    return new KV<K, V>(map)
   }
 
-  static of<V>(map: Dict<V>): Dict<V> {
+  static of<K extends string, V>(map: Dict<K, V>): Dict<K, V> {
     return this.from(map.collect())
   }
 
-  static empty<V>(): Dict<V> {
-    return new KV<V>()
+  static empty<K extends string, V>(): Dict<K, V> {
+    return new KV<K, V>()
   }
 
   private setSize(size?: number) {
     this._size = size !== undefined ? size : Object.keys(this._map).length
   }
 
-  put(key: string, value: V): this {
+  put(key: K, value: V): this {
     this._map[key] = value
     this.setSize()
     return this
@@ -63,13 +64,13 @@ export class KV<V> implements Dict<V> {
     return this
   }
 
-  merge(...dict: Array<Dict<V>>): this {
+  merge(...dict: Array<Dict<K, V>>): this {
     this._map = dict.reduce((old, cur) => ({...old, ...cur.collect()}), this._map)
     this.setSize()
     return this
   }
 
-  hasKey(key: string): boolean {
+  hasKey(key: K): boolean {
     return containsProperty(this._map as object, `${key}`)
   }
 
@@ -83,34 +84,34 @@ export class KV<V> implements Dict<V> {
     return {...this._map}
   }
 
-  remove(key: string): this {
+  remove(key: K): this {
     delete this._map[key]
     this.setSize()
     return this
   }
 
-  get(key: string): V {
+  get(key: K): V {
     return this._map[key]
   }
 
-  getOrDefault(key: string, defaultValue: V): V {
+  getOrDefault(key: K, defaultValue: V): V {
     if (this.hasKey(key)) return this.get(key)
     return defaultValue
   }
 
-  getOptional(key: string): Optionable<V> {
+  getOptional(key: K): Optionable<V> {
     return this.hasKey(key) ? Optional.of(this.get(key)) : Optional.empty()
   }
 
-  keys(): List<string> {
-    return Lists.from(Object.keys(this._map))
+  keys(): List<K> {
+    return Lists.from(Object.keys(this._map)) as List<K>
   }
 
   values(): List<V> {
     return Lists.from(Object.values(this._map as object))
   }
 
-  entries(): List<DictObjectEntry<V>> {
+  entries(): List<DictObjectEntry<K, V>> {
     return this.keys()
       .stream()
       .map(key => ({
@@ -124,11 +125,11 @@ export class KV<V> implements Dict<V> {
     return this._size
   }
 
-  copy(): Dict<V> {
-    return new KV<V>(this._map)
+  copy(): Dict<K, V> {
+    return new KV<K, V>(this._map)
   }
 
-  equals(other: Dict<V>): boolean {
+  equals(other: Dict<K, V>): boolean {
     return (
       !!other &&
       other.size() === this.size() &&
@@ -141,7 +142,7 @@ export class KV<V> implements Dict<V> {
     )
   }
 
-  select(predicate: DictEntryPredicate<V>): Dict<V> {
+  select(predicate: DictEntryPredicate<K, V>): Dict<K, V> {
     return fromEntriesFn(
       this.entries()
         .stream()
@@ -150,22 +151,22 @@ export class KV<V> implements Dict<V> {
     )
   }
 
-  count(predicate: DictEntryPredicate<V>): number {
+  count(predicate: DictEntryPredicate<K, V>): number {
     return this.select(predicate).size()
   }
 
-  filter(predicate: DictEntryPredicate<V>): this {
+  filter(predicate: DictEntryPredicate<K, V>): this {
     const filtered = this.select(predicate)
     this.clear()
     this.merge(filtered)
     return this
   }
 
-  find(predicate: DictEntryPredicate<V>): V | undefined {
+  find(predicate: DictEntryPredicate<K, V>): V | undefined {
     return this.findOptional(predicate).orElseUndefined()
   }
 
-  findOptional(predicate: DictEntryPredicate<V>): Optionable<V> {
+  findOptional(predicate: DictEntryPredicate<K, V>): Optionable<V> {
     return this.entries()
       .stream()
       .findOptional(entry => predicate(entry))
@@ -180,7 +181,7 @@ export class KV<V> implements Dict<V> {
     return this._size === 0
   }
 
-  log(identifier?: string | number, entryFormatter?: DictLogFormatter<V>): this {
+  log(identifier?: string | number, entryFormatter?: DictLogFormatter<K, V>): this {
     const id = identifier || "KV"
     let message: any
     if (this.isEmpty()) message = "Empty"

@@ -2,39 +2,44 @@ import {List} from "../List"
 import {Optionable} from "../Optionable"
 import {containsMethod, defined} from "../Utils"
 
-export type DictObjectEntry<V> = {
-  key: string
+export type DictKey<K extends string> = string | K
+
+export type DictObjectEntry<K extends string, V> = {
+  key: K
   value: V
 }
 export type DictObject<V> = {[key in string]: V}
 
-export type DictEntryPredicate<V> = (entry: DictObjectEntry<V>) => boolean
+export type DictEntryPredicate<K extends string, V> = (
+  entry: DictObjectEntry<K, V>
+) => boolean
 
-export type DictLogFormatter<V> = (
-  entry: DictObjectEntry<V>,
+export type DictLogFormatter<K extends string, V> = (
+  entry: DictObjectEntry<K, V>,
   dict: DictObject<V>
 ) => string
 
-export interface Dict<V> {
+export interface Dict<K extends string, V> {
   toString(): string
+
   /*
    * Mutations
    */
 
-  put(key: string, value: V): this
+  put(key: K, value: V): this
 
   putAll(...obj: Array<DictObject<V>>): this
 
-  merge(...dict: Array<Dict<V>>): this
+  merge(...dict: Array<Dict<K, V>>): this
 
   clear(): this
 
-  remove(key: string): this
+  remove(key: K): this
 
   /**
    * Filter the properties
    */
-  filter(predicate: DictEntryPredicate<V>): this
+  filter(predicate: DictEntryPredicate<K, V>): this
 
   /*
    * Accessors
@@ -44,44 +49,44 @@ export interface Dict<V> {
 
   hasElements(): boolean
 
-  hasKey(key: string): boolean
+  hasKey(key: K): boolean
 
-  equals(other: Dict<V>): boolean
+  equals(other: Dict<K, V>): boolean
 
-  find(predicate: DictEntryPredicate<V>): V | undefined
+  find(predicate: DictEntryPredicate<K, V>): V | undefined
 
-  findOptional(predicate: DictEntryPredicate<V>): Optionable<V>
+  findOptional(predicate: DictEntryPredicate<K, V>): Optionable<V>
 
-  count(predicate: DictEntryPredicate<V>): number
+  count(predicate: DictEntryPredicate<K, V>): number
 
   size(): number
 
-  get(key: string): V
+  get(key: K): V
 
-  getOrDefault(key: string, defaultValue: V): V
+  getOrDefault(key: K, defaultValue: V): V
 
-  getOptional(key: string): Optionable<V>
+  getOptional(key: K): Optionable<V>
 
   collect(): DictObject<V>
 
-  keys(): List<string>
+  keys(): List<K>
 
   values(): List<V>
 
-  entries(): List<DictObjectEntry<V>>
+  entries(): List<DictObjectEntry<K, V>>
 
-  copy(): Dict<V>
+  copy(): Dict<K, V>
 
   log(identifier?: string | number): this
 
-  log(identifier?: string | number, entryFormatter?: DictLogFormatter<V>): this
+  log(identifier?: string | number, entryFormatter?: DictLogFormatter<K, V>): this
 
   /**
    * Returns a new Dict containing filtered properties
    */
-  select(predicate: DictEntryPredicate<V>): Dict<V>
+  select(predicate: DictEntryPredicate<K, V>): Dict<K, V>
 }
 
-export const isDict = <T>(obj: Dict<T> | any): boolean => {
+export const isDict = <K extends string, T>(obj: Dict<K, T> | any): boolean => {
   return defined(obj) && containsMethod(obj, "collect") && containsMethod(obj, "entries")
 }
