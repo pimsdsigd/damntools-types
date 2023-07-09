@@ -1,6 +1,5 @@
 import {KV} from "./KV"
 
-export * from "./Dict"
 export * from "./KV"
 export * from "./StaticKV"
 

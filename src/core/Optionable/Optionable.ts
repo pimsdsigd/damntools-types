@@ -1,4 +1,4 @@
-import {ClassType} from "../types"
+import {ClassType} from "../ClassType"
 
 export interface Optionable<T> {
   get(): T
@@ -7,25 +7,27 @@ export interface Optionable<T> {
 
   filterClass<U extends T>(type: ClassType<U>): Optionable<U>
 
-  map<U>(action: (value: T) => U | undefined | null): Optionable<U>
+  map<U>(action: (value: T) => U): Optionable<U>
 
   mapEmpty(action: () => T): Optionable<T>
 
-  flatMap<U>(action: (value: T) => Optionable<U> | undefined | null): Optionable<U>
+  flatMap<U>(action: (value: T) => Optionable<U>): Optionable<U>
 
   orElseReturn(other: T): T
+
+  orElseUndefined(): T | undefined
 
   orElseGet(supplier: () => T): T
 
   orElseThrow(errorSupplier: () => Error): T
 
+  orElse(optionalSupplier: () => Optionable<T>): Optionable<T>
+
   ifPresentDo(action: (value: T) => void): void
 
   ifPresentOrElse(action: (value: T) => void, elseAction: () => void): void
 
-  orElse(optionalSupplier: () => Optionable<T>): Optionable<T>
-
-  log(): this
+  log(identifier?: string | number): this
 
   peek(action: (value: T) => void): Optionable<T>
 
@@ -34,12 +36,7 @@ export interface Optionable<T> {
   isPresent(): boolean
 
   equals<O>(
-    other: O | T | Optionable<O | T>,
-    equalityPredicate: (a: O | T, b: O | T) => boolean
+    other: Optionable<T | O>,
+    equalityPredicate?: (a: T | O, b: T | O) => boolean
   ): boolean
-
-  compare<O>(
-    other: O | T | Optionable<O | T>,
-    equalityPredicate: (a: O | T, b: O | T) => number
-  ): number
 }

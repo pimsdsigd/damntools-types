@@ -1,14 +1,24 @@
 import {expect} from "chai"
 import {
+  abstractArrayToArray,
   containsMethod,
   containsProperty,
+  containsPrototypeMethod,
   defined,
   equals,
+  isList,
   notDefined,
   requireDefined
 } from "./Utils"
-import {UndefinedError} from "./exceptions"
+import {InvalidArrayError, UndefinedError} from "../exceptions"
+import {List} from "./List"
 
+// @ts-ignore
+class DummyList implements List<any> {
+  getInner(): Array<any> {
+    return [5]
+  }
+}
 describe("Utils", () => {
   describe("containsProperty()", () => {
     it("returns false", () => {
@@ -85,6 +95,45 @@ describe("Utils", () => {
     })
   })
 
+  describe("containsPrototypeMethod()", () => {
+    it("returns false", () => {
+      expect(containsPrototypeMethod(undefined, undefined)).to.be.false
+      expect(containsPrototypeMethod(undefined, null)).to.be.false
+      expect(containsPrototypeMethod(undefined, "")).to.be.false
+      expect(containsPrototypeMethod(undefined, "key")).to.be.false
+
+      expect(containsPrototypeMethod({}, undefined)).to.be.false
+      expect(containsPrototypeMethod({}, null)).to.be.false
+      expect(containsPrototypeMethod({}, "")).to.be.false
+      expect(containsPrototypeMethod({}, "key")).to.be.false
+
+      expect(containsPrototypeMethod({key: "value"}, undefined)).to.be.false
+      expect(containsPrototypeMethod({key: "value"}, null)).to.be.false
+      expect(containsPrototypeMethod({key: "value"}, "")).to.be.false
+      expect(containsPrototypeMethod({key: "value"}, "key")).to.be.false
+      expect(
+        containsPrototypeMethod(
+          {
+            key: () => {
+              return 1
+            }
+          },
+          "key"
+        )
+      ).to.be.false
+    })
+
+    it("returns true", () => {
+      class Tt {
+        hey() {
+          return true
+        }
+      }
+
+      expect(containsPrototypeMethod(new Tt(), "hey")).to.be.true
+    })
+  })
+
   describe("defined()", () => {
     it("returns false", () => {
       expect(defined(undefined)).to.be.false
@@ -141,7 +190,7 @@ describe("Utils", () => {
       expect(equals(1, 1)).to.be.true
       expect(equals("", "")).to.be.true
       expect(equals("t", "t")).to.be.true
-      expect(equals({equals: (o) => true}, {})).to.be.true
+      expect(equals({equals: () => true}, {})).to.be.true
     })
     it("returns false", () => {
       expect(equals(undefined, null)).to.be.false
@@ -152,6 +201,44 @@ describe("Utils", () => {
       expect(equals({t: 1}, {t: 2})).to.be.false
       expect(equals([1], [1])).to.be.false
       expect(equals([1], [2])).to.be.false
+    })
+  })
+  describe("isList()", () => {
+    it("undefined returns false", () => {
+      expect(isList(undefined)).to.be.false
+    })
+    it("array returns false", () => {
+      expect(isList(["a"])).to.be.false
+    })
+    it("object returns false", () => {
+      expect(isList({a: () => ({})})).to.be.false
+    })
+    it("sub returns true", () => {
+      expect(isList({getInner: () => ({})})).to.be.false
+      expect(isList(new DummyList())).to.be.true
+    })
+    it("other returns false", () => {
+      expect(isList(1)).to.be.false
+      expect(isList("")).to.be.false
+      expect(isList("1")).to.be.false
+    })
+  })
+
+  describe("abstractArrayToArray()", () => {
+    it("returns inner if List", () => {
+      // @ts-ignore
+      const a = abstractArrayToArray(new DummyList())
+      expect(a[0]).to.be.equals(5)
+    })
+    it("returns array if array", () => {
+      const a = abstractArrayToArray([5])
+      expect(a[0]).to.be.equals(5)
+    })
+    it("throws if not list or array", () => {
+      expect(() => {
+        // @ts-ignore
+        abstractArrayToArray(6546)
+      }).to.throw(InvalidArrayError)
     })
   })
 })

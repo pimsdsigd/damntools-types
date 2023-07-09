@@ -1,4 +1,4 @@
-import {ArrayList} from "./src";
+import {ArrayList} from "./src"
 
 console.log("{}", typeof {})
 console.log("[]", typeof [])

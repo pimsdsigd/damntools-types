@@ -1,22 +1,22 @@
-import {ArrayList} from "./list"
-import {Dict, DictKeyType} from "./dict"
+import {Dict, List} from "./core"
 
 export * from "./exceptions"
+export * from "./core"
 export * from "./list"
-export * from "./optional"
+export * from "./stream"
 export * from "./dict"
-export * from "./types"
 export * from "./enum"
+export * from "./utils"
+export * from "./TypeUtils"
 export * from "./DictUtils"
 export * from "./ObjectUtils"
-export * from "./Utils"
 
 declare global {
   interface Array<T> {
-    toList(): ArrayList<T>
+    toList(): List<T>
   }
 
   interface Object {
-    toDict<K extends DictKeyType, V>(): Dict<K, V>
+    toDict<V>(): Dict<V>
   }
 }

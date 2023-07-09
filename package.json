@@ -1,6 +1,6 @@
 {
   "name": "@damntools.fr/types",
-  "version": "3.2.5",
+  "version": "4.0.0",
   "description": "",
   "files": [
     "dist"
@@ -25,6 +25,6 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^2.1.0"
+    "@damntools.fr/ts-lib": "^5.0.0"
   }
 }

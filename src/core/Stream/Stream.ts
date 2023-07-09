@@ -1,6 +1,6 @@
-import {List, PeekFunction, SortFunction} from "./List"
-import {ClassType} from "../types"
-import {Optional} from "../optional"
+import {List, PeekFunction, SortFunction} from "../List"
+import {Optionable} from "../Optionable"
+import {ClassType} from "../ClassType"
 
 export type ReducerFunction<T, U> = (
   previousValue: U,
@@ -25,6 +25,8 @@ export type FlatMapFunction<T, U> = (
   index?: number,
   array?: List<T>
 ) => List<U> | Array<U>
+
+export type StreamCollector<T, R> = (items: Array<T>) => R
 
 export interface Stream<T> {
   concat(items: Stream<T>): Stream<T>
@@ -71,13 +73,13 @@ export interface Stream<T> {
 
   find(predicate: SearchPredicate<T>): T | undefined
 
-  findOptional(predicate: SearchPredicate<T>): Optional<T>
+  findOptional(predicate: SearchPredicate<T>): Optionable<T>
 
   findIndex(predicate: SearchPredicate<T>): number
 
-  findFirst(): Optional<T>
+  findFirst(): Optionable<T>
 
-  findLast(): Optional<T>
+  findLast(): Optionable<T>
 
   reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U
 
@@ -87,7 +89,7 @@ export interface Stream<T> {
 
   count(predicate: SearchPredicate<T>): number
 
-  collect(): List<T>
+  collect<R>(collector: StreamCollector<T, R>): R
 
   collectArray(): Array<T>
 }

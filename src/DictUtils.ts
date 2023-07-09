@@ -1,28 +1,25 @@
-import {ArrayList, List} from "./list"
-import {Dict, DictKeyType, DictObjectEntry, fromEntriesFn, KV} from "./dict"
+import {Lists} from "./utils"
+import {fromEntriesFn, KV} from "./dict"
+import {Dict, DictObjectEntry, List} from "./core"
 
 export class DictUtils {
   static entries(obj: object): List<[string, any]> {
-    return ArrayList.from(Object.entries(obj))
+    return Lists.from(Object.entries(obj))
   }
 
-  static fromEntries<K extends DictKeyType, V>(
-    entries: List<DictObjectEntry<K, V>>
-  ): Dict<K, V> {
+  static fromEntries<V>(entries: List<DictObjectEntry<V>>): Dict<V> {
     return fromEntriesFn(entries)
   }
 
-  static fromObjectEntries<K extends DictKeyType, V>(
-    entries: List<[string, any]>
-  ): Dict<K, V> {
+  static fromObjectEntries<V>(entries: List<[string, any]>): Dict<V> {
     return KV.from(Object.fromEntries(entries.getInner()) as any)
   }
 
   static keys(obj: object): List<string> {
-    return ArrayList.from(Object.keys(obj))
+    return Lists.from(Object.keys(obj))
   }
 
   static values(obj: object): List<any> {
-    return ArrayList.from(Object.values(obj))
+    return Lists.from(Object.values(obj))
   }
 }

@@ -1,11 +1,15 @@
-import {Optionable} from "../Optionable"
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {defined, equals, notDefined} from "../../Utils"
-import {ClassType, TypeUtils} from "../../types"
-import {SortFunction} from "../../list"
+import {
+  ClassType,
+  defined,
+  equals,
+  notDefined,
+  Optionable,
+  requireDefined
+} from "../../core"
 
 export class Optional<T> implements Optionable<T> {
-  protected static EMPTY = new Optional()
+  public static EMPTY = new Optional()
 
   protected readonly _value: T | undefined
 
@@ -16,16 +20,16 @@ export class Optional<T> implements Optionable<T> {
     this._value = value
   }
 
-  static of<U>(value: U): Optional<U> {
-    TypeUtils.requireDefined(value, "Value should be defined when using of()")
+  static of<U>(value: U): Optionable<U> {
+    requireDefined(value, "Value should be defined when using of()")
     return new Optional<U>(value)
   }
 
-  static empty<U>(): Optional<U> {
+  static empty<U>(): Optionable<U> {
     return this.EMPTY as Optional<U>
   }
 
-  static nullable<U>(value: U | undefined | null): Optional<U> {
+  static nullable<U>(value: U | undefined | null): Optionable<U> {
     return defined(value) ? this.of(value) : this.empty()
   }
 
@@ -34,31 +38,31 @@ export class Optional<T> implements Optionable<T> {
     return this._value
   }
 
-  filter(predicate: (value: T) => boolean): Optional<T> {
+  filter(predicate: (value: T) => boolean): Optionable<T> {
     if (this.isEmpty() || !predicate(this._value)) return Optional.empty()
     return Optional.of(this._value)
   }
 
-  filterClass<U extends T>(type: ClassType<U>): Optional<U> {
+  filterClass<U extends T>(type: ClassType<U>): Optionable<U> {
     if (this.isEmpty() || !(this._value instanceof type)) return Optional.empty()
     return Optional.of(this._value)
   }
 
-  map<U>(action: (value: T) => U): Optional<U> {
+  map<U>(action: (value: T) => U): Optionable<U> {
     if (this.isEmpty()) return Optional.empty()
     const value = action(this._value)
     if (defined(value)) return Optional.of(value)
     return Optional.empty()
   }
 
-  mapEmpty(action: () => T): Optional<T> {
+  mapEmpty(action: () => T): Optionable<T> {
     if (this.isPresent()) return this
     const value = action()
     if (defined(value)) return Optional.of(value)
     return Optional.empty()
   }
 
-  flatMap<U>(action: (value: T) => Optional<U>): Optional<U> {
+  flatMap<U>(action: (value: T) => Optionable<U>): Optionable<U> {
     if (this.isEmpty()) return Optional.empty()
     const value = action(this._value)
     if (defined(value) && value.isPresent()) return Optional.of(value.get())
@@ -89,7 +93,7 @@ export class Optional<T> implements Optionable<T> {
     return this._value
   }
 
-  orElse(optionalSupplier: () => Optional<T>): Optional<T> {
+  orElse(optionalSupplier: () => Optionable<T>): Optionable<T> {
     if (this.isEmpty()) {
       const supplied = optionalSupplier()
       if (supplied && supplied.isPresent()) return supplied
@@ -114,7 +118,7 @@ export class Optional<T> implements Optionable<T> {
     return this
   }
 
-  peek(action: (value: T) => void): Optional<T> {
+  peek(action: (value: T) => void): Optionable<T> {
     if (this.isEmpty()) return Optional.empty()
     action(this._value)
     return this
@@ -129,7 +133,7 @@ export class Optional<T> implements Optionable<T> {
   }
 
   equals<O>(
-    other: Optional<T | O>,
+    other: Optionable<T | O>,
     equalityPredicate?: (a: T | O, b: T | O) => boolean
   ): boolean {
     if (this.isEmpty() && other.isEmpty()) return true
@@ -138,14 +142,5 @@ export class Optional<T> implements Optionable<T> {
       return equalityPredicate(this.get(), other.get())
     }
     return false
-  }
-
-  compare<O>(other: Optional<T | O>, compareFn?: SortFunction<T | O>): number {
-    if (this.isEmpty() && other.isEmpty()) return 0
-    if (this.isPresent() && other.isPresent()) {
-      if (!compareFn) compareFn = TypeUtils.compare
-      return compareFn(this.get(), other.get())
-    }
-    return this.isEmpty() ? -1 : 1
   }
 }

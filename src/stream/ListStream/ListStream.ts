@@ -1,47 +1,57 @@
-import {ArrayList, peekFn} from "./ArrayList"
-import {ClassType, TypeUtils} from "../types"
-import {List, PeekFunction, SortFunction} from "./List"
-import {Optional} from "../optional"
-import {equals} from "../Utils"
 import {
+  ClassType,
+  defined,
   EqualityPredicate,
+  equals,
   FlatMapFunction,
+  isList,
+  List,
   MapDefinedFunction,
   MapFunction,
   MapUndefinedFunction,
+  notDefined,
+  Optionable,
+  PeekFunction,
   ReducerFunction,
   SearchPredicate,
-  Stream
-} from "./Stream"
+  SortFunction,
+  Stream,
+  StreamCollector
+} from "../../core"
+import {Optional} from "../../optional"
+import {ArrayList} from "../../list"
 
-const reduceFn = callbackFn => (p, c, i, a) => callbackFn(p, c, i, ArrayList.from(a))
+const reduceFn = callbackFn => (p, c, i, a) => callbackFn(p, c, i, new ArrayList(a))
+const peekFn = action => (value, index, arr) => {
+  if (value) action(value, index, new ArrayList(arr))
+}
 const peekPresentFn = action => (value, index, arr) => {
-  if (value) action(value, index, ArrayList.from(arr))
+  if (value) action(value, index, new ArrayList(arr))
 }
 
-const mapFn = action => (value, index, arr) => action(value, index, ArrayList.from(arr))
+const mapFn = action => (value, index, arr) => action(value, index, new ArrayList(arr))
 const mapDefinedFn = action => (value, index, arr) =>
-  TypeUtils.defined(value) ? action(value, index, ArrayList.from(arr)) : value
+  defined(value) ? action(value, index, new ArrayList(arr)) : value
 
 const mapUndefinedFn = action => (value, index, arr) =>
-  TypeUtils.notDefined(value) ? action(index, ArrayList.from(arr)) : value
+  notDefined(value) ? action(index, new ArrayList(arr)) : value
 
 const flatMapFn = item => {
-  if (item instanceof ArrayList) return item.getInner()
+  if (isList(item)) return item.getInner()
   return item
 }
 
-const predicateFn = predicate => (v, i, a) => predicate(v, i, ArrayList.from(a))
+const predicateFn = predicate => (v, i, a) => predicate(v, i, new ArrayList(a))
 
 export class ListStream<T> implements Stream<T> {
   private array: Array<T>
 
-  private constructor(array?: Array<T>) {
+  constructor(array?: Array<T>) {
     this.array = [].concat(array)
   }
 
   concat(stream: Stream<T>): Stream<T> {
-    this.array = this.array.concat(stream.collect().getInner())
+    this.array = this.array.concat(stream.collectArray())
     return this
   }
 
@@ -94,17 +104,17 @@ export class ListStream<T> implements Stream<T> {
   }
 
   filter(predicate: SearchPredicate<T>): Stream<T> {
-    this.array = this.array.filter((v, i, a) => predicate(v, i, ArrayList.from(a)))
+    this.array = this.array.filter((v, i, a) => predicate(v, i, new ArrayList(a)))
     return this
   }
 
   filterPresent(): Stream<NonNullable<T>> {
-    this.filter(TypeUtils.defined)
+    this.filter(defined)
     return this as any
   }
 
   filterNotPresent(): Stream<undefined | null> {
-    this.filter(TypeUtils.notDefined)
+    this.filter(notDefined)
     return this as any
   }
 
@@ -120,11 +130,11 @@ export class ListStream<T> implements Stream<T> {
   }
 
   every(predicate: SearchPredicate<T>): boolean {
-    return this.array.every((v, i, a) => predicate(v, i, ArrayList.from(a)))
+    return this.array.every((v, i, a) => predicate(v, i, new ArrayList(a)))
   }
 
   some(predicate: SearchPredicate<T>): boolean {
-    return this.array.some((v, i, a) => predicate(v, i, ArrayList.from(a)))
+    return this.array.some((v, i, a) => predicate(v, i, new ArrayList(a)))
   }
 
   none(predicate: SearchPredicate<T>): boolean {
@@ -145,23 +155,23 @@ export class ListStream<T> implements Stream<T> {
     return this.array.findIndex(predicateFn(predicate))
   }
 
-  findOptional(predicate: SearchPredicate<T>): Optional<T> {
+  findOptional(predicate: SearchPredicate<T>): Optionable<T> {
     return Optional.nullable(this.find(predicate))
   }
 
-  findFirst(): Optional<T> {
+  findFirst(): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
     return Optional.of(this.array[0])
   }
 
-  findLast(): Optional<T> {
+  findLast(): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
     this.reverse()
     return Optional.of(this.array[0])
   }
 
   count(predicate: SearchPredicate<T>): number {
-    return this.filter(predicate).collect().size()
+    return this.filter(predicate).collectArray().length
   }
 
   join(separator?: string): string {
@@ -169,15 +179,15 @@ export class ListStream<T> implements Stream<T> {
   }
 
   reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U {
-    return this.array.reduce(reduceFn, initialValue)
+    return this.array.reduce(reduceFn(callbackFn), initialValue)
   }
 
   reduceRight<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U {
-    return this.array.reduceRight(reduceFn, initialValue)
+    return this.array.reduceRight(reduceFn(callbackFn), initialValue)
   }
 
-  collect(): List<T> {
-    return ArrayList.from(this.array)
+  collect<R>(collector: StreamCollector<T, R>): R {
+    return collector(this.array)
   }
 
   collectArray(): Array<T> {
@@ -193,13 +203,9 @@ export class ListStream<T> implements Stream<T> {
     else if (entryFormatter)
       console.debug(
         id,
-        this.array.map((e, i, a) => entryFormatter(e, i, ArrayList.from(a)))
+        this.array.map((e, i, a) => entryFormatter(e, i, new ArrayList(a)))
       )
     else console.debug(id, this.array)
     return this
-  }
-
-  static of<T>(array: Array<T>) {
-    return new ListStream(array)
   }
 }

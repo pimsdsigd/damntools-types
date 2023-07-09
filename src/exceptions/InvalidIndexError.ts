@@ -1,5 +1,5 @@
 export class InvalidIndexError extends Error {
-  constructor() {
-    super("Index is invalid !")
+  constructor(message?: string) {
+    super(message || "Index is invalid !")
   }
 }

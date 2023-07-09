@@ -1,8 +1,7 @@
-import {TypeUtils} from "../types"
 import {InvalidEnumKey} from "../exceptions"
+import {defined, List, notDefined, Optionable} from "../core"
+import {Lists} from "../utils"
 import {Optional} from "../optional"
-import {ArrayList, List} from "../list"
-import {defined, notDefined} from "../Utils"
 
 export type EnumKey = string | number
 
@@ -12,6 +11,16 @@ const fromValuePredicate = (value: any) => (e: Enum<any>) => e.key() === value
 
 const instanceReducer = (type: any) => v => type[v] instanceof type
 const instanceEnumMapper = (type: any) => v => type[v]
+
+const compareKeyFn = (a: EnumKey, b: EnumKey) => {
+  if (typeof a === "string" && typeof b === "string") return a.localeCompare(b)
+  if (typeof a === "number" && typeof b === "number") return a - b
+  return 0
+}
+
+const equalsKeyFn = (a: EnumKey, b: EnumKey) => {
+  return a === b
+}
 
 export abstract class Enum<K extends EnumKey> {
   private static COUNTER = {
@@ -36,7 +45,11 @@ export abstract class Enum<K extends EnumKey> {
   }
 
   equals(other: Enum<K>): boolean {
-    return defined(other) && TypeUtils.equals(this._key, other._key)
+    return (
+      defined(other) &&
+      other instanceof this.constructor &&
+      equalsKeyFn(this._key, other._key)
+    )
   }
 
   compare(other: Enum<K>): number {
@@ -44,7 +57,7 @@ export abstract class Enum<K extends EnumKey> {
       (defined(other) &&
         defined(other._key) &&
         ((!!this._ordinal && this._ordinal - other._ordinal) ||
-          TypeUtils.compare(this._key, other._key))) ||
+          compareKeyFn(this._key, other._key))) ||
       0
     )
   }
@@ -56,14 +69,16 @@ export abstract class Enum<K extends EnumKey> {
       .findOrThrow(fromValuePredicate(value), invalidEnumSupplier(this, value))
   }
 
-  static optionalFromValue<K extends EnumKey, T extends Enum<K>>(value: K): Optional<T> {
+  static optionalFromValue<K extends EnumKey, T extends Enum<K>>(
+    value: K
+  ): Optionable<T> {
     if (notDefined(value)) throw new InvalidEnumKey(this, value)
     const found = this.all<T>().stream().find(fromValuePredicate(value))
     return found ? Optional.of(found) : Optional.empty()
   }
 
   static all<T extends Enum<EnumKey>>(): List<T> {
-    return ArrayList.from(
+    return Lists.from(
       Object.keys(this).filter(instanceReducer(this)).map(instanceEnumMapper(this))
     )
   }

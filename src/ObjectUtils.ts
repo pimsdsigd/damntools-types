@@ -1,4 +1,5 @@
-import {ArrayList, List} from "./list"
+import {Lists} from "./utils"
+import {containsMethod, containsProperty, List} from "./core"
 
 export class ObjectUtils {
   /**
@@ -9,18 +10,15 @@ export class ObjectUtils {
   }
 
   static containsProperty(obj: object, propertyName: string): boolean {
-    return Object.prototype.hasOwnProperty.call(obj, propertyName)
+    return containsProperty(obj, propertyName)
   }
 
   static containsMethod(obj: object, methodName: string): boolean {
-    return (
-      Object.prototype.hasOwnProperty.call(obj, methodName) &&
-      typeof obj[methodName] === "function"
-    )
+    return containsMethod(obj, methodName)
   }
 
   static entries(obj: object): List<[string, any]> {
-    return ArrayList.from(Object.entries(obj))
+    return Lists.from(Object.entries(obj))
   }
 
   static fromEntries(entries: List<[string, any]>): object {
@@ -28,15 +26,15 @@ export class ObjectUtils {
   }
 
   static keys(obj: object): List<string> {
-    return ArrayList.from(Object.keys(obj))
+    return Lists.from(Object.keys(obj))
   }
 
   static values<T>(obj: object): List<T> {
-    return ArrayList.from(Object.values(obj))
+    return Lists.from(Object.values(obj))
   }
 
   static sortEntries(obj: object): List<any> {
-    return ArrayList.from(Object.entries(obj).sort(this.entrySorter))
+    return Lists.from(Object.entries(obj).sort(this.entrySorter))
   }
 
   static entrySorter(a: Array<any>, b: Array<any>): number {

@@ -384,29 +384,4 @@ describe("Optional", () => {
       expect(PROVIDED(0).equals(PROVIDED("0"))).to.be.false
     })
   })
-
-  describe("compare()", () => {
-    it("on empty and empty returns 0", () => {
-      expect(EMPTY().compare(EMPTY())).to.be.equals(0)
-    })
-    it("on empty and not empty returns -1", () => {
-      expect(EMPTY().compare(PROVIDED(1))).to.be.equals(-1)
-    })
-    it("on not empty and empty returns 1", () => {
-      expect(PROVIDED(1).compare(EMPTY())).to.be.equals(1)
-    })
-    it("on not empty and not empty returns 0 when value equals", () => {
-      expect(PROVIDED(1).compare(PROVIDED(1))).to.be.equals(0)
-      expect(PROVIDED(0).compare(PROVIDED(0))).to.be.equals(0)
-      expect(PROVIDED("0").compare(PROVIDED("0"))).to.be.equals(0)
-    })
-    it("on not empty and not empty returns -1 when other is superior", () => {
-      expect(PROVIDED(1).compare(PROVIDED(2))).to.be.equals(-1)
-      expect(PROVIDED("a").compare(PROVIDED("b"))).to.be.equals(-1)
-    })
-    it("on not empty and not empty returns 1 when other is inferior", () => {
-      expect(PROVIDED(2).compare(PROVIDED(1))).to.be.equals(1)
-      expect(PROVIDED("b").compare(PROVIDED("a"))).to.be.equals(1)
-    })
-  })
 })

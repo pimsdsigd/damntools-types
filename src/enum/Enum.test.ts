@@ -8,6 +8,12 @@ class SOME extends Enum<string> {
   static KEY3 = new SOME("key1", 0)
 }
 
+class OTHER extends Enum<string> {
+  static KEY1 = new OTHER("key1", 2)
+  static KEY2 = new OTHER("key2", 1)
+  static KEY3 = new OTHER("key1", 0)
+}
+
 describe("Enum", () => {
   describe("constructor()", () => {
     it("without ordinal", () => {
@@ -90,6 +96,9 @@ describe("Enum", () => {
       expect(SOME.KEY1.equals(SOME.KEY2)).to.be.false
       expect(SOME.KEY3.equals(SOME.KEY2)).to.be.false
       expect(SOME.KEY1.equals(undefined)).to.be.false
+    })
+    it("returns false when key equals but not type", () => {
+      expect(SOME.KEY1.equals(OTHER.KEY1)).to.be.false
     })
   })
 
