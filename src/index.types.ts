@@ -17,6 +17,6 @@ declare global {
   }
 
   interface Object {
-    toDict<V>(): Dict<V>
+    toDict<K extends string, V>(): Dict<K, V>
   }
 }

@@ -7,11 +7,13 @@ export class DictUtils {
     return Lists.from(Object.entries(obj))
   }
 
-  static fromEntries<V>(entries: List<DictObjectEntry<V>>): Dict<V> {
+  static fromEntries<K extends string, V>(
+    entries: List<DictObjectEntry<K, V>>
+  ): Dict<K, V> {
     return fromEntriesFn(entries)
   }
 
-  static fromObjectEntries<V>(entries: List<[string, any]>): Dict<V> {
+  static fromObjectEntries<V>(entries: List<[string, any]>): Dict<string, V> {
     return KV.from(Object.fromEntries(entries.getInner()) as any)
   }
 
