@@ -9,6 +9,7 @@ import {Lists, Streams, Collectors, Functions} from "./utils"
 import {
   containsMethod,
   containsProperty,
+  compare,
   defined,
   equals,
   isDict,
@@ -34,6 +35,7 @@ export {
   ObjectUtils,
   defined,
   notDefined,
+  compare,
   equals,
   containsProperty,
   containsMethod,

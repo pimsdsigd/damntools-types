@@ -33,6 +33,10 @@ export class Optional<T> implements Optionable<T> {
     return defined(value) ? this.of(value) : this.empty()
   }
 
+  static fromString(value: string | undefined | null): Optionable<string> {
+    return defined(value) || value.length > 0 ? this.of(value) : this.empty()
+  }
+
   get(): T {
     if (this.isEmpty()) throw new EmptyOptionalAccessError()
     return this._value
