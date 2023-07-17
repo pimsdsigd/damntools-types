@@ -43,11 +43,17 @@ export interface Stream<T> {
 
   log(identifier?: string | number, entryFormatter?: (entry: T) => string): Stream<T>
 
-  map<U>(action: MapFunction<T, U>): Stream<U>
+  map<U>(action: (value: T) => U): Stream<U>
+  map<U>(action: (value: T, index: number) => U): Stream<U>
+  map<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
 
-  mapDefined<U>(action: MapDefinedFunction<T, U>): Stream<U>
+  mapDefined<U>(action: (value: T) => U): Stream<U>
+  mapDefined<U>(action: (value: T, index: number) => U): Stream<U>
+  mapDefined<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
 
-  mapUndefined<U>(action: MapUndefinedFunction<T, U>): Stream<U | T>
+  mapUndefined<U>(action: () => U | T): Stream<U | T>
+  mapUndefined<U>(action: (index: number) => U | T): Stream<U | T>
+  mapUndefined<U>(action: (index: number, array: List<T>) => U | T): Stream<U | T>
 
   flat<U>(depth?: number): Stream<U>
 
