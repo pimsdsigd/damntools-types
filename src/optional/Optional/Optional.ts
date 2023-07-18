@@ -26,15 +26,15 @@ export class Optional<T> implements Optionable<T> {
   }
 
   static empty<U>(): Optionable<U> {
-    return this.EMPTY as Optional<U>
+    return Optional.EMPTY as Optional<U>
   }
 
   static nullable<U>(value: U | undefined | null): Optionable<U> {
-    return defined(value) ? this.of(value) : this.empty()
+    return defined(value) ? Optional.of(value) : Optional.empty()
   }
 
   static fromString(value: string | undefined | null): Optionable<string> {
-    return defined(value) || value.length > 0 ? this.of(value) : this.empty()
+    return defined(value) || value.length > 0 ? Optional.of(value) : Optional.empty()
   }
 
   get(): T {
