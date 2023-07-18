@@ -159,15 +159,23 @@ export class ListStream<T> implements Stream<T> {
     return Optional.nullable(this.find(predicate))
   }
 
-  findFirst(): Optionable<T> {
+  findFirst(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    return Optional.of(this.array[0])
+    if(defined(predicate))
+      return this.filter(predicate).findFirst()
+    else{
+      return Optional.of(this.array[0])
+    }
   }
 
-  findLast(): Optionable<T> {
+  findLast(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    this.reverse()
-    return Optional.of(this.array[0])
+    if(defined(predicate))
+      return this.filter(predicate).findLast()
+    else{
+      this.reverse()
+      return Optional.of(this.array[0])
+    }
   }
 
   count(predicate: SearchPredicate<T>): number {

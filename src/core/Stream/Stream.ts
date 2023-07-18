@@ -84,8 +84,10 @@ export interface Stream<T> {
   findIndex(predicate: SearchPredicate<T>): number
 
   findFirst(): Optionable<T>
+  findFirst(predicate: SearchPredicate<T>): Optionable<T>
 
   findLast(): Optionable<T>
+  findLast(predicate: SearchPredicate<T>): Optionable<T>
 
   reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U
 
