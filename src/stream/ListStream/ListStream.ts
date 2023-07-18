@@ -161,20 +161,38 @@ export class ListStream<T> implements Stream<T> {
 
   findFirst(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    if(defined(predicate))
-      return this.filter(predicate).findFirst()
-    else{
+    if (defined(predicate)) return this.filter(predicate).findFirst()
+    else {
       return Optional.of(this.array[0])
+    }
+  }
+
+  findFirstIndex(predicate?: SearchPredicate<T>): number {
+    if (this.array.length === 0) return -1
+    if (defined(predicate)) return this.findIndex(predicate)
+    else {
+      return -1
     }
   }
 
   findLast(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    if(defined(predicate))
-      return this.filter(predicate).findLast()
-    else{
+    if (defined(predicate)) return this.filter(predicate).findLast()
+    else {
       this.reverse()
       return Optional.of(this.array[0])
+    }
+  }
+
+  findLastIndex(predicate?: SearchPredicate<T>): number {
+    if (this.array.length === 0) return -1
+    if (defined(predicate)) {
+      const array = this.collectArray()
+      array.reverse()
+      const index = new ListStream(array).findIndex(predicate)
+      return index === -1 ? index : this.array.length - 1 - index
+    } else {
+      return -1
     }
   }
 

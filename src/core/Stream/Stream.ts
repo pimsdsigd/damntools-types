@@ -44,15 +44,21 @@ export interface Stream<T> {
   log(identifier?: string | number, entryFormatter?: (entry: T) => string): Stream<T>
 
   map<U>(action: (value: T) => U): Stream<U>
+
   map<U>(action: (value: T, index: number) => U): Stream<U>
+
   map<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
 
   mapDefined<U>(action: (value: T) => U): Stream<U>
+
   mapDefined<U>(action: (value: T, index: number) => U): Stream<U>
+
   mapDefined<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
 
   mapUndefined<U>(action: () => U | T): Stream<U | T>
+
   mapUndefined<U>(action: (index: number) => U | T): Stream<U | T>
+
   mapUndefined<U>(action: (index: number, array: List<T>) => U | T): Stream<U | T>
 
   flat<U>(depth?: number): Stream<U>
@@ -84,10 +90,20 @@ export interface Stream<T> {
   findIndex(predicate: SearchPredicate<T>): number
 
   findFirst(): Optionable<T>
+
   findFirst(predicate: SearchPredicate<T>): Optionable<T>
 
+  findFirstIndex(): number
+
+  findFirstIndex(predicate: SearchPredicate<T>): number
+
   findLast(): Optionable<T>
+
   findLast(predicate: SearchPredicate<T>): Optionable<T>
+
+  findLastIndex(): number
+
+  findLastIndex(predicate: SearchPredicate<T>): number
 
   reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U
 
