@@ -1,6 +1,7 @@
 import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {AbstractedArray, List} from "./List"
 import {Comparator} from "./Comparator"
+import {Optionable} from "./Optionable";
 
 export const containsProperty = (obj: object, propertyName: string): boolean => {
   return (
@@ -96,4 +97,8 @@ export const isNumber = (value: any): boolean => {
 }
 export const asNumber = (value: any): number => {
   return value as number
+}
+
+export const isPresent = <T>(value: Optionable<T>) =>{
+  return defined(value) && value.isPresent();
 }
