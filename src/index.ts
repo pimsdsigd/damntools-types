@@ -15,7 +15,7 @@ import {
   isDict,
   isList,
   notDefined,
-  requireDefined
+  requireDefined, isPresent
 } from "./core"
 
 export * from "./exceptions"
@@ -41,5 +41,6 @@ export {
   containsMethod,
   requireDefined,
   isList,
-  isDict
+  isDict,
+  isPresent
 }
