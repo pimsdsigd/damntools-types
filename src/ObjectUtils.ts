@@ -68,4 +68,24 @@ export class ObjectUtils {
       } else return undefined
     }
   }
+
+  static pathModifier(obj: object, path: string, value: any,  separator?: string) {
+    if (!separator) separator = "."
+    const steps = path.split(separator)
+    if (steps.length > 0) {
+      const current = steps[0].replace(/\?$/, "")
+      if (ObjectUtils.containsProperty(obj, current)) {
+        if (steps.length === 1) {
+          obj[current] = value
+        }else {
+          ObjectUtils.pathModifier(
+            obj[current],
+            steps.slice(1).join("."),
+            value,
+            separator
+          )
+        }
+      }
+    }
+  }
 }

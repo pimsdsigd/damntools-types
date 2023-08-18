@@ -1,8 +1,16 @@
-import {KV} from "./src"
+import {ObjectUtils} from "./src";
 
-export const PatternTableMap = KV.from<string, number>({
-  "%black": 2,
-  "%blue": 6
-})
+const obj = {
+  a: 5,
+  b: {
+    b1: {
+      bb: true
+    },
+    b2: "51"
+  }
+}
 
-console.log(PatternTableMap.entries().stream().reverse().collect())
+console.log(obj)
+ObjectUtils.pathModifier(obj, "a", {bc: 645})
+ObjectUtils.pathModifier(obj, "b", 2)
+console.log(obj)
