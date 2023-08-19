@@ -26,3 +26,8 @@ export abstract class Collectors {
     return Math.max(...items.filter(isNumber).map(asNumber))
   }
 }
+
+export const toList = Collectors.toList
+export const toArray = Collectors.toArray
+export const collectMin = Collectors.min
+export const collectMax = Collectors.max

@@ -5,17 +5,27 @@ import {TypeUtils} from "./TypeUtils"
 import {ObjectUtils} from "./ObjectUtils"
 import {Enum} from "./enum"
 import {Optional} from "./optional"
-import {Lists, Streams, Collectors, Functions} from "./utils"
 import {
+  collectMax,
+  collectMin,
+  Collectors,
+  Functions,
+  Lists,
+  Streams,
+  toArray,
+  toList
+} from "./utils"
+import {
+  compare,
   containsMethod,
   containsProperty,
-  compare,
   defined,
   equals,
   isDict,
   isList,
+  isPresent,
   notDefined,
-  requireDefined, isPresent
+  requireDefined
 } from "./core"
 
 export * from "./exceptions"
@@ -42,5 +52,9 @@ export {
   requireDefined,
   isList,
   isDict,
-  isPresent
+  isPresent,
+  toList,
+  toArray,
+  collectMin,
+  collectMax
 }
