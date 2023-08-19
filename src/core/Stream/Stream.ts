@@ -105,9 +105,41 @@ export interface Stream<T> {
 
   findLastIndex(predicate: SearchPredicate<T>): number
 
-  reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U
+  reduce<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T
+  ) => U, initialValue: U): U
 
-  reduceRight<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U
+  reduce<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T,
+    index: number,
+  ) => U, initialValue: U): U
+
+  reduce<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T,
+    index: number,
+    array: List<T>
+  ) => U, initialValue: U): U
+
+  reduceRight<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T
+  ) => U, initialValue: U): U
+
+  reduceRight<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T,
+    index: number
+  ) => U, initialValue: U): U
+
+  reduceRight<U>(callbackFn: (
+    previousValue: U,
+    currentValue: T,
+    index: number,
+    array: List<T>
+  ) => U, initialValue: U): U
 
   join(separator?: string): string
 
