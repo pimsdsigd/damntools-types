@@ -87,6 +87,6 @@ export interface Dict<K extends string, V> {
   select(predicate: DictEntryPredicate<K, V>): Dict<K, V>
 }
 
-export const isDict = <K extends string, T>(obj: Dict<K, T> | any): boolean => {
+export const isDict = <K extends string, T>(obj: Dict<K, T> | any): obj is Dict<K, T> => {
   return defined(obj) && containsMethod(obj, "collect") && containsMethod(obj, "entries")
 }
