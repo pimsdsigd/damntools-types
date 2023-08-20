@@ -2,6 +2,7 @@ import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {AbstractedArray, List} from "./List"
 import {Comparator} from "./Comparator"
 import {Optionable} from "./Optionable"
+import {ArrayList} from "../list";
 
 export const containsProperty = (obj: object, propertyName: string): boolean => {
   return (
@@ -83,16 +84,18 @@ export const compare: Comparator<any> = (a: any, b: any): number => {
   return -1
 }
 
-export const isList = <T>(obj: AbstractedArray<T> | any): boolean => {
+export const isList = <T>(obj: AbstractedArray<T> | any): obj is List<T> => {
   return defined(obj) && containsPrototypeMethod(obj, "getInner")
 }
+
+
 export const abstractArrayToArray = <T>(obj: AbstractedArray<T>): Array<T> => {
   if (isList(obj)) return (obj as List<T>).getInner()
   else if (Array.isArray(obj)) return obj
   throw new InvalidArrayError("Object is not an Array or a List")
 }
 
-export const isNumber = (value: any): boolean => {
+export const isNumber = (value: any): value is number => {
   return typeof value === "number"
 }
 export const asNumber = (value: any): number => {
