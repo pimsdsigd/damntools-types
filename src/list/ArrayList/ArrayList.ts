@@ -10,6 +10,7 @@ import {
   Comparator,
   compare,
   ConcatArgType,
+  concatArray,
   copyArrayInstance,
   defined,
   isList,
@@ -194,9 +195,11 @@ export class ArrayList<T> implements List<T> {
         .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
       if (totalLength > this.capacity - this.size())
         throw new ListMaxCapacityCrossedError(this.capacity, this.size(), totalLength)
-      this.array = this.array.concat(...container)
+      let array = this.array
+      container.forEach(c => (array = concatArray(array, c)))
+      this.array = array
+      this._size = this.array.length
     }
-    this._size = this.array.length
     return this
   }
 

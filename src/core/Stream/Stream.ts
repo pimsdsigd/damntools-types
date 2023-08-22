@@ -1,6 +1,6 @@
 import {List, PeekFunction, SortFunction} from "../List"
 import {Optionable} from "../Optionable"
-import {AbstractType, ClassType} from "../ClassType"
+import {ClassType} from "../ClassType"
 
 export type ReducerFunction<T, U> = (
   previousValue: U,

@@ -111,3 +111,10 @@ export const copyArrayInstance = <T>(array: Array<T>): Array<T> => {
   }
   return other
 }
+
+export const concatArray = <T>(a1: Array<T>, a2: Array<T>): Array<T> => {
+  for (let i =  0; i < a2.length ; i++) {
+    a1[a1.length+i] = a2[i]
+  }
+  return a1
+}

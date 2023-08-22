@@ -1,5 +1,5 @@
 import {
-  ClassType,
+  ClassType, concatArray,
   copyArrayInstance,
   defined,
   EqualityPredicate,
@@ -54,7 +54,7 @@ export class ListStream<T> implements Stream<T> {
   }
 
   concat(stream: Stream<T>): Stream<T> {
-    return new ListStream(this.array.concat(stream.collectArray()))
+    return new ListStream(concatArray(this.array, stream.collectArray()))
   }
 
   reverse(): Stream<T> {
