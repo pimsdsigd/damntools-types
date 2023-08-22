@@ -1,4 +1,4 @@
-import {ObjectUtils} from "./src";
+import {ObjectUtils} from "./src"
 
 const obj = {
   a: 5,

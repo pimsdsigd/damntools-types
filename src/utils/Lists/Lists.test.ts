@@ -47,7 +47,7 @@ describe("Lists", () => {
 
   describe("from", () => {
     it("with undefined array throws", () => {
-      assert.throw(() => Lists.from(undefined), InvalidArrayError)
+      assert.throw(() => Lists.from(null), InvalidArrayError)
     })
 
     it("with empty array returns empty array", () => {

@@ -1,4 +1,4 @@
-import {AbstractedArray, isList, List} from "../../core"
+import {AbstractedArray, List, notDefined} from "../../core"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -11,8 +11,6 @@ export abstract class Lists {
 
   /**
    * Returns static list containing numbers between range
-   * @param start {number}
-   * @param end {number}
    */
   static range(start: number, end: number): List<number> {
     if (!start && start !== 0) throw new InvalidRangeStartError()
@@ -23,7 +21,6 @@ export abstract class Lists {
 
   /**
    * Returns modifiable list created from elements passed as parameters
-   * @param items
    */
   static of<T>(...items: Array<T | undefined>): List<T> {
     return new ArrayList<T>(items)
@@ -31,7 +28,6 @@ export abstract class Lists {
 
   /**
    * Returns static list created from elements passed as parameters
-   * @param items
    */
   static unmodifiable<T>(...items: Array<T | undefined>): List<T> {
     return new StaticArrayList<T>(items)
@@ -39,12 +35,10 @@ export abstract class Lists {
 
   /**
    * Returns static list created from the elements of the array passed as parameter
-   * @param array
    */
-  static from<T>(array: AbstractedArray<T>): List<T> {
-    if (Array.isArray(array)) return new StaticArrayList(array)
-    if (isList(array)) return new StaticArrayList(array.getInner())
-    else throw new InvalidArrayError()
+  static from<T>(array: NonNullable<AbstractedArray<T>>): List<T> {
+    if (notDefined(array)) throw new InvalidArrayError("Array should be provided !")
+    return new StaticArrayList(array)
   }
 
   /**
@@ -58,7 +52,7 @@ export abstract class Lists {
    * Returns static list containing one element passed as parameter
    * @param item
    */
-  static singleton<T>(item: T): List<T> {
+  static singleton<T>(item: NonNullable<T>): List<T> {
     return new StaticArrayList<T>([item])
   }
 }

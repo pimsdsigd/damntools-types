@@ -1,9 +1,13 @@
 import {ArrayList} from "../ArrayList"
 import {IllegalAccessError} from "../../exceptions"
+import {AbstractedArray, isList} from "../../core"
 
 export class StaticArrayList<T> extends ArrayList<T> {
-  constructor(array: Array<T>) {
-    super(array, array.length)
+  constructor(array: AbstractedArray<T>) {
+    let capacity = 0
+    if (array instanceof Array) capacity = array.length
+    else if (isList(array)) capacity = array.size()
+    super(array, capacity)
   }
 
   clear(): this {

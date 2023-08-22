@@ -34,7 +34,7 @@ export class Optional<T> implements Optionable<T> {
   }
 
   static fromString(value: string | undefined | null): Optionable<string> {
-    return defined(value) || value.length > 0 ? Optional.of(value) : Optional.empty()
+    return defined(value) && value.length > 0 ? Optional.of(value) : Optional.empty()
   }
 
   get(): T {

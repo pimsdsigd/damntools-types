@@ -69,7 +69,7 @@ export class ObjectUtils {
     }
   }
 
-  static pathModifier(obj: object, path: string, value: any,  separator?: string) {
+  static pathModifier(obj: object, path: string, value: any, separator?: string) {
     if (!separator) separator = "."
     const steps = path.split(separator)
     if (steps.length > 0) {
@@ -77,7 +77,7 @@ export class ObjectUtils {
       if (ObjectUtils.containsProperty(obj, current)) {
         if (steps.length === 1) {
           obj[current] = value
-        }else {
+        } else {
           ObjectUtils.pathModifier(
             obj[current],
             steps.slice(1).join("."),

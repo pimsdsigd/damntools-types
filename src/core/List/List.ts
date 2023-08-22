@@ -57,7 +57,7 @@ export interface List<T> {
 
   replaceFrom(start: number, items?: AbstractedArray<T>): this
 
-  sub(start: number, end?: number): List<T>
+  sub(start: number, end?: number): this
 
   toString(): string
 }

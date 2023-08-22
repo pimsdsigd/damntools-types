@@ -2,7 +2,6 @@ import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {AbstractedArray, List} from "./List"
 import {Comparator} from "./Comparator"
 import {Optionable} from "./Optionable"
-import {ArrayList} from "../list";
 
 export const containsProperty = (obj: object, propertyName: string): boolean => {
   return (
@@ -22,11 +21,11 @@ export const containsPrototypeMethod = (obj: object, methodName: string): boolea
   )
 }
 
-export const defined = (variable: any): boolean => {
+export const defined = <T>(variable: T): variable is NonNullable<T> => {
   return variable !== undefined && variable !== null
 }
 
-export const notDefined = (variable: any): boolean => !defined(variable)
+export const notDefined = (variable: any): variable is undefined => !defined(variable)
 
 export const requireDefined = <T>(variable: T, reason?: string): T => {
   if (notDefined(variable)) throw new UndefinedError(reason)
@@ -88,7 +87,6 @@ export const isList = <T>(obj: AbstractedArray<T> | any): obj is List<T> => {
   return defined(obj) && containsPrototypeMethod(obj, "getInner")
 }
 
-
 export const abstractArrayToArray = <T>(obj: AbstractedArray<T>): Array<T> => {
   if (isList(obj)) return (obj as List<T>).getInner()
   else if (Array.isArray(obj)) return obj
@@ -104,4 +102,12 @@ export const asNumber = (value: any): number => {
 
 export const isPresent = <T>(value: Optionable<T>): boolean => {
   return defined(value) && value.isPresent()
+}
+
+export const copyArrayInstance = <T>(array: Array<T>): Array<T> => {
+  const other = []
+  for (let i = 0; i < array.length; i++) {
+    other[i] = array[i]
+  }
+  return other
 }

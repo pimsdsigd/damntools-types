@@ -10,7 +10,9 @@ import {
   Comparator,
   compare,
   ConcatArgType,
+  copyArrayInstance,
   defined,
+  isList,
   List,
   notDefined,
   Optionable,
@@ -34,16 +36,26 @@ const prepareIndex = (index: number, length: number) => {
 export class ArrayList<T> implements List<T> {
   protected array: Array<T>
   protected readonly capacity: number
+  protected _size: number
 
-  public constructor(array?: Array<T> | any, capacity?: number) {
-    if (defined(array) && (!Array.isArray(array) || typeof array === "string"))
-      throw new InvalidArrayError()
+  /**
+   * Will store same array instance if parameter type is Array
+   * If it is a List, then the array is copied into another instance
+   */
+  public constructor(array?: AbstractedArray<T>, capacity?: number) {
+    if (defined(array)) {
+      if (isList(array)) this.array = array.getInner()
+      else if (Array.isArray(array)) this.array = array
+      else throw new InvalidArrayError()
+    } else {
+      this.array = []
+    }
     this.capacity = defined(capacity) ? capacity : Number.MAX_VALUE
-    this.array = array ? [].concat(array) : []
+    this._size = this.array.length
   }
 
   copy(): List<T> {
-    return new ArrayList(this.array)
+    return new ArrayList(this)
   }
 
   stream(): Stream<T> {
@@ -51,7 +63,7 @@ export class ArrayList<T> implements List<T> {
   }
 
   getInner(): Array<T> {
-    return [].concat(this.array)
+    return copyArrayInstance(this.array)
   }
 
   forEach(action: PeekFunction<T>): this {
@@ -60,7 +72,7 @@ export class ArrayList<T> implements List<T> {
   }
 
   size(): number {
-    return this.array.length
+    return this._size
   }
 
   isEmpty(): boolean {
@@ -101,12 +113,14 @@ export class ArrayList<T> implements List<T> {
 
   clear(): this {
     this.array = []
+    this._size = this.array.length
     return this
   }
 
   remove(index: number): this {
     index = prepareIndex(index, this.array.length)
     if (this.hasElements()) this.array.splice(index, 1)
+    this._size = this._size - 1
     return this
   }
 
@@ -118,17 +132,20 @@ export class ArrayList<T> implements List<T> {
     } else {
       this.array.splice(start)
     }
+    this._size = this.array.length
     return this
   }
 
-  sub(start: number, end?: number): List<T> {
+  sub(start: number, end?: number): this {
     start = prepareIndex(start, this.array.length)
     if (defined(end)) {
       if (end < start) throw new InvalidIndexError("End cannot be before start !")
-      return new ArrayList(this.array.slice(start, end), this.capacity)
+      this.array = this.array.slice(start, end)
     } else {
-      return new ArrayList(this.array.slice(start), this.capacity)
+      this.array = this.array.slice(start)
     }
+    this._size = this.array.length
+    return this
   }
 
   insert(start: number, items?: AbstractedArray<T>): this {
@@ -137,6 +154,7 @@ export class ArrayList<T> implements List<T> {
     if (array.length > this.capacity - this.size())
       throw new ListMaxCapacityCrossedError(this.capacity, this.size(), array.length)
     this.array.splice(start, 0, ...array)
+    this._size = this.array.length
     return this
   }
 
@@ -146,6 +164,7 @@ export class ArrayList<T> implements List<T> {
     if (array.length - 1 > this.capacity - this.size())
       throw new ListMaxCapacityCrossedError(this.capacity, this.size(), array.length)
     this.array.splice(start, 1, ...array)
+    this._size = this.array.length
     return this
   }
 
@@ -155,6 +174,7 @@ export class ArrayList<T> implements List<T> {
     if (array.length > this.capacity - this.size())
       throw new ListMaxCapacityCrossedError(this.capacity, this.size(), array.length)
     this.array.splice(start, array.length, ...array)
+    this._size = this.array.length
     return this
   }
 
@@ -162,6 +182,7 @@ export class ArrayList<T> implements List<T> {
     if (items.length > this.capacity - this.size())
       throw new ListMaxCapacityCrossedError(this.capacity, this.size(), items.length)
     this.array.push(...items)
+    this._size = this.array.length
     return this
   }
 
@@ -175,6 +196,7 @@ export class ArrayList<T> implements List<T> {
         throw new ListMaxCapacityCrossedError(this.capacity, this.size(), totalLength)
       this.array = this.array.concat(...container)
     }
+    this._size = this.array.length
     return this
   }
 

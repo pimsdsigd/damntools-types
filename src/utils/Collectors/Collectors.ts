@@ -1,4 +1,4 @@
-import {asNumber, isNumber, List} from "../../core"
+import {asNumber, copyArrayInstance, isNumber, List} from "../../core"
 import {ArrayList} from "../../list"
 
 export abstract class Collectors {
@@ -15,7 +15,7 @@ export abstract class Collectors {
    * @param items
    */
   static toArray<T>(items: Array<T>): Array<T> {
-    return [].concat(items)
+    return copyArrayInstance(items)
   }
 
   static min<T>(items: Array<T>): number {

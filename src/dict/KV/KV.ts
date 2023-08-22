@@ -146,7 +146,7 @@ export class KV<K extends string, V> implements Dict<K, V> {
     return fromEntriesFn(
       this.entries()
         .stream()
-        .filter(entry => predicate(entry))
+        .filter((entry): entry is DictObjectEntry<K, V> => predicate(entry))
         .collect(Collectors.toList)
     )
   }

@@ -6,24 +6,29 @@ export type ReducerFunction<T, U> = (
   previousValue: U,
   currentValue: T,
   index?: number,
-  array?: List<T>
+  array?: Array<T>
 ) => U
 
-export type SearchPredicate<T> = (value: T, index?: number, array?: List<T>) => boolean
+export type SearchPredicateNarrowing<T, X extends T> = (
+  value: T,
+  index?: number,
+  array?: Array<T>
+) => value is X
+export type SearchPredicate<T> = (value: T, index?: number, array?: Array<T>) => boolean
 export type JoinFunction<T> = (value: T) => string
 
 export type EqualityPredicate<T, O> = (a: T, b: O) => boolean
 
-export type MapFunction<T, U> = (value: T, index?: number, array?: List<T>) => U
+export type MapFunction<T, U> = (value: T, index?: number, array?: Array<T>) => U
 
-export type MapDefinedFunction<T, U> = (value: T, index?: number, array?: List<T>) => U
+export type MapDefinedFunction<T, U> = (value: T, index?: number, array?: Array<T>) => U
 
-export type MapUndefinedFunction<T, U> = (index?: number, array?: List<T>) => U | T
+export type MapUndefinedFunction<T> = (index?: number, array?: Array<T>) => T
 
 export type FlatMapFunction<T, U> = (
   value: T,
   index?: number,
-  array?: List<T>
+  array?: Array<T>
 ) => List<U> | Array<U>
 
 export type StreamCollector<T, R> = (items: Array<T>) => R
@@ -47,19 +52,19 @@ export interface Stream<T> {
 
   map<U>(action: (value: T, index: number) => U): Stream<U>
 
-  map<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
+  map<U>(action: (value: T, index: number, array: Array<T>) => U): Stream<U>
 
   mapDefined<U>(action: (value: T) => U): Stream<U>
 
   mapDefined<U>(action: (value: T, index: number) => U): Stream<U>
 
-  mapDefined<U>(action: (value: T, index: number, array: List<T>) => U): Stream<U>
+  mapDefined<U>(action: (value: T, index: number, array: Array<T>) => U): Stream<U>
 
   mapUndefined<U>(action: () => U | T): Stream<U | T>
 
   mapUndefined<U>(action: (index: number) => U | T): Stream<U | T>
 
-  mapUndefined<U>(action: (index: number, array: List<T>) => U | T): Stream<U | T>
+  mapUndefined<U>(action: (index: number, array: Array<T>) => U | T): Stream<U | T>
 
   flat<U>(depth?: number): Stream<U>
 
@@ -67,11 +72,9 @@ export interface Stream<T> {
 
   filterClass<U extends T>(type: ClassType<U>): Stream<U>
 
-  filter(predicate: SearchPredicate<T>): Stream<T>
+  filter<X extends T>(predicate: SearchPredicateNarrowing<T, X>): Stream<X>
 
   filterPresent(): Stream<NonNullable<T>>
-
-  filterNotPresent(): Stream<undefined | null>
 
   unique(equalityPredicate?: EqualityPredicate<T, T>): Stream<T>
 
@@ -105,45 +108,35 @@ export interface Stream<T> {
 
   findLastIndex(predicate: SearchPredicate<T>): number
 
-  reduce<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T
-  ) => U, initialValue: U): U
+  reduce<U>(callbackFn: (previousValue: U, currentValue: T) => U, initialValue: U): U
 
-  reduce<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T,
-    index: number,
-  ) => U, initialValue: U): U
+  reduce<U>(
+    callbackFn: (previousValue: U, currentValue: T, index: number) => U,
+    initialValue: U
+  ): U
 
-  reduce<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T,
-    index: number,
-    array: List<T>
-  ) => U, initialValue: U): U
+  reduce<U>(
+    callbackFn: (previousValue: U, currentValue: T, index: number, array: Array<T>) => U,
+    initialValue: U
+  ): U
 
-  reduceRight<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T
-  ) => U, initialValue: U): U
+  reduceRight<U>(callbackFn: (previousValue: U, currentValue: T) => U, initialValue: U): U
 
-  reduceRight<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T,
-    index: number
-  ) => U, initialValue: U): U
+  reduceRight<U>(
+    callbackFn: (previousValue: U, currentValue: T, index: number) => U,
+    initialValue: U
+  ): U
 
-  reduceRight<U>(callbackFn: (
-    previousValue: U,
-    currentValue: T,
-    index: number,
-    array: List<T>
-  ) => U, initialValue: U): U
+  reduceRight<U>(
+    callbackFn: (previousValue: U, currentValue: T, index: number, array: Array<T>) => U,
+    initialValue: U
+  ): U
 
   join(separator?: string): string
 
   count(predicate: SearchPredicate<T>): number
+
+  countNotPresent(): number
 
   collect<R>(collector: StreamCollector<T, R>): R
 

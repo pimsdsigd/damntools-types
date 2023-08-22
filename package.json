@@ -1,6 +1,6 @@
 {
   "name": "@damntools.fr/types",
-  "version": "4.0.16",
+  "version": "4.1.0",
   "description": "",
   "files": [
     "dist"
@@ -17,7 +17,8 @@
     "test": "npm run lint && npm run test:coverage:report",
     "test:unit": "mocha",
     "test:coverage:report": "c8 npm run test:unit",
-    "test:local": "ts-node test.ts"
+    "test:local": "ts-node test.ts",
+    "test:perf": "ts-node perf/Psr.perftest.ts"
   },
   "author": "flocastera",
   "publishConfig": {
@@ -25,6 +26,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^5.0.0"
+    "@damntools.fr/ts-lib": "^5.0.0",
+    "@damntools.fr/performer": "^1.0.14"
   }
 }
