@@ -1,6 +1,6 @@
 import {List, PeekFunction, SortFunction} from "../List"
 import {Optionable} from "../Optionable"
-import {ClassType} from "../ClassType"
+import {AbstractType, ClassType} from "../ClassType"
 
 export type ReducerFunction<T, U> = (
   previousValue: U,
@@ -70,7 +70,7 @@ export interface Stream<T> {
 
   flatMap<U>(action: FlatMapFunction<T, U>, depth?: number): Stream<U>
 
-  filterClass<U extends T>(type: ClassType<U>): Stream<U>
+  filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U>
 
   filter<X extends T>(predicate: SearchPredicateNarrowing<T, X>): Stream<X>
 

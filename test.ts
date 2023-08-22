@@ -1,16 +1,25 @@
-import {ObjectUtils} from "./src"
+import {Lists} from "./src"
 
-const obj = {
-  a: 5,
-  b: {
-    b1: {
-      bb: true
-    },
-    b2: "51"
+abstract class Test {
+  id: number
+}
+
+class YY extends Test {
+  num: number
+}
+
+abstract class Sub extends Test {
+  yolo() {
+    return true
   }
 }
 
-console.log(obj)
-ObjectUtils.pathModifier(obj, "a", {bc: 645})
-ObjectUtils.pathModifier(obj, "b", 2)
-console.log(obj)
+class TT extends Sub {
+  id = 6
+
+  constructor() {
+    super()
+  }
+}
+
+Lists.of<Test>(new TT(), new YY()).stream().filterAbstract(Sub).log()

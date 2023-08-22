@@ -105,8 +105,8 @@ export class ListStream<T> implements Stream<T> {
     return new ListStream<X>(array as any)
   }
 
-  filterClass<U extends T>(type: ClassType<U>): Stream<U> {
-    return this.filter<U>((v): v is U => v instanceof type).map(value => value as U)
+  filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U> {
+    return this.filter((c): c is U => types.findIndex(t => c instanceof t) > -1)
   }
 
   filterPresent(): Stream<NonNullable<T>> {
