@@ -176,8 +176,8 @@ export class ListStream<T> implements Stream<T> {
     if (defined(predicate))
       return this.filter((v, i, a): v is T => predicate(v, i, a)).findLast()
     else {
-      this.reverse()
-      return Optional.of(this.array[0])
+      return Optional.of(
+        this.reverse().collectArray()[0])
     }
   }
 
