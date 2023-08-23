@@ -1,44 +1,48 @@
+import {Perf, Performer} from "@damntools.fr/performer"
+import {ArrayList, KV} from "../src"
 
-import {Perf, Performer} from "@damntools.fr/performer";
-import {ArrayList, KV} from "../src";
+const ITERATIONS = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
+const TIMEOUT = 60000
 
-
-const generateData = (count) => {
-    console.log("generating data")
-    const array = new Array(count)
-    for (let i = 0; i < count; i++)
-        array.push({id: i, value: Math.random()})
-    console.log("done")
-    return array
+const generateData = count => {
+  const obj = {}
+  const keys = new ArrayList()
+  for (let i = 0; i < count; i++) {
+    obj[i + ""] = {id: i, value: Math.random()}
+    keys.push(i + "")
+  }
+  return {
+    keys,
+    obj
+  }
 }
 
-const  cache = KV.empty()
-
-
-Perf.Test("mapVsFor")
-    .Iterations([
-        1, 1_000, 10_000, 100_000, 1_000_000
-    ])
-    .Do(count => {
-        const array = generateData(count)
-        const list = new ArrayList(array)
+describe("perf.list", () => {
+  it("filter", done => {
+    Perf.Test("mapVsFor")
+      .Iterations(ITERATIONS)
+      .Do(count => {
+        const data = generateData(count)
+        const dataDict = {keys: data.keys, obj: KV.from(data.obj)}
         return {
-            test: () => {
-                list.forEach(row => {
-                    cache.put(row.id, row)
-                })
-                console.log(cache.size())
-            },
-            compare: () => {
-                const obj = {}
-                array.forEach(row => {
-                   obj[row.id] = row
-                })
-                console.log(Object.keys(obj).length)
-            }
+          test: () => {
+            let cpt = 0
+            dataDict.obj.entries().forEach((f: any) => {
+              cpt += f.value.id
+            })
+            console.log(cpt)
+          },
+          compare: () => {
+            let cpt = 0
+            dataDict.keys.forEach((f: any) => {
+              // @ts-ignore
+              cpt += dataDict.obj.get(f).id
+            })
+            console.log(cpt)
+          }
         }
-    })
+      })
 
-void Performer.execSubscribed()
-
-
+    void Performer.execSubscribed().then(() => done())
+  }).timeout(TIMEOUT)
+})

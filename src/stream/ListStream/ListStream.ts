@@ -59,18 +59,20 @@ export class ListStream<T> implements Stream<T> {
   }
 
   peek(action: PeekFunction<T>): Stream<T> {
-    for (let i = 0; i < this.array.length; i++) {
-      action(this.array[i], i, this.array)
+    const stream = new ListStream(copyArrayInstance(this.array))
+    for (let i = 0; i < stream.array.length; i++) {
+      action(stream.array[i], i, stream.array)
     }
-    return this
+    return stream
   }
 
   peekDefined(action: PeekFunction<T>): Stream<T> {
-    for (let i = 0; i < this.array.length; i++) {
-      const v = this.array[i]
-      if (!!v || v === 0 || v === false || v === "") action(v, i, this.array)
+    const stream = new ListStream(copyArrayInstance(this.array))
+    for (let i = 0; i < stream.array.length; i++) {
+      const v = stream.array[i]
+      if (!!v || v === 0 || v === false || v === "") action(v, i, stream.array)
     }
-    return this
+    return stream
   }
 
   map<U>(action: MapFunction<T, U>): Stream<U> {
