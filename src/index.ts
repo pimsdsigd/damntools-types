@@ -4,7 +4,7 @@ import {DictUtils} from "./DictUtils"
 import {TypeUtils} from "./TypeUtils"
 import {ObjectUtils} from "./ObjectUtils"
 import {Enum} from "./enum"
-import {Optional} from "./optional"
+import {isOptional, Optional} from "./optional"
 import {
   collectMax,
   collectMin,
@@ -52,6 +52,7 @@ export {
   requireDefined,
   isList,
   isDict,
+  isOptional,
   isPresent,
   toList,
   toArray,

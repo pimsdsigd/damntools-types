@@ -86,6 +86,7 @@ export const isList = <T>(obj: AbstractedArray<T> | any): obj is List<T> => {
   return defined(obj) && containsPrototypeMethod(obj, "getInner")
 }
 
+
 export const abstractArrayToArray = <T>(obj: AbstractedArray<T>): Array<T> => {
   if (isList(obj)) return (obj as List<T>).getInner()
   else if (Array.isArray(obj)) return obj
