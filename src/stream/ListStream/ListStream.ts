@@ -105,6 +105,8 @@ export class ListStream<T> implements Stream<T> {
   }
 
   filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U> {
+    if( types.length ===  0)
+      return new ListStream<U>();
     return this.filter((c): c is U => types.findIndex(t => c instanceof t) > -1)
   }
 
