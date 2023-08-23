@@ -1,4 +1,4 @@
-import {AbstractedArray, List, notDefined} from "../../core"
+import {AbstractedArray, List} from "../../core"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -37,7 +37,7 @@ export abstract class Lists {
    * Returns static list created from the elements of the array passed as parameter
    */
   static from<T>(array: NonNullable<AbstractedArray<T>>): List<T> {
-    if (notDefined(array)) throw new InvalidArrayError("Array should be provided !")
+    if (!array) throw new InvalidArrayError("Array should be provided !")
     return new StaticArrayList(array)
   }
 

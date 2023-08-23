@@ -8,7 +8,7 @@ export type ConcatArgType<T> = Array<AbstractedArray<T>>
 
 export type SortFunction<T> = (a: T, b: T) => number
 
-export type PeekFunction<T> = (value: T, index?: number, array?: List<T>) => void
+export type PeekFunction<T> = (value: T, index?: number, array?: Array<T>) => void
 
 export interface List<T> {
   clear(): this

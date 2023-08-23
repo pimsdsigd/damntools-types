@@ -4,13 +4,13 @@ import {isDict} from "./Dict"
 describe("Dict", () => {
   describe("isDict()", () => {
     it("undefined returns false", () => {
-      expect(isDict(undefined)).to.be.false
+      expect(isDict(undefined)).to.not.be.ok
     })
     it("array returns false", () => {
-      expect(isDict(["a"])).to.be.false
+      expect(isDict(["a"])).to.not.be.ok
     })
     it("object returns false", () => {
-      expect(isDict({a: () => ({})})).to.be.false
+      expect(isDict({a: () => ({})})).to.not.be.ok
     })
     it("sub returns true", () => {
       expect(
@@ -18,12 +18,12 @@ describe("Dict", () => {
           collect: () => ({}),
           entries: () => ({})
         })
-      ).to.be.true
+      ).to.be.ok
     })
     it("other returns false", () => {
-      expect(isDict(1)).to.be.false
-      expect(isDict("")).to.be.false
-      expect(isDict("1")).to.be.false
+      expect(isDict(1)).to.not.be.ok
+      expect(isDict("")).to.not.be.ok
+      expect(isDict("1")).to.not.be.ok
     })
   })
 })

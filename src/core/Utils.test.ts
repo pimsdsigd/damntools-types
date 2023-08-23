@@ -22,20 +22,20 @@ class DummyList implements List<any> {
 describe("Utils", () => {
   describe("containsProperty()", () => {
     it("returns false", () => {
-      expect(containsProperty(undefined, undefined)).to.be.false
-      expect(containsProperty(undefined, null)).to.be.false
-      expect(containsProperty(undefined, "")).to.be.false
-      expect(containsProperty(undefined, "key")).to.be.false
+      expect(containsProperty(undefined, undefined)).to.not.be.ok
+      expect(containsProperty(undefined, null)).to.not.be.ok
+      expect(containsProperty(undefined, "")).to.not.be.ok
+      expect(containsProperty(undefined, "key")).to.not.be.ok
 
-      expect(containsProperty({}, undefined)).to.be.false
-      expect(containsProperty({}, null)).to.be.false
-      expect(containsProperty({}, "")).to.be.false
-      expect(containsProperty({}, "key")).to.be.false
+      expect(containsProperty({}, undefined)).to.not.be.ok
+      expect(containsProperty({}, null)).to.not.be.ok
+      expect(containsProperty({}, "")).to.not.be.ok
+      expect(containsProperty({}, "key")).to.not.be.ok
 
-      expect(containsProperty({key: "value"}, undefined)).to.be.false
-      expect(containsProperty({key: "value"}, null)).to.be.false
-      expect(containsProperty({key: "value"}, "")).to.be.false
-      expect(containsProperty({key: "value"}, "keyT")).to.be.false
+      expect(containsProperty({key: "value"}, undefined)).to.not.be.ok
+      expect(containsProperty({key: "value"}, null)).to.not.be.ok
+      expect(containsProperty({key: "value"}, "")).to.not.be.ok
+      expect(containsProperty({key: "value"}, "keyT")).to.not.be.ok
     })
 
     it("returns true", () => {
@@ -55,20 +55,20 @@ describe("Utils", () => {
 
   describe("containsMethod()", () => {
     it("returns false", () => {
-      expect(containsMethod(undefined, undefined)).to.be.false
-      expect(containsMethod(undefined, null)).to.be.false
-      expect(containsMethod(undefined, "")).to.be.false
-      expect(containsMethod(undefined, "key")).to.be.false
+      expect(containsMethod(undefined, undefined)).to.not.be.ok
+      expect(containsMethod(undefined, null)).to.not.be.ok
+      expect(containsMethod(undefined, "")).to.not.be.ok
+      expect(containsMethod(undefined, "key")).to.not.be.ok
 
-      expect(containsMethod({}, undefined)).to.be.false
-      expect(containsMethod({}, null)).to.be.false
-      expect(containsMethod({}, "")).to.be.false
-      expect(containsMethod({}, "key")).to.be.false
+      expect(containsMethod({}, undefined)).to.not.be.ok
+      expect(containsMethod({}, null)).to.not.be.ok
+      expect(containsMethod({}, "")).to.not.be.ok
+      expect(containsMethod({}, "key")).to.not.be.ok
 
-      expect(containsMethod({key: "value"}, undefined)).to.be.false
-      expect(containsMethod({key: "value"}, null)).to.be.false
-      expect(containsMethod({key: "value"}, "")).to.be.false
-      expect(containsMethod({key: "value"}, "key")).to.be.false
+      expect(containsMethod({key: "value"}, undefined)).to.not.be.ok
+      expect(containsMethod({key: "value"}, null)).to.not.be.ok
+      expect(containsMethod({key: "value"}, "")).to.not.be.ok
+      expect(containsMethod({key: "value"}, "key")).to.not.be.ok
     })
 
     it("returns true", () => {
@@ -97,20 +97,20 @@ describe("Utils", () => {
 
   describe("containsPrototypeMethod()", () => {
     it("returns false", () => {
-      expect(containsPrototypeMethod(undefined, undefined)).to.be.false
-      expect(containsPrototypeMethod(undefined, null)).to.be.false
-      expect(containsPrototypeMethod(undefined, "")).to.be.false
-      expect(containsPrototypeMethod(undefined, "key")).to.be.false
+      expect(containsPrototypeMethod(undefined, undefined)).to.not.be.ok
+      expect(containsPrototypeMethod(undefined, null)).to.not.be.ok
+      expect(containsPrototypeMethod(undefined, "")).to.not.be.ok
+      expect(containsPrototypeMethod(undefined, "key")).to.not.be.ok
 
-      expect(containsPrototypeMethod({}, undefined)).to.be.false
-      expect(containsPrototypeMethod({}, null)).to.be.false
-      expect(containsPrototypeMethod({}, "")).to.be.false
-      expect(containsPrototypeMethod({}, "key")).to.be.false
+      expect(containsPrototypeMethod({}, undefined)).to.not.be.ok
+      expect(containsPrototypeMethod({}, null)).to.not.be.ok
+      expect(containsPrototypeMethod({}, "")).to.not.be.ok
+      expect(containsPrototypeMethod({}, "key")).to.not.be.ok
 
-      expect(containsPrototypeMethod({key: "value"}, undefined)).to.be.false
-      expect(containsPrototypeMethod({key: "value"}, null)).to.be.false
-      expect(containsPrototypeMethod({key: "value"}, "")).to.be.false
-      expect(containsPrototypeMethod({key: "value"}, "key")).to.be.false
+      expect(containsPrototypeMethod({key: "value"}, undefined)).to.not.be.ok
+      expect(containsPrototypeMethod({key: "value"}, null)).to.not.be.ok
+      expect(containsPrototypeMethod({key: "value"}, "")).to.not.be.ok
+      expect(containsPrototypeMethod({key: "value"}, "key")).to.not.be.ok
       expect(
         containsPrototypeMethod(
           {
@@ -120,7 +120,7 @@ describe("Utils", () => {
           },
           "key"
         )
-      ).to.be.false
+      ).to.not.be.ok
     })
 
     it("returns true", () => {
@@ -136,8 +136,8 @@ describe("Utils", () => {
 
   describe("defined()", () => {
     it("returns false", () => {
-      expect(defined(undefined)).to.be.false
-      expect(defined(null)).to.be.false
+      expect(defined(undefined)).to.not.be.ok
+      expect(defined(null)).to.not.be.ok
     })
     it("returns true", () => {
       expect(defined(true)).to.be.true

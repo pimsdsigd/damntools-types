@@ -3,10 +3,8 @@ import {AbstractedArray, List} from "./List"
 import {Comparator} from "./Comparator"
 import {Optionable} from "./Optionable"
 
-export const containsProperty = (obj: object, propertyName: string): boolean => {
-  return (
-    !!obj && !!propertyName && Object.prototype.hasOwnProperty.call(obj, propertyName)
-  )
+export const containsProperty = (obj: object, propertyName: string): boolean=> {
+  return obj && Object.prototype.hasOwnProperty.call(obj, propertyName)
 }
 
 export const containsMethod = (obj: object, methodName: string): boolean => {
@@ -22,14 +20,15 @@ export const containsPrototypeMethod = (obj: object, methodName: string): boolea
 }
 
 export const defined = <T>(variable: T): variable is NonNullable<T> => {
-  return variable !== undefined && variable !== null
+  return !!variable || variable === 0 || variable === false || variable === ""
 }
 
 export const notDefined = (variable: any): variable is undefined => !defined(variable)
 
 export const requireDefined = <T>(variable: T, reason?: string): T => {
-  if (notDefined(variable)) throw new UndefinedError(reason)
-  return variable
+  if (!!variable || variable === 0 || variable === false || variable === "")
+    return variable
+  throw new UndefinedError(reason)
 }
 
 export const equals = (a: any, b: any): boolean => {
@@ -113,8 +112,8 @@ export const copyArrayInstance = <T>(array: Array<T>): Array<T> => {
 }
 
 export const concatArray = <T>(a1: Array<T>, a2: Array<T>): Array<T> => {
-  for (let i =  0; i < a2.length ; i++) {
-    a1[a1.length+i] = a2[i]
+  for (let i = 0; i < a2.length; i++) {
+    a1[a1.length + i] = a2[i]
   }
   return a1
 }

@@ -6,20 +6,20 @@ import {Lists} from "./utils"
 describe("ObjectUtils", () => {
   describe("containsProperty()", () => {
     it("returns false", () => {
-      expect(ObjectUtils.containsProperty(undefined, undefined)).to.be.false
-      expect(ObjectUtils.containsProperty(undefined, null)).to.be.false
-      expect(ObjectUtils.containsProperty(undefined, "")).to.be.false
-      expect(ObjectUtils.containsProperty(undefined, "key")).to.be.false
+      expect(ObjectUtils.containsProperty(undefined, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsProperty(undefined, null)).to.not.be.ok
+      expect(ObjectUtils.containsProperty(undefined, "")).to.not.be.ok
+      expect(ObjectUtils.containsProperty(undefined, "key")).to.not.be.ok
 
-      expect(ObjectUtils.containsProperty({}, undefined)).to.be.false
-      expect(ObjectUtils.containsProperty({}, null)).to.be.false
-      expect(ObjectUtils.containsProperty({}, "")).to.be.false
-      expect(ObjectUtils.containsProperty({}, "key")).to.be.false
+      expect(ObjectUtils.containsProperty({}, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsProperty({}, null)).to.not.be.ok
+      expect(ObjectUtils.containsProperty({}, "")).to.not.be.ok
+      expect(ObjectUtils.containsProperty({}, "key")).to.not.be.ok
 
-      expect(ObjectUtils.containsProperty({key: "value"}, undefined)).to.be.false
-      expect(ObjectUtils.containsProperty({key: "value"}, null)).to.be.false
-      expect(ObjectUtils.containsProperty({key: "value"}, "")).to.be.false
-      expect(ObjectUtils.containsProperty({key: "value"}, "keyT")).to.be.false
+      expect(ObjectUtils.containsProperty({key: "value"}, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsProperty({key: "value"}, null)).to.not.be.ok
+      expect(ObjectUtils.containsProperty({key: "value"}, "")).to.not.be.ok
+      expect(ObjectUtils.containsProperty({key: "value"}, "keyT")).to.not.be.ok
     })
 
     it("returns true", () => {
@@ -39,20 +39,20 @@ describe("ObjectUtils", () => {
 
   describe("containsMethod()", () => {
     it("returns false", () => {
-      expect(ObjectUtils.containsMethod(undefined, undefined)).to.be.false
-      expect(ObjectUtils.containsMethod(undefined, null)).to.be.false
-      expect(ObjectUtils.containsMethod(undefined, "")).to.be.false
-      expect(ObjectUtils.containsMethod(undefined, "key")).to.be.false
+      expect(ObjectUtils.containsMethod(undefined, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsMethod(undefined, null)).to.not.be.ok
+      expect(ObjectUtils.containsMethod(undefined, "")).to.not.be.ok
+      expect(ObjectUtils.containsMethod(undefined, "key")).to.not.be.ok
 
-      expect(ObjectUtils.containsMethod({}, undefined)).to.be.false
-      expect(ObjectUtils.containsMethod({}, null)).to.be.false
-      expect(ObjectUtils.containsMethod({}, "")).to.be.false
-      expect(ObjectUtils.containsMethod({}, "key")).to.be.false
+      expect(ObjectUtils.containsMethod({}, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsMethod({}, null)).to.not.be.ok
+      expect(ObjectUtils.containsMethod({}, "")).to.not.be.ok
+      expect(ObjectUtils.containsMethod({}, "key")).to.not.be.ok
 
-      expect(ObjectUtils.containsMethod({key: "value"}, undefined)).to.be.false
-      expect(ObjectUtils.containsMethod({key: "value"}, null)).to.be.false
-      expect(ObjectUtils.containsMethod({key: "value"}, "")).to.be.false
-      expect(ObjectUtils.containsMethod({key: "value"}, "key")).to.be.false
+      expect(ObjectUtils.containsMethod({key: "value"}, undefined)).to.not.be.ok
+      expect(ObjectUtils.containsMethod({key: "value"}, null)).to.not.be.ok
+      expect(ObjectUtils.containsMethod({key: "value"}, "")).to.not.be.ok
+      expect(ObjectUtils.containsMethod({key: "value"}, "key")).to.not.be.ok
     })
 
     it("returns true", () => {

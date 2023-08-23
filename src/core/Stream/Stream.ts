@@ -15,7 +15,6 @@ export type SearchPredicateNarrowing<T, X extends T> = (
   array?: Array<T>
 ) => value is X
 export type SearchPredicate<T> = (value: T, index?: number, array?: Array<T>) => boolean
-export type JoinFunction<T> = (value: T) => string
 
 export type EqualityPredicate<T, O> = (a: T, b: O) => boolean
 
@@ -38,6 +37,7 @@ export interface Stream<T> {
 
   reverse(): Stream<T>
 
+  sort(): Stream<T>
   sort(compareFn?: SortFunction<T>): Stream<T>
 
   peek(action: PeekFunction<T>): Stream<T>
@@ -73,6 +73,7 @@ export interface Stream<T> {
   filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U>
 
   filter<X extends T>(predicate: SearchPredicateNarrowing<T, X>): Stream<X>
+  filter(predicate: SearchPredicate<T>): Stream<T>;
 
   filterPresent(): Stream<NonNullable<T>>
 
@@ -132,13 +133,16 @@ export interface Stream<T> {
     initialValue: U
   ): U
 
+  join(): string
   join(separator?: string): string
 
-  count(predicate: SearchPredicate<T>): number
+  count(): number
+  count(predicate?: SearchPredicate<T>): number
 
   countNotPresent(): number
 
   collect<R>(collector: StreamCollector<T, R>): R
 
   collectArray(): Array<T>
+
 }

@@ -1,6 +1,8 @@
 import {Optional} from "./Optional"
 import {expect} from "chai"
 import {EmptyOptionalAccessError, UndefinedError} from "../../exceptions"
+import {EmptyOptional} from "./EmptyOptional";
+import {ValueOptional} from "./ValueOptional";
 
 const PROVIDED = <T>(value: T) => Optional.of<T>(value)
 const EMPTY = <T>() => Optional.empty<T>()
@@ -8,31 +10,31 @@ const EMPTY = <T>() => Optional.empty<T>()
 describe("Optional", () => {
   describe("constructor()", () => {
     it("with undefined returns empty", () => {
-      // @ts-ignore
-      const op = new Optional(undefined)
+      const op = new EmptyOptional(undefined)
       expect(op).not.to.be.undefined
       expect(op.isEmpty()).to.be.true
+      // @ts-ignore
       expect(op._value).to.be.equals(undefined)
     })
     it("with null returns empty", () => {
-      // @ts-ignore
-      const op = new Optional(null)
+      const op = new EmptyOptional(null)
       expect(op).not.to.be.undefined
       expect(op.isEmpty()).to.be.true
+      // @ts-ignore
       expect(op._value).to.be.equals(null)
     })
     it("with zero returns not empty", () => {
-      // @ts-ignore
-      const op = new Optional(0)
+      const op = new ValueOptional(0)
       expect(op).not.to.be.undefined
       expect(op.isEmpty()).to.be.false
+      // @ts-ignore
       expect(op._value).to.be.equals(0)
     })
     it("with false returns not empty", () => {
-      // @ts-ignore
-      const op = new Optional(false)
+      const op = new ValueOptional(false)
       expect(op).not.to.be.undefined
       expect(op.isEmpty()).to.be.false
+      // @ts-ignore
       expect(op._value).to.be.equals(false)
     })
   })
@@ -44,10 +46,10 @@ describe("Optional", () => {
     })
 
     it("with provided returns not empty", () => {
-      // @ts-ignore
-      const op = new Optional("efi")
+      const op = new ValueOptional("efi")
       expect(op).not.to.be.undefined
       expect(op.isEmpty()).to.be.false
+      // @ts-ignore
       expect(op._value).to.be.equals("efi")
     })
   })

@@ -24,15 +24,12 @@ export const fromEntriesFn = <K extends string, V>(
 
 export class KV<K extends string, V> implements Dict<K, V> {
   protected _map: DictObject<V>
-  private _size: number
 
   protected constructor(map?: DictObject<V>) {
     if (map) {
       this._map = {...map}
-      this.setSize()
     } else {
       this._map = {} as DictObject<V>
-      this.setSize(0)
     }
   }
 
@@ -48,25 +45,19 @@ export class KV<K extends string, V> implements Dict<K, V> {
     return new KV<K, V>()
   }
 
-  private setSize(size?: number) {
-    this._size = size !== undefined ? size : Object.keys(this._map).length
-  }
 
   put(key: K, value: V): this {
     this._map[key] = value
-    this.setSize()
     return this
   }
 
   putAll(...obj: Array<DictObject<V>>): this {
     this._map = obj.reduce((old, cur) => ({...old, ...cur}), this._map)
-    this.setSize()
     return this
   }
 
   merge(...dict: Array<Dict<K, V>>): this {
     this._map = dict.reduce((old, cur) => ({...old, ...cur.collect()}), this._map)
-    this.setSize()
     return this
   }
 
@@ -76,7 +67,6 @@ export class KV<K extends string, V> implements Dict<K, V> {
 
   clear(): this {
     this._map = {} as DictObject<V>
-    this.setSize(0)
     return this
   }
 
@@ -86,7 +76,6 @@ export class KV<K extends string, V> implements Dict<K, V> {
 
   remove(key: K): this {
     delete this._map[key]
-    this.setSize()
     return this
   }
 
@@ -100,7 +89,7 @@ export class KV<K extends string, V> implements Dict<K, V> {
   }
 
   getOptional(key: K): Optionable<V> {
-    return this.hasKey(key) ? Optional.of(this.get(key)) : Optional.empty()
+    return Optional.nullable(this.get(key))
   }
 
   keys(): List<K> {
@@ -122,7 +111,7 @@ export class KV<K extends string, V> implements Dict<K, V> {
   }
 
   size(): number {
-    return this._size
+    return Object.keys(this._map).length
   }
 
   copy(): Dict<K, V> {
@@ -178,7 +167,7 @@ export class KV<K extends string, V> implements Dict<K, V> {
   }
 
   isEmpty(): boolean {
-    return this._size === 0
+    return this.size() === 0
   }
 
   log(identifier?: string | number, entryFormatter?: DictLogFormatter<K, V>): this {

@@ -15,7 +15,6 @@ import {
   defined,
   isList,
   List,
-  notDefined,
   Optionable,
   PeekFunction,
   Stream
@@ -23,12 +22,8 @@ import {
 import {Optional} from "../../optional"
 import {ListStream} from "../../stream"
 
-const peekFn = action => (value, index, arr) => {
-  if (value) action(value, index, new ArrayList(arr))
-}
-
 const prepareIndex = (index: number, length: number) => {
-  if (notDefined(index)) throw new InvalidIndexError()
+  if (!index && index !== 0) throw new InvalidIndexError()
   if (index < 0) index = length + index
   if (index < 0 || index >= length) throw new IndexOutOfBoundError(index, length)
   return index
@@ -44,14 +39,14 @@ export class ArrayList<T> implements List<T> {
    * If it is a List, then the array is copied into another instance
    */
   public constructor(array?: AbstractedArray<T>, capacity?: number) {
-    if (defined(array)) {
+    if (array) {
       if (isList(array)) this.array = array.getInner()
       else if (Array.isArray(array)) this.array = array
       else throw new InvalidArrayError()
     } else {
       this.array = []
     }
-    this.capacity = defined(capacity) ? capacity : Number.MAX_VALUE
+    this.capacity = (capacity && capacity >= 0) ? capacity : Number.MAX_VALUE
     this._size = this.array.length
   }
 
@@ -68,7 +63,10 @@ export class ArrayList<T> implements List<T> {
   }
 
   forEach(action: PeekFunction<T>): this {
-    this.array.forEach(peekFn(action))
+    for (let i = 0; i < this.array.length; i++) {
+      const v = this.array[i]
+      if (!!v || v === 0 || v === false || v === "") action(v, i, this.array)
+    }
     return this
   }
 
@@ -188,7 +186,7 @@ export class ArrayList<T> implements List<T> {
   }
 
   concat(...items: ConcatArgType<T>): this {
-    if (defined(items)) {
+    if (items) {
       const container: Array<Array<T>> = items.filter(defined).map(abstractArrayToArray)
       const totalLength = container
         .map(value => value.length)

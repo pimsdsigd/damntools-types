@@ -19,7 +19,7 @@ describe("ArrayList", () => {
       expect(() => newArray(1)).to.throw(InvalidArrayError)
       expect(() => newArray(true)).to.throw(InvalidArrayError)
       expect(() => newArray({})).to.throw(InvalidArrayError)
-      expect(() => newArray("")).to.throw(InvalidArrayError)
+      expect( newArray("").size()).to.be.eq(0)
     })
     it("array provided", () => {
       expect(newArray([1]).size()).to.be.equals(1)

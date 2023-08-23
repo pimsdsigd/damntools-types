@@ -27,6 +27,6 @@
   "license": "ISC",
   "devDependencies": {
     "@damntools.fr/ts-lib": "^5.0.0",
-    "@damntools.fr/performer": "^1.0.14"
+    "@damntools.fr/performer": "^1.1.0"
   }
 }

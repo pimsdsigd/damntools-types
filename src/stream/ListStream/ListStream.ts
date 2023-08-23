@@ -1,5 +1,6 @@
 import {
-  ClassType, concatArray,
+  ClassType,
+  concatArray,
   copyArrayInstance,
   defined,
   EqualityPredicate,
@@ -20,14 +21,6 @@ import {
   StreamCollector
 } from "../../core"
 import {Optional} from "../../optional"
-
-const reduceFn = callbackFn => (p, c, i, a) => callbackFn(p, c, i, a)
-const peekFn = action => (value, index, arr) => {
-  if (value) action(value, index, arr)
-}
-const peekPresentFn = action => (value, index, arr) => {
-  if (value) action(value, index, arr)
-}
 
 const mapFn =
   <T>(action) =>
@@ -66,14 +59,18 @@ export class ListStream<T> implements Stream<T> {
   }
 
   peek(action: PeekFunction<T>): Stream<T> {
-    this.array.forEach(peekFn(action))
+    for (let i = 0; i < this.array.length; i++) {
+      action(this.array[i], i, this.array)
+    }
     return this
   }
 
   peekDefined(action: PeekFunction<T>): Stream<T> {
-    const instance = new ListStream<T>(this.array)
-    instance.array.forEach(peekPresentFn(action))
-    return instance
+    for (let i = 0; i < this.array.length; i++) {
+      const v = this.array[i]
+      if (!!v || v === 0 || v === false || v === "") action(v, i, this.array)
+    }
+    return this
   }
 
   map<U>(action: MapFunction<T, U>): Stream<U> {
@@ -156,8 +153,15 @@ export class ListStream<T> implements Stream<T> {
 
   findFirst(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    if (defined(predicate))
-      return this.filter((v, i, a): v is T => predicate(v, i, a)).findFirst()
+    if (predicate) {
+      for (let i = 0; i < this.array.length; i++) {
+        const v = this.array[i]
+        if (predicate(v)) {
+          return Optional.of(v)
+        }
+      }
+      return Optional.empty()
+    }
     else {
       return Optional.of(this.array[0])
     }
@@ -165,7 +169,7 @@ export class ListStream<T> implements Stream<T> {
 
   findFirstIndex(predicate?: SearchPredicate<T>): number {
     if (this.array.length === 0) return -1
-    if (defined(predicate)) return this.findIndex((v, i, a): v is T => predicate(v, i, a))
+    if (predicate) return this.findIndex((v, i, a): v is T => predicate(v, i, a))
     else {
       return -1
     }
@@ -173,17 +177,23 @@ export class ListStream<T> implements Stream<T> {
 
   findLast(predicate?: SearchPredicate<T>): Optionable<T> {
     if (this.array.length === 0) return Optional.empty()
-    if (defined(predicate))
-      return this.filter((v, i, a): v is T => predicate(v, i, a)).findLast()
-    else {
-      return Optional.of(
-        this.reverse().collectArray()[0])
+    if (predicate) {
+      const length = this.array.length
+      for (let i = length - 1; i >= 0; i--) {
+        const v = this.array[i]
+        if (predicate(v)) {
+          return Optional.of(v)
+        }
+      }
+      return Optional.empty()
+    } else {
+      return Optional.of(this.array[this.array.length - 1])
     }
   }
 
   findLastIndex(predicate?: SearchPredicate<T>): number {
     if (this.array.length === 0) return -1
-    if (defined(predicate)) {
+    if (predicate) {
       const array = this.collectArray()
       array.reverse()
       const index = new ListStream(array).findIndex(predicate)
@@ -193,12 +203,13 @@ export class ListStream<T> implements Stream<T> {
     }
   }
 
-  count(predicate: SearchPredicate<T>): number {
+  count(predicate?: SearchPredicate<T>): number {
+    if (!predicate) return this.array.length
     return this.filter((v, i, a): v is T => predicate(v, i, a)).collectArray().length
   }
 
   countNotPresent(): number {
-    return this.filter(notDefined).collectArray().length
+    return this.filter(notDefined).count()
   }
 
   join(separator?: string): string {
@@ -206,11 +217,19 @@ export class ListStream<T> implements Stream<T> {
   }
 
   reduce<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U {
-    return this.array.reduce(reduceFn(callbackFn), initialValue)
+    let other = initialValue
+    for (let i = 0; i < this.array.length; i++) {
+      other = callbackFn(other, this.array[i])
+    }
+    return other
   }
 
   reduceRight<U>(callbackFn: ReducerFunction<T, U>, initialValue: U): U {
-    return this.array.reduceRight(reduceFn(callbackFn), initialValue)
+    let other = initialValue
+    for (let i = this.array.length - 1; i >= 0; i--) {
+      other = callbackFn(other, this.array[i])
+    }
+    return other
   }
 
   collect<R>(collector: StreamCollector<T, R>): R {

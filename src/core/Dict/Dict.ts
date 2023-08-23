@@ -1,6 +1,6 @@
 import {List} from "../List"
 import {Optionable} from "../Optionable"
-import {containsMethod, defined} from "../Utils"
+import {containsMethod} from "../Utils"
 
 export type DictKey<K extends string> = string | K
 
@@ -88,5 +88,5 @@ export interface Dict<K extends string, V> {
 }
 
 export const isDict = <K extends string, T>(obj: Dict<K, T> | any): obj is Dict<K, T> => {
-  return defined(obj) && containsMethod(obj, "collect") && containsMethod(obj, "entries")
+  return obj && containsMethod(obj, "collect") && containsMethod(obj, "entries")
 }

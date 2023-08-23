@@ -11,6 +11,14 @@ export abstract class Collectors {
   }
 
   /**
+   * Can be used to collect array in a String
+   * @param items
+   */
+  static toString<T>(items: Array<T>): string {
+    return items.join()
+  }
+
+  /**
    * Can be used to collect stream into array
    * @param items
    */
