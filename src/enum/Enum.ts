@@ -28,11 +28,11 @@ export abstract class Enum<K extends EnumKey> {
   }
 
   private readonly _key: K
-  private readonly _ordinal?: number
+  private readonly _ordinal: number
 
-  protected constructor(key: K, ordinal?: number) {
+  protected constructor(key: K) {
     this._key = key
-    this._ordinal = ordinal || Enum.COUNTER.counter
+    this._ordinal = Enum.COUNTER.counter
     Enum.COUNTER.counter++
   }
 
