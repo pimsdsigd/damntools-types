@@ -24,9 +24,9 @@ describe("KV", () => {
     })
 
     it("on not empty adds one", () => {
-      const dict = KV.from({a: 5})
+      const dict = KV.from<string, number>({a: 5, c: 10})
       dict.put("b", 10)
-      expect(dict.size()).to.be.equals(2)
+      expect(dict.size()).to.be.equals(3)
       expect(dict.get("b")).to.be.equals(10)
     })
 
@@ -47,7 +47,7 @@ describe("KV", () => {
     })
 
     it("on not empty adds one", () => {
-      const dict = KV.from({a: 5})
+      const dict = KV.from<string, number>({a: 5})
       dict.putAll({b: 10})
       expect(dict.size()).to.be.equals(2)
       expect(dict.get("b")).to.be.equals(10)
@@ -85,7 +85,7 @@ describe("KV", () => {
     })
 
     it("on not empty adds one", () => {
-      const dict = KV.from({a: 5})
+      const dict = KV.from<string, number>({a: 5})
       dict.merge(KV.from({b: 10}))
       expect(dict.size()).to.be.equals(2)
       expect(dict.get("b")).to.be.equals(10)
@@ -120,7 +120,7 @@ describe("KV", () => {
       expect(dict.hasKey("d")).to.be.false
     })
     it("on not found returns false", () => {
-      const dict = KV.from({a: 10})
+      const dict = KV.from<string, number>({a: 10})
       expect(dict.hasKey("d")).to.be.false
     })
     it("on found returns true", () => {
@@ -153,7 +153,7 @@ describe("KV", () => {
       expect(dict.size()).to.be.equals(0)
     })
     it("on not found does nothing", () => {
-      const dict = KV.from({a: 10})
+      const dict = KV.from<string, number>({a: 10})
       expect(dict.size()).to.be.equals(1)
       dict.remove("b")
       expect(dict.size()).to.be.equals(1)
@@ -259,7 +259,7 @@ describe("KV", () => {
       expect(dict.equals(dict2)).to.be.false
     })
     it("on other different size returns false", () => {
-      const dict = KV.from({a: 10})
+      const dict = KV.from<string, number>({a: 10})
       const dict2 = KV.from({b: 20, c: 30})
       expect(dict.equals(dict2)).to.be.false
     })
@@ -274,7 +274,7 @@ describe("KV", () => {
       expect(dict.equals(dict2)).to.be.false
     })
     it("on different keys returns true", () => {
-      const dict = KV.from({a: 10})
+      const dict = KV.from<string, number>({a: 10})
       const dict2 = KV.from({b: 15})
       expect(dict.equals(dict2)).to.be.false
     })

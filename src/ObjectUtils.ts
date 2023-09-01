@@ -1,5 +1,6 @@
 import {Lists} from "./utils"
 import {containsMethod, containsProperty, List} from "./core"
+import {StaticArrayList} from "./list"
 
 export class ObjectUtils {
   /**
@@ -18,7 +19,7 @@ export class ObjectUtils {
   }
 
   static entries(obj: object): List<[string, any]> {
-    return Lists.from(Object.entries(obj))
+    return new StaticArrayList(Object.keys(obj).map(key => [key, obj[key]]))
   }
 
   static fromEntries(entries: List<[string, any]>): object {

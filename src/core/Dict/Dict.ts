@@ -4,22 +4,24 @@ import {containsMethod} from "../Utils"
 
 export type DictKey<K extends string> = string | K
 
-export type DictObjectEntry<K extends string, V> = {
+export type DicKeyType = string | number | symbol
+
+export type DictObjectEntry<K extends DicKeyType, V> = {
   key: K
   value: V
 }
-export type DictObject<V> = {[key in string]: V}
+export type DictObject<K extends DicKeyType, V> = {[key in K]: V}
 
-export type DictEntryPredicate<K extends string, V> = (
+export type DictEntryPredicate<K extends DicKeyType, V> = (
   entry: DictObjectEntry<K, V>
 ) => boolean
 
-export type DictLogFormatter<K extends string, V> = (
+export type DictLogFormatter<K extends DicKeyType, V> = (
   entry: DictObjectEntry<K, V>,
-  dict: DictObject<V>
+  dict: DictObject<K, V>
 ) => string
 
-export interface Dict<K extends string, V> {
+export interface Dict<K extends DicKeyType, V> {
   toString(): string
 
   /*
@@ -28,7 +30,7 @@ export interface Dict<K extends string, V> {
 
   put(key: K, value: V): this
 
-  putAll(...obj: Array<DictObject<V>>): this
+  putAll(...obj: Array<DictObject<K, V>>): this
 
   merge(...dict: Array<Dict<K, V>>): this
 
@@ -67,7 +69,7 @@ export interface Dict<K extends string, V> {
 
   getOptional(key: K): Optionable<V>
 
-  collect(): DictObject<V>
+  collect(): DictObject<K, V>
 
   keys(): List<K>
 

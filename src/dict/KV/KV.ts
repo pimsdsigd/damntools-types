@@ -1,5 +1,6 @@
 import {
   containsProperty,
+  DicKeyType,
   Dict,
   DictEntryPredicate,
   DictLogFormatter,
@@ -11,47 +12,48 @@ import {
 import {Collectors, Lists} from "../../utils"
 import {Optional} from "../../optional"
 
-const fromEntryFn = <K extends string, V>(
+const fromEntryFn = <K extends DicKeyType, V>(
   entry: DictObjectEntry<K, V>
-): [string, any] => [entry.key, entry.value]
+): [DicKeyType, any] => [entry.key, entry.value]
 
-export const fromEntriesFn = <K extends string, V>(
+export const fromEntriesFn = <K extends DicKeyType, V>(
   entries: List<DictObjectEntry<K, V>>
 ): Dict<K, V> => {
-  const obj = Object.fromEntries(entries.stream().map(fromEntryFn).collectArray())
-  return KV.from(obj as DictObject<V>)
+  const obj = Object.fromEntries(
+    entries.stream().map(fromEntryFn).collectArray()
+  ) as DictObject<K, V>
+  return KV.from(obj)
 }
 
-export class KV<K extends string, V> implements Dict<K, V> {
-  protected _map: DictObject<V>
+export class KV<K extends DicKeyType, V> implements Dict<K, V> {
+  protected _map: DictObject<K, V>
 
-  protected constructor(map?: DictObject<V>) {
+  protected constructor(map?: DictObject<K, V>) {
     if (map) {
       this._map = {...map}
     } else {
-      this._map = {} as DictObject<V>
+      this._map = {} as DictObject<K, V>
     }
   }
 
-  static from<K extends string, V>(map: DictObject<V>): Dict<K, V> {
+  static from<K extends DicKeyType, V>(map: DictObject<K, V>): Dict<K, V> {
     return new KV<K, V>(map)
   }
 
-  static of<K extends string, V>(map: Dict<K, V>): Dict<K, V> {
+  static of<K extends DicKeyType, V>(map: Dict<K, V>): Dict<K, V> {
     return this.from(map.collect())
   }
 
-  static empty<K extends string, V>(): Dict<K, V> {
+  static empty<K extends DicKeyType, V>(): Dict<K, V> {
     return new KV<K, V>()
   }
-
 
   put(key: K, value: V): this {
     this._map[key] = value
     return this
   }
 
-  putAll(...obj: Array<DictObject<V>>): this {
+  putAll(...obj: Array<DictObject<K, V>>): this {
     this._map = obj.reduce((old, cur) => ({...old, ...cur}), this._map)
     return this
   }
@@ -62,15 +64,15 @@ export class KV<K extends string, V> implements Dict<K, V> {
   }
 
   hasKey(key: K): boolean {
-    return containsProperty(this._map as object, `${key}`)
+    return containsProperty(this._map as object, String(key))
   }
 
   clear(): this {
-    this._map = {} as DictObject<V>
+    this._map = {} as DictObject<K, V>
     return this
   }
 
-  collect(): DictObject<V> {
+  collect(): DictObject<K, V> {
     return {...this._map}
   }
 

@@ -1,9 +1,9 @@
-import {Dict, DictObject} from "../../core"
+import {DicKeyType, Dict, DictObject} from "../../core"
 import {IllegalAccessError} from "../../exceptions"
 import {KV} from "../KV"
 
-export class StaticKV<K extends string, V> extends KV<K, V> {
-  protected constructor(map?: DictObject<V>) {
+export class StaticKV<K extends DicKeyType, V> extends KV<K, V> {
+  protected constructor(map?: DictObject<K, V>) {
     super(map)
   }
 
@@ -31,15 +31,15 @@ export class StaticKV<K extends string, V> extends KV<K, V> {
     throw new IllegalAccessError("KeyValue is not modifiable !")
   }
 
-  static from<K extends string, V>(map: DictObject<V>): Dict<K, V> {
+  static from<K extends DicKeyType, V>(map: DictObject<K, V>): Dict<K, V> {
     return new StaticKV<K, V>(map)
   }
 
-  static of<K extends string, V>(map: Dict<K, V>): Dict<K, V> {
+  static of<K extends DicKeyType, V>(map: Dict<K, V>): Dict<K, V> {
     return new StaticKV<K, V>(map.collect())
   }
 
-  static empty<K extends string, V>(): Dict<K, V> {
+  static empty<K extends DicKeyType, V>(): Dict<K, V> {
     return new StaticKV<K, V>()
   }
 }

@@ -17,7 +17,7 @@ const generateData = count => {
   }
 }
 
-describe("perf.list", () => {
+describe("perf.dict", () => {
   it("filter", done => {
     Perf.Test("mapVsFor")
       .Iterations(ITERATIONS)
@@ -45,4 +45,79 @@ describe("perf.list", () => {
 
     void Performer.execSubscribed().then(() => done())
   }).timeout(TIMEOUT)
+
+  it("entries", done => {
+    Perf.Test("entries")
+      .Iterations(ITERATIONS)
+      .Do(count => {
+        const data = generateData(count)
+        const dataDict = {keys: data.keys, obj: KV.from(data.obj)}
+        return {
+          test: () => {
+            let cpt = 0
+            dataDict.obj.entries().forEach((f: any) => {
+              cpt += f.value.id
+            })
+            console.log(cpt)
+          },
+          compare: () => {
+            let cpt = 0
+            for (const key in data.obj) {
+              cpt += data.obj[key].id
+            }
+            console.log(cpt)
+          }
+        }
+      })
+
+    void Performer.execSubscribed().then(() => done())
+  }).timeout(TIMEOUT)
+
+  it("keys", done => {
+    Perf.Test("keysVsObjectKeys") // faster
+      .Iterations(ITERATIONS)
+      .Do(count => {
+        const cache = KV.empty()
+        const obj = {}
+        for (let i = 0; i < count; i++) {
+          cache.put("" + i, {id: i, value: Math.random()})
+          obj[i] = {id: i, value: Math.random()}
+        }
+        const filterFn = (v: any) => v.endsWith("000")
+        return {
+          test: () => {
+            const v = cache.keys().stream().filter(filterFn).collectArray()
+            console.log(v.length)
+          },
+          compare: () => {
+            const v = Object.keys(obj).filter(filterFn)
+            console.log(v.length)
+          }
+        }
+      })
+
+    Perf.Test("keysVsFor") // faster
+      .Iterations(ITERATIONS)
+      .Do(count => {
+        const cache = KV.empty()
+        const obj = {}
+        for (let i = 0; i < count; i++) {
+          cache.put("" + i, {id: i, value: Math.random()})
+          obj[i] = {id: i, value: Math.random()}
+        }
+        return {
+          test: () => {
+            const v = cache
+              .filter(e => !e.key)
+            console.log(v.size())
+          },
+          compare: () => {
+            const v = Object.entries(obj).filter(e => !e[0])
+            console.log(v.length)
+          }
+        }
+      })
+
+    Performer.execSubscribed().then(() => done())
+  }).timeout(60000)
 })
