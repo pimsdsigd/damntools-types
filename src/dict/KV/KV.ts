@@ -1,6 +1,6 @@
 import {
   containsProperty,
-  DicKeyType,
+  DictKeyType,
   Dict,
   DictEntryPredicate,
   DictLogFormatter,
@@ -12,11 +12,11 @@ import {
 import {Collectors, Lists} from "../../utils"
 import {Optional} from "../../optional"
 
-const fromEntryFn = <K extends DicKeyType, V>(
+const fromEntryFn = <K extends DictKeyType, V>(
   entry: DictObjectEntry<K, V>
-): [DicKeyType, any] => [entry.key, entry.value]
+): [DictKeyType, any] => [entry.key, entry.value]
 
-export const fromEntriesFn = <K extends DicKeyType, V>(
+export const fromEntriesFn = <K extends DictKeyType, V>(
   entries: List<DictObjectEntry<K, V>>
 ): Dict<K, V> => {
   const obj = Object.fromEntries(
@@ -25,7 +25,7 @@ export const fromEntriesFn = <K extends DicKeyType, V>(
   return KV.from(obj)
 }
 
-export class KV<K extends DicKeyType, V> implements Dict<K, V> {
+export class KV<K extends DictKeyType, V> implements Dict<K, V> {
   protected _map: DictObject<K, V>
 
   protected constructor(map?: DictObject<K, V>) {
@@ -36,15 +36,15 @@ export class KV<K extends DicKeyType, V> implements Dict<K, V> {
     }
   }
 
-  static from<K extends DicKeyType, V>(map: DictObject<K, V>): Dict<K, V> {
+  static from<K extends DictKeyType, V>(map: DictObject<K, V>): Dict<K, V> {
     return new KV<K, V>(map)
   }
 
-  static of<K extends DicKeyType, V>(map: Dict<K, V>): Dict<K, V> {
+  static of<K extends DictKeyType, V>(map: Dict<K, V>): Dict<K, V> {
     return this.from(map.collect())
   }
 
-  static empty<K extends DicKeyType, V>(): Dict<K, V> {
+  static empty<K extends DictKeyType, V>(): Dict<K, V> {
     return new KV<K, V>()
   }
 

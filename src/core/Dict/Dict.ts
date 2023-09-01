@@ -2,26 +2,24 @@ import {List} from "../List"
 import {Optionable} from "../Optionable"
 import {containsMethod} from "../Utils"
 
-export type DictKey<K extends string> = string | K
+export type DictKeyType = string | number | symbol
 
-export type DicKeyType = string | number | symbol
-
-export type DictObjectEntry<K extends DicKeyType, V> = {
+export type DictObjectEntry<K extends DictKeyType, V> = {
   key: K
   value: V
 }
-export type DictObject<K extends DicKeyType, V> = {[key in K]: V}
+export type DictObject<K extends DictKeyType, V> = {[key in K]: V}
 
-export type DictEntryPredicate<K extends DicKeyType, V> = (
+export type DictEntryPredicate<K extends DictKeyType, V> = (
   entry: DictObjectEntry<K, V>
 ) => boolean
 
-export type DictLogFormatter<K extends DicKeyType, V> = (
+export type DictLogFormatter<K extends DictKeyType, V> = (
   entry: DictObjectEntry<K, V>,
   dict: DictObject<K, V>
 ) => string
 
-export interface Dict<K extends DicKeyType, V> {
+export interface Dict<K extends DictKeyType, V> {
   toString(): string
 
   /*
