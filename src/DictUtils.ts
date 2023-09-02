@@ -1,13 +1,13 @@
 import {Lists} from "./utils"
 import {fromEntriesFn, KV} from "./dict"
-import {Dict, DictObjectEntry, List} from "./core"
+import {Dict, DictKeyType, DictObjectEntry, List} from "./core"
 
 export class DictUtils {
   static entries(obj: object): List<[string, any]> {
     return Lists.from(Object.entries(obj))
   }
 
-  static fromEntries<K extends string, V>(
+  static fromEntries<K extends DictKeyType, V>(
     entries: List<DictObjectEntry<K, V>>
   ): Dict<K, V> {
     return fromEntriesFn(entries)

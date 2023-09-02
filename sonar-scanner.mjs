@@ -8,7 +8,7 @@ scanner(
       "sonar.projectName": "fr.damntools.npm.types",
       "sonar.projectKey": "fr.damntools.npm.types",
       "sonar.sources": "./src",
-      "sonar.tests": "**/*.test.ts",
+      "sonar.test.inclusions": "**/*.test.ts",
       "sonar.javascript.lcov.reportPaths": "coverage/lcov.info"
     }
   },
