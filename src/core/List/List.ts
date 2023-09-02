@@ -31,6 +31,8 @@ export interface List<T> {
 
   getOptional(index: number): Optionable<T>
 
+  includes(item: T): boolean
+
   forEach(action: PeekFunction<T>): this
 
   getInner(): Array<T>

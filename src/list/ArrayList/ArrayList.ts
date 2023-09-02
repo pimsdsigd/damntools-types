@@ -95,6 +95,10 @@ export class ArrayList<T> implements List<T> {
     }
   }
 
+  includes(item: T): boolean {
+    return this.array.includes(item)
+  }
+
   indexOf(value: T): Optionable<number> {
     const index = this.array.indexOf(value)
     return index === -1 ? Optional.empty() : Optional.of(index)
