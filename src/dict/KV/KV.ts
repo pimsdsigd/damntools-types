@@ -27,6 +27,7 @@ export const fromEntriesFn = <K extends DictKeyType, V>(
 
 export class KV<K extends DictKeyType, V> implements Dict<K, V> {
   protected _map: DictObject<K, V>
+  private readonly __iamDict = true
 
   protected constructor(map?: DictObject<K, V>) {
     if (map) {

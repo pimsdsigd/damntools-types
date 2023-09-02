@@ -1,5 +1,6 @@
 import {expect} from "chai"
 import {isDict} from "./Dict"
+import {StaticKV} from "../../dict";
 
 describe("Dict", () => {
   describe("isDict()", () => {
@@ -14,10 +15,7 @@ describe("Dict", () => {
     })
     it("sub returns true", () => {
       expect(
-        isDict({
-          collect: () => ({}),
-          entries: () => ({})
-        })
+        isDict(StaticKV.empty())
       ).to.be.ok
     })
     it("other returns false", () => {

@@ -12,9 +12,11 @@ import {
 } from "./Utils"
 import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {List} from "./List"
+import {StaticArrayList} from "../list";
 
 // @ts-ignore
 class DummyList implements List<any> {
+  private readonly __iamList = true
   getInner(): Array<any> {
     return [5]
   }
@@ -221,6 +223,12 @@ describe("Utils", () => {
       expect(isList(1)).to.be.false
       expect(isList("")).to.be.false
       expect(isList("1")).to.be.false
+    })
+    it("sub returns ok", () => {
+      console.log("")
+      const list =new StaticArrayList([])
+      console.log(list)
+      expect(isList(list)).to.be.true
     })
   })
 

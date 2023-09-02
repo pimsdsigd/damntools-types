@@ -83,7 +83,7 @@ export const compare: Comparator<any> = (a: any, b: any): number => {
 }
 
 export const isList = <T>(obj: AbstractedArray<T> | any): obj is List<T> => {
-  return defined(obj) && containsPrototypeMethod(obj, "getInner")
+  return !!obj && !!obj['__iamList']
 }
 
 

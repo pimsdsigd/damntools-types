@@ -1,6 +1,5 @@
 import {List} from "../List"
 import {Optionable} from "../Optionable"
-import {containsMethod} from "../Utils"
 
 export type DictKeyType = string | number | symbol
 
@@ -88,5 +87,5 @@ export interface Dict<K extends DictKeyType, V> {
 }
 
 export const isDict = <K extends string, T>(obj: Dict<K, T> | any): obj is Dict<K, T> => {
-  return obj && containsMethod(obj, "collect") && containsMethod(obj, "entries")
+  return !!obj && !!obj["__iamDict"]
 }

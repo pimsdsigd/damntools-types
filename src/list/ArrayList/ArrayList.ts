@@ -33,6 +33,7 @@ export class ArrayList<T> implements List<T> {
   protected array: Array<T>
   protected readonly capacity: number
   protected _size: number
+  private readonly __iamList = true
 
   /**
    * Will store same array instance if parameter type is Array

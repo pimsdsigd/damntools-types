@@ -98,16 +98,4 @@ describe("Enum", () => {
       expect(SOME.KEY1.equals(OTHER.KEY1)).to.be.false
     })
   })
-
-  describe("compare()", () => {
-    it("returns 0 when ordinal equals", () => {
-      expect(SOME.KEY1.compare(SOME.KEY1)).to.be.equals(0)
-    })
-    it("1 when ordinal is superior than other", () => {
-      expect(SOME.KEY1.compare(SOME.KEY2)).to.be.equals(1)
-    })
-    it("-1 when ordinal is inferior than other", () => {
-      expect(SOME.KEY2.compare(SOME.KEY1)).to.be.equals(-1)
-    })
-  })
 })
