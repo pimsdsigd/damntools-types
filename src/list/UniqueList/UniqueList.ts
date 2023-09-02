@@ -26,14 +26,16 @@ export class UniqueList<T> extends ArrayList<T> implements List<T> {
   ) {
     super(undefined, capacity)
     if (array) {
-      if (isList(array))
+      if (isList(array)) {
         this.array = array.stream().unique(equalityPredicate).collectArray()
-      else if (Array.isArray(array))
+      } else if (Array.isArray(array)) {
         this.array = new ArrayList(array)
           .stream()
           .unique(equalityPredicate)
           .collectArray()
-      else throw new InvalidArrayError()
+      } else {
+        throw new InvalidArrayError()
+      }
     } else {
       this.array = []
     }

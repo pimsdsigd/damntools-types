@@ -40,13 +40,17 @@ export class ArrayList<T> implements List<T> {
    */
   public constructor(array?: AbstractedArray<T>, capacity?: number) {
     if (array) {
-      if (isList(array)) this.array = array.getInner()
-      else if (Array.isArray(array)) this.array = array
-      else throw new InvalidArrayError()
+      if (isList(array)) {
+        this.array = array.getInner()
+      } else if (Array.isArray(array)) {
+        this.array = array
+      } else {
+        throw new InvalidArrayError()
+      }
     } else {
       this.array = []
     }
-    this.capacity = (capacity && capacity >= 0) ? capacity : Number.MAX_VALUE
+    this.capacity = capacity && capacity >= 0 ? capacity : Number.MAX_VALUE
     this._size = this.array.length
   }
 
