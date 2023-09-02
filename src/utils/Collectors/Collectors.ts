@@ -1,5 +1,5 @@
 import {asNumber, copyArrayInstance, isNumber, List} from "../../core"
-import {ArrayList} from "../../list"
+import {ArrayList, UniqueList} from "../../list"
 
 export abstract class Collectors {
   /**
@@ -8,6 +8,14 @@ export abstract class Collectors {
    */
   static toList<T>(items: Array<T>): List<T> {
     return new ArrayList(items)
+  }
+
+  /**
+   * Can be used to collect array in a UniqueList
+   * @param items
+   */
+  static toSet<T>(items: Array<T>): List<T> {
+    return new UniqueList(items)
   }
 
   /**
@@ -36,6 +44,7 @@ export abstract class Collectors {
 }
 
 export const toList = Collectors.toList
+export const toSet = Collectors.toSet
 export const toArray = Collectors.toArray
 export const collectMin = Collectors.min
 export const collectMax = Collectors.max

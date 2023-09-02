@@ -15,6 +15,7 @@ export * from "./ObjectUtils"
 declare global {
   interface Array<T> {
     toList(): List<T>
+    toSet(): List<T>
   }
 
   interface Object {

@@ -3,15 +3,15 @@ import {expect} from "chai"
 import {InvalidEnumKey} from "../exceptions"
 
 class SOME extends Enum<string> {
-  static KEY1 = new SOME("key1", 2)
-  static KEY2 = new SOME("key2", 1)
-  static KEY3 = new SOME("key1", 0)
+  static KEY1 = new SOME("key1")
+  static KEY2 = new SOME("key2")
+  static KEY3 = new SOME("key1")
 }
 
 class OTHER extends Enum<string> {
-  static KEY1 = new OTHER("key1", 2)
-  static KEY2 = new OTHER("key2", 1)
-  static KEY3 = new OTHER("key1", 0)
+  static KEY1 = new OTHER("key1")
+  static KEY2 = new OTHER("key2")
+  static KEY3 = new OTHER("key1")
 }
 
 describe("Enum", () => {
@@ -34,11 +34,10 @@ describe("Enum", () => {
       Enum.COUNTER.counter = 0
 
       class EE extends Enum<string> {
-        static V1 = new EE("1", 10)
+        static V1 = new EE("1")
       }
 
       expect(EE.V1.key()).to.be.equals("1")
-      expect(EE.V1.ordinal()).to.be.equals(10)
       // @ts-ignore
       expect(Enum.COUNTER.counter).to.be.equals(1)
     })
@@ -49,7 +48,6 @@ describe("Enum", () => {
       const fromValue = SOME.fromValue<string, SOME>("key1")
       expect(fromValue).to.be.instanceof(SOME)
       expect(fromValue.key()).to.be.equals("key1")
-      expect(fromValue.ordinal()).to.be.equals(2)
     })
     it("with not found key throws", () => {
       expect(() => SOME.fromValue<string, SOME>("key3")).to.throw(InvalidEnumKey)
@@ -66,7 +64,6 @@ describe("Enum", () => {
       expect(fromValue.isPresent()).to.be.true
       expect(fromValue.get()).to.be.instanceof(SOME)
       expect(fromValue.get().key()).to.be.equals("key1")
-      expect(fromValue.get().ordinal()).to.be.equals(2)
     })
     it("with not found key throws", () => {
       const fromValue = SOME.optionalFromValue<string, SOME>("key3")

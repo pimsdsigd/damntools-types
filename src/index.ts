@@ -1,4 +1,4 @@
-import {ArrayList, StaticArrayList} from "./list"
+import {ArrayList, StaticArrayList, UniqueList} from "./list"
 import {KV, StaticKV} from "./dict"
 import {DictUtils} from "./DictUtils"
 import {TypeUtils} from "./TypeUtils"
@@ -13,7 +13,8 @@ import {
   Lists,
   Streams,
   toArray,
-  toList
+  toList,
+  toSet
 } from "./utils"
 import {
   compare,
@@ -38,6 +39,7 @@ export {
   Streams,
   Collectors,
   Functions,
+  UniqueList,
   KV,
   StaticKV,
   DictUtils,
@@ -55,6 +57,7 @@ export {
   isOptional,
   isPresent,
   toList,
+  toSet,
   toArray,
   collectMin,
   collectMax
