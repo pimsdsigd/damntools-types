@@ -1,14 +1,7 @@
-import {
-  IndexOutOfBoundError,
-  InvalidArrayError,
-  InvalidIndexError,
-  ListMaxCapacityCrossedError
-} from "../../exceptions"
+import {InvalidArrayError, ListMaxCapacityCrossedError} from "../../exceptions"
 import {
   abstractArrayToArray,
   AbstractedArray,
-  Comparator,
-  compare,
   ConcatArgType,
   concatArray,
   defined,
@@ -19,18 +12,8 @@ import {
 } from "../../core"
 import {ArrayList} from "../ArrayList"
 
-const prepareIndex = (index: number, length: number) => {
-  if (!index && index !== 0) throw new InvalidIndexError()
-  if (index < 0) index = length + index
-  if (index < 0 || index >= length) throw new IndexOutOfBoundError(index, length)
-  return index
-}
-
 export class UniqueList<T> extends ArrayList<T> implements List<T> {
-  protected array: Array<T>
   protected equalityPredicate?: EqualityPredicate<T, T>
-  protected readonly capacity: number
-  protected _size: number
 
   /**
    * Will store same array instance if parameter type is Array
@@ -102,5 +85,4 @@ export class UniqueList<T> extends ArrayList<T> implements List<T> {
     }
     return this
   }
-
 }
