@@ -16,7 +16,6 @@ import {
   isList,
   List,
   Optionable,
-  PeekFunction,
   Stream
 } from "../../core"
 import {Optional} from "../../optional"
@@ -67,7 +66,7 @@ export class ArrayList<T> implements List<T> {
     return copyArrayInstance(this.array)
   }
 
-  forEach(action: (value: T, index?: number, array?: Array<T>) => void): this {
+  forEach(action: (value: T, index: number, array: Array<T>) => void): this {
     for (let i = 0; i < this.array.length; i++) {
       const v = this.array[i]
       if (!!v || v === 0 || v === false || v === "") action(v, i, this.array)
