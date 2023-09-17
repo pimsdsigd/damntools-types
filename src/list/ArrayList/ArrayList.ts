@@ -67,7 +67,7 @@ export class ArrayList<T> implements List<T> {
     return copyArrayInstance(this.array)
   }
 
-  forEach(action: PeekFunction<T>): this {
+  forEach(action: (value: T, index?: number, array?: Array<T>) => void): this {
     for (let i = 0; i < this.array.length; i++) {
       const v = this.array[i]
       if (!!v || v === 0 || v === false || v === "") action(v, i, this.array)
