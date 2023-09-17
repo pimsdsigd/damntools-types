@@ -1,5 +1,6 @@
 import {
   ClassType,
+  compare,
   concatArray,
   copyArrayInstance,
   defined,
@@ -58,6 +59,12 @@ export class ListStream<T> implements Stream<T> {
     return new ListStream(copyArrayInstance(this.array).sort(compareFn))
   }
 
+  sortWith(key: keyof T): Stream<T> {
+    return new ListStream<T>(
+      copyArrayInstance(this.array).sort((a, b) => compare(a[key], b[key]))
+    )
+  }
+
   peek(action: PeekFunction<T>): Stream<T> {
     const stream = new ListStream(copyArrayInstance(this.array))
     for (let i = 0; i < stream.array.length; i++) {
@@ -105,8 +112,7 @@ export class ListStream<T> implements Stream<T> {
   }
 
   filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U> {
-    if( types.length ===  0)
-      return new ListStream<U>();
+    if (types.length === 0) return new ListStream<U>()
     return this.filter((c): c is U => types.findIndex(t => c instanceof t) > -1)
   }
 
@@ -165,8 +171,7 @@ export class ListStream<T> implements Stream<T> {
         }
       }
       return Optional.empty()
-    }
-    else {
+    } else {
       return Optional.of(this.array[0])
     }
   }

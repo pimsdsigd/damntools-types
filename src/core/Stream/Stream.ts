@@ -38,7 +38,10 @@ export interface Stream<T> {
   reverse(): Stream<T>
 
   sort(): Stream<T>
+
   sort(compareFn?: SortFunction<T>): Stream<T>
+
+  sortWith(key: keyof T): Stream<T>
 
   peek(action: PeekFunction<T>): Stream<T>
 
@@ -73,7 +76,8 @@ export interface Stream<T> {
   filterClass<U extends T>(...types: Array<ClassType<U>>): Stream<U>
 
   filter<X extends T>(predicate: SearchPredicateNarrowing<T, X>): Stream<X>
-  filter(predicate: SearchPredicate<T>): Stream<T>;
+
+  filter(predicate: SearchPredicate<T>): Stream<T>
 
   filterPresent(): Stream<NonNullable<T>>
 
@@ -134,9 +138,11 @@ export interface Stream<T> {
   ): U
 
   join(): string
+
   join(separator?: string): string
 
   count(): number
+
   count(predicate?: SearchPredicate<T>): number
 
   countNotPresent(): number
@@ -144,5 +150,4 @@ export interface Stream<T> {
   collect<R>(collector: StreamCollector<T, R>): R
 
   collectArray(): Array<T>
-
 }
