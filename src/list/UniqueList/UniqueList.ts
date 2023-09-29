@@ -1,10 +1,9 @@
-import {InvalidArrayError, ListMaxCapacityCrossedError} from "../../exceptions"
+import {InvalidArrayError} from "../../exceptions"
 import {
   abstractArrayToArray,
   AbstractedArray,
   ConcatArgType,
   concatArray,
-  defined,
   EqualityPredicate,
   equals,
   isList,
@@ -68,21 +67,14 @@ export class UniqueList<T> extends ArrayList<T> implements List<T> {
 
   concat(...items: ConcatArgType<T>): this {
     if (items) {
-      const container: Array<Array<T>> = items.filter(defined).map(abstractArrayToArray)
-      const totalLength = container
-        .map(value => value.length)
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
-      if (totalLength > this.capacity - this.size())
-        throw new ListMaxCapacityCrossedError(this.capacity, this.size(), totalLength)
-      let array = this.array
+      const container: Array<Array<T>> = this.getConcatArgs(...items)
       container.forEach(
         c =>
-          (array = concatArray(
-            array,
+          (this.array = concatArray(
+            this.array,
             c.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
           ))
       )
-      this.array = array
       this._size = this.array.length
     }
     return this

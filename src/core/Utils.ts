@@ -113,8 +113,9 @@ export const copyArrayInstance = <T>(array: Array<T>): Array<T> => {
 }
 
 export const concatArray = <T>(a1: Array<T>, a2: Array<T>): Array<T> => {
+  const initialLength = a1.length;
   for (let i = 0; i < a2.length; i++) {
-    a1[a1.length + i] = a2[i]
+    a1[initialLength + i] = a2[i]
   }
   return a1
 }

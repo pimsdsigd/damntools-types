@@ -6,6 +6,7 @@ import {
   InvalidIndexError
 } from "../../exceptions"
 import {compareNumbers, compareStrings} from "../../core"
+import {Lists} from "../../utils"
 
 // @ts-ignore
 const newArray = <T>(array?: any) => new ArrayList<T>(array)
@@ -495,6 +496,16 @@ describe("ArrayList", () => {
       const arr1 = new ArrayList()
       arr1.concat([1], new ArrayList([2]))
       expect(arr1.getInner()).to.eql([1, 2])
+    })
+    it("on empty with reduce", () => {
+      const other = Lists.of({list: Lists.of(1, 2)})
+      const numbers = other.stream().reduce((previousValue, currentValue) => {
+        return currentValue.list.hasElements()
+          ? previousValue.concat(currentValue.list)
+          : previousValue
+      }, new ArrayList())
+      expect(numbers.getInner()).to.eql([1, 2])
+      expect(numbers.size()).to.eql(2)
     })
 
     it("with undefined do nothing", () => {

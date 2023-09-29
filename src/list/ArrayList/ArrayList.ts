@@ -195,15 +195,8 @@ export class ArrayList<T> implements List<T> {
 
   concat(...items: ConcatArgType<T>): this {
     if (items) {
-      const container: Array<Array<T>> = items.filter(defined).map(abstractArrayToArray)
-      const totalLength = container
-        .map(value => value.length)
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
-      if (totalLength > this.capacity - this.size())
-        throw new ListMaxCapacityCrossedError(this.capacity, this.size(), totalLength)
-      let array = this.array
-      container.forEach(c => (array = concatArray(array, c)))
-      this.array = array
+      const container: Array<Array<T>> = this.getConcatArgs(...items)
+      container.forEach(c => (this.array = concatArray(this.array, c)))
       this._size = this.array.length
     }
     return this
@@ -222,5 +215,15 @@ export class ArrayList<T> implements List<T> {
   reverse(): this {
     if (this.hasElements()) this.array.reverse()
     return this
+  }
+
+  protected getConcatArgs(...args: ConcatArgType<T>){
+    const container: Array<Array<T>> = args.filter(defined).map(abstractArrayToArray)
+    const totalLength = container
+      .map(value => value.length)
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    if (totalLength > this.capacity - this.size())
+      throw new ListMaxCapacityCrossedError(this.capacity, this.size(), totalLength)
+    return container
   }
 }
