@@ -1,0 +1,86 @@
+@startuml
+
+
+package core {
+    interface List<T>{
+        + stream(): Stream
+        + ...()
+    }
+    interface Stream<T> {
+        + collect<R>(c: (items: Array<T>) => R): R
+        + collectArray(): Array<T>
+        + ...()
+    }
+    interface Dict<T> {
+        + ...()
+    }
+    interface Optionable<T> {
+        + ...()
+    }
+}
+
+package list {
+    class ArrayList<T> {
+    }
+    class UniqueList<T> {
+    }
+    class StaticArrayList {
+    }
+}
+
+package stream {
+    class ListStream<T> {
+    }
+}
+
+package dict {
+    class KV<T>
+    class StaticKV<T>
+}
+
+package optional {
+    class Optional<T>
+}
+
+package enum {
+    class Enum<T> {
+        + key(): string
+        + ordinal(): number
+    }
+}
+
+package utils {
+
+    abstract Lists {
+      range(start: number, end: number): List<number>
+      of<T>(...items: Array<T | undefined>): List<T>
+      unmodifiable<T>(...items: Array<T | undefined>): List<T>
+      from<T>(array: Array<T> | List<T>): List<T>
+      empty<T>(): List<T>
+      singleton<T>(item: NonNullable<T>): List<T>
+    }
+
+    abstract Streams {
+        from(array: Array): Stream
+    }
+
+    abstract Collectors {
+        toList<T>(items: Array<T>): List<T>
+        toSet<T>(items: Array<T>): List<T>
+        toString<T>(items: Array<T>): string
+        toArray<T>(items: Array<T>): Array<T>
+        min<T>(items: Array<T>): number
+        max<T>(items: Array<T>): number
+    }
+}
+
+
+List <|-- ArrayList
+Optionable <|-- Optional
+ArrayList <|-- StaticArrayList
+ArrayList <|-- UniqueList
+Stream <|-- ListStream
+Dict <|-- KV
+KV <|-- StaticKV
+
+@enduml

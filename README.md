@@ -10,3 +10,8 @@
 * This is a mirrored repository, you can fork but I will not accept PR here.
 
 > Work repository : https://gitlab.dev.damntools.fr/damntools-npm/types
+
+
+![api.png](.docs%2Fapi.png)
+
+![utils.png](.docs%2Futils.png)
