@@ -106,7 +106,12 @@ describe("perf.list", () => {
     Perf.Test("findFirst") // faster
       .Iterations(ITERATIONS)
       .Do(count => {
-          const fn = v =>v.id === 5_000_000 ||v.id === 500_000 ||v.id === 50_000 || v.id === 5_000 ||  v.id === 500
+        const fn = v =>
+          v.id === 5_000_000 ||
+          v.id === 500_000 ||
+          v.id === 50_000 ||
+          v.id === 5_000 ||
+          v.id === 500
         const obj = generateData(count)
         const list = new ArrayList(obj)
         return {
@@ -128,7 +133,12 @@ describe("perf.list", () => {
     Perf.Test("findLast") // faster
       .Iterations(ITERATIONS)
       .Do(count => {
-        const fn = v => v.id === 500 || v.id === 5_000 ||v.id === 50_000 ||v.id === 500_000 ||v.id === 5_000_000
+        const fn = v =>
+          v.id === 500 ||
+          v.id === 5_000 ||
+          v.id === 50_000 ||
+          v.id === 500_000 ||
+          v.id === 5_000_000
         const obj = generateData(count)
         const list = new ArrayList(obj)
         return {
@@ -137,8 +147,8 @@ describe("perf.list", () => {
             console.log(other.get())
           },
           compare: () => {
-              const filtered = obj.filter(fn)
-            const other = filtered[filtered.length -1 ]
+            const filtered = obj.filter(fn)
+            const other = filtered[filtered.length - 1]
             console.log(other)
           }
         }

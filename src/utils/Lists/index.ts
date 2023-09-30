@@ -1,5 +1,5 @@
 import {Lists} from "./Lists"
-import {UniqueList} from "../../list";
+import {UniqueList} from "../../list"
 
 export * from "./Lists"
 

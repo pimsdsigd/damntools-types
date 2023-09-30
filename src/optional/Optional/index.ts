@@ -1,2 +1,2 @@
 export * from "./Optional"
-export {EmptyOptional} from "./EmptyOptional";
+export {EmptyOptional} from "./EmptyOptional"

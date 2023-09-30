@@ -30,7 +30,7 @@ describe("UniqueList", () => {
       expect(array.size()).to.be.equals(4)
       array.push(5)
       expect(array.size()).to.be.equals(5)
-      array.push(23.00)
+      array.push(23.0)
       expect(array.size()).to.be.equals(5)
       array.push(23.000000001)
       expect(array.size()).to.be.equals(6)

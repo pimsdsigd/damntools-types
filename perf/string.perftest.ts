@@ -1,6 +1,6 @@
 import {Perf, Performer} from "@damntools.fr/performer"
 import {ArrayList} from "../src"
-import {List} from "../src/core";
+import {List} from "../src/core"
 
 const ITERATIONS = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
 const TIMEOUT = 60000

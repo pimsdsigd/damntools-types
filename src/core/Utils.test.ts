@@ -12,7 +12,7 @@ import {
 } from "./Utils"
 import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {List} from "./List"
-import {StaticArrayList} from "../list";
+import {StaticArrayList} from "../list"
 
 // @ts-ignore
 class DummyList implements List<any> {
@@ -226,7 +226,7 @@ describe("Utils", () => {
     })
     it("sub returns ok", () => {
       console.log("")
-      const list =new StaticArrayList([])
+      const list = new StaticArrayList([])
       console.log(list)
       expect(isList(list)).to.be.true
     })

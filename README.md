@@ -9,4 +9,4 @@
 
 * This is a mirrored repository, you can fork but I will not accept PR here.
 
-> Work repository : https://gitlab.dev.damntools.fr/wnab/application
+> Work repository : https://gitlab.dev.damntools.fr/damntools-npm/types

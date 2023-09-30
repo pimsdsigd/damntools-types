@@ -107,8 +107,7 @@ describe("perf.dict", () => {
         }
         return {
           test: () => {
-            const v = cache
-              .filter(e => !e.key)
+            const v = cache.filter(e => !e.key)
             console.log(v.size())
           },
           compare: () => {

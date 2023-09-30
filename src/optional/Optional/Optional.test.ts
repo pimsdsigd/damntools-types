@@ -1,8 +1,8 @@
 import {Optional} from "./Optional"
 import {expect} from "chai"
 import {EmptyOptionalAccessError, UndefinedError} from "../../exceptions"
-import {EmptyOptional} from "./EmptyOptional";
-import {ValueOptional} from "./ValueOptional";
+import {EmptyOptional} from "./EmptyOptional"
+import {ValueOptional} from "./ValueOptional"
 
 const PROVIDED = <T>(value: T) => Optional.of<T>(value)
 const EMPTY = <T>() => Optional.empty<T>()

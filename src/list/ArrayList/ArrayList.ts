@@ -217,7 +217,7 @@ export class ArrayList<T> implements List<T> {
     return this
   }
 
-  protected getConcatArgs(...args: ConcatArgType<T>){
+  protected getConcatArgs(...args: ConcatArgType<T>) {
     const container: Array<Array<T>> = args.filter(defined).map(abstractArrayToArray)
     const totalLength = container
       .map(value => value.length)

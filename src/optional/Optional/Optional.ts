@@ -28,10 +28,9 @@ export class Optional {
       : Optional.empty()
   }
 
-  static isOptional<T>(obj: Optionable<T> | any): obj is Optionable<T>{
-    return obj instanceof ValueOptional || obj instanceof  EmptyOptional
+  static isOptional<T>(obj: Optionable<T> | any): obj is Optionable<T> {
+    return obj instanceof ValueOptional || obj instanceof EmptyOptional
   }
 }
 
 export const isOptional = Optional.isOptional
-

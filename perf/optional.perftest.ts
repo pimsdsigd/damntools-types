@@ -1,7 +1,7 @@
 import {Perf, Performer} from "@damntools.fr/performer"
 import {defined, Optional} from "../src"
 import {Optionable} from "../src/core"
-import {ValueOptional} from "../src/optional/Optional/ValueOptional";
+import {ValueOptional} from "../src/optional/Optional/ValueOptional"
 
 const ITERATIONS = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
 

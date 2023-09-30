@@ -3,7 +3,7 @@ import {AbstractedArray, List} from "./List"
 import {Comparator} from "./Comparator"
 import {Optionable} from "./Optionable"
 
-export const containsProperty = (obj: object, propertyName: string): boolean=> {
+export const containsProperty = (obj: object, propertyName: string): boolean => {
   return obj && Object.prototype.hasOwnProperty.call(obj, propertyName)
 }
 
@@ -83,9 +83,8 @@ export const compare: Comparator<any> = (a: any, b: any): number => {
 }
 
 export const isList = <T>(obj: AbstractedArray<T> | any): obj is List<T> => {
-  return !!obj && !!obj['__iamList']
+  return !!obj && !!obj["__iamList"]
 }
-
 
 export const abstractArrayToArray = <T>(obj: AbstractedArray<T>): Array<T> => {
   if (isList(obj)) return (obj as List<T>).getInner()
@@ -113,7 +112,7 @@ export const copyArrayInstance = <T>(array: Array<T>): Array<T> => {
 }
 
 export const concatArray = <T>(a1: Array<T>, a2: Array<T>): Array<T> => {
-  const initialLength = a1.length;
+  const initialLength = a1.length
   for (let i = 0; i < a2.length; i++) {
     a1[initialLength + i] = a2[i]
   }

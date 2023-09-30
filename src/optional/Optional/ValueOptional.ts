@@ -93,4 +93,3 @@ export class ValueOptional<T> extends AbstractOptional<T> {
     return equalityPredicate(this.get(), other.get())
   }
 }
-
