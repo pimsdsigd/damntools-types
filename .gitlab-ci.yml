@@ -5,6 +5,8 @@ include:
 
 variables:
   BUILD_PROJECT: 'yes'
+  PUSH_GITHUB: 'yes'
+  GITHUB_MIRROR_URL: 'git@github.com:pimsdsigd/damntools-types.git'
 
 Publish:
   needs:
