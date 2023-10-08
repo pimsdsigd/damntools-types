@@ -17,9 +17,9 @@ const generateData = count => {
   }
 }
 
-describe("perf.dict", () => {
-  it("filter", done => {
-    Perf.Test("mapVsFor")
+describe("KV", () => {
+  it("mapVsFor", function (done) {
+    Perf.Test(this)
       .Iterations(ITERATIONS)
       .Do(count => {
         const data = generateData(count)
@@ -43,11 +43,11 @@ describe("perf.dict", () => {
         }
       })
 
-    void Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
   it("entries", done => {
-    Perf.Test("entries")
+    Perf.Test(this)
       .Iterations(ITERATIONS)
       .Do(count => {
         const data = generateData(count)
@@ -69,54 +69,57 @@ describe("perf.dict", () => {
           }
         }
       })
-
-    void Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("keys", done => {
-    Perf.Test("keysVsObjectKeys") // faster
-      .Iterations(ITERATIONS)
-      .Do(count => {
-        const cache = KV.empty()
-        const obj = {}
-        for (let i = 0; i < count; i++) {
-          cache.put("" + i, {id: i, value: Math.random()})
-          obj[i] = {id: i, value: Math.random()}
-        }
-        const filterFn = (v: any) => v.endsWith("000")
-        return {
-          test: () => {
-            const v = cache.keys().stream().filter(filterFn).collectArray()
-            console.log(v.length)
-          },
-          compare: () => {
-            const v = Object.keys(obj).filter(filterFn)
-            console.log(v.length)
+  describe("keys", () => {
+    it("keysVsObjectKeys", function (done) {
+      Perf.Test(this) // faster
+        .Iterations(ITERATIONS)
+        .Do(count => {
+          const cache = KV.empty()
+          const obj = {}
+          for (let i = 0; i < count; i++) {
+            cache.put("" + i, {id: i, value: Math.random()})
+            obj[i] = {id: i, value: Math.random()}
           }
-        }
-      })
-
-    Perf.Test("keysVsFor") // faster
-      .Iterations(ITERATIONS)
-      .Do(count => {
-        const cache = KV.empty()
-        const obj = {}
-        for (let i = 0; i < count; i++) {
-          cache.put("" + i, {id: i, value: Math.random()})
-          obj[i] = {id: i, value: Math.random()}
-        }
-        return {
-          test: () => {
-            const v = cache.filter(e => !e.key)
-            console.log(v.size())
-          },
-          compare: () => {
-            const v = Object.entries(obj).filter(e => !e[0])
-            console.log(v.length)
+          const filterFn = (v: any) => v.endsWith("000")
+          return {
+            test: () => {
+              const v = cache.keys().stream().filter(filterFn).collectArray()
+              console.log(v.length)
+            },
+            compare: () => {
+              const v = Object.keys(obj).filter(filterFn)
+              console.log(v.length)
+            }
           }
-        }
-      })
+        })
+      Performer.execSubscribed(done)
+    })
 
-    Performer.execSubscribed().then(() => done())
-  }).timeout(60000)
+    it("keysVsObjectKeys", function (done) {
+      Perf.Test("keysVsFor") // faster
+        .Iterations(ITERATIONS)
+        .Do(count => {
+          const cache = KV.empty()
+          const obj = {}
+          for (let i = 0; i < count; i++) {
+            cache.put("" + i, {id: i, value: Math.random()})
+            obj[i] = {id: i, value: Math.random()}
+          }
+          return {
+            test: () => {
+              const v = cache.filter(e => !e.key)
+              console.log(v.size())
+            },
+            compare: () => {
+              const v = Object.entries(obj).filter(e => !e[0])
+              console.log(v.length)
+            }
+          }
+        })
+      Performer.execSubscribed(done)
+    }).timeout(60000)
+  })
 })

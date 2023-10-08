@@ -1,7 +1,7 @@
 import {Perf, Performer} from "@damntools.fr/performer"
 import {ArrayList} from "../src"
 
-const ITERATIONS = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
+const ITERATIONS = [10_000, 100_000, 1_000_000, 10_000_000]
 const TIMEOUT = 60000
 
 const generateData = count => {
@@ -10,56 +10,53 @@ const generateData = count => {
   return array
 }
 
-describe("perf.list", () => {
-  it("filter", done => {
-    Perf.Test("filter") // faster
+describe("ArrayList", () => {
+  it("filter", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
-      .Do(count => {
-        const obj = generateData(count)
-        const list = new ArrayList(obj)
+      .Repeat(5)
+      .Do(iteration => {
+        const obj = generateData(iteration)
+        const list = new ArrayList(obj).stream()
         return {
           test: () => {
-            const res = list
-              .stream()
-              .filter(row => row.id % 2 === 0)
-              .collectArray()
-            console.log(res.length)
+            list.filter(row => row.id % 2 === 0)
           },
           compare: () => {
-            const res = obj.filter(row => row.id % 2 === 0)
-            console.log(res.length)
-          }
+            obj.filter(row => row.id % 2 === 0)
+          },
+          repeatOutside: true
         }
       })
-
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("reduce", done => {
-    Perf.Test("reduce") // faster
+  it("reduce", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
+      .Repeat(5)
       .Do(count => {
         const obj = generateData(count)
-        const list = new ArrayList(obj)
+        const list = new ArrayList(obj).stream()
         const fn = (o, v) => o + (v.id % 2)
         return {
           test: () => {
-            const res = list.stream().reduce(fn, 0)
-            console.log(res)
+            list.reduce(fn, 0)
           },
           compare: () => {
-            const res = obj.reduce(fn, 0)
-            console.log(res)
-          }
+            obj.reduce(fn, 0)
+          },
+          repeatOutside: true
         }
       })
 
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("forEach", done => {
-    Perf.Test("forEach") // faster
+  it("forEach", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
+      .Repeat(5)
       .Do(count => {
         const obj = generateData(count)
         const list = new ArrayList(obj)
@@ -67,44 +64,44 @@ describe("perf.list", () => {
           test: () => {
             let other = 0
             list.forEach(r => (other = other + r.id))
-            console.log(other)
           },
           compare: () => {
             let other = 0
             obj.forEach(r => (other = other + r.id))
-            console.log(other)
-          }
+          },
+          repeatOutside: true
         }
       })
 
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("find", done => {
-    Perf.Test("find") // faster
+  it("findIndex", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
+      .Repeat(5)
       .Do(count => {
         const fn = v => v.id % 2 === 0
         const obj = generateData(count)
-        const list = new ArrayList(obj)
+        const list = new ArrayList(obj).stream()
         return {
           test: () => {
-            const other = list.stream().findIndex(fn)
-            console.log(other)
+            list.findIndex(fn)
           },
           compare: () => {
-            const other = obj.findIndex(fn)
-            console.log(other)
-          }
+            obj.findIndex(fn)
+          },
+          repeatOutside: true
         }
       })
 
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("findFirst", done => {
-    Perf.Test("findFirst") // faster
+  it("findFirst", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
+      .Repeat(5)
       .Do(count => {
         const fn = v =>
           v.id === 5_000_000 ||
@@ -113,24 +110,25 @@ describe("perf.list", () => {
           v.id === 5_000 ||
           v.id === 500
         const obj = generateData(count)
-        const list = new ArrayList(obj)
+        const list = new ArrayList(obj).stream()
         return {
           test: () => {
-            const other = list.stream().findFirst(fn)
+            const other = list.findFirst(fn)
             console.log(other.get())
           },
           compare: () => {
             const other = obj.filter(fn)[0]
             console.log(other)
-          }
+          },
+          repeatOutside: true
         }
       })
 
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 
-  it("findLast", done => {
-    Perf.Test("findLast") // faster
+  it("findLast", function (done) {
+    Perf.Test(this) // faster
       .Iterations(ITERATIONS)
       .Do(count => {
         const fn = v =>
@@ -154,6 +152,6 @@ describe("perf.list", () => {
         }
       })
 
-    Performer.execSubscribed().then(() => done())
+    Performer.execSubscribed(done)
   }).timeout(TIMEOUT)
 })

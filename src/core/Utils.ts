@@ -69,16 +69,15 @@ export const compareStrings: Comparator<string> = (a: string, b: string): number
 }
 
 export const compare: Comparator<any> = (a: any, b: any): number => {
-  if (a) {
-    if (a === b) return 0
-    else if (typeof a.compare === "function") return a.compare(b)
-    else if (typeof a === "string" && typeof b === "string") return a.localeCompare(b)
-    else if (typeof a === "number" && typeof b === "number") return a - b
-    else if (a instanceof Date && b instanceof Date) return a.getTime() - b.getTime()
-    else if (Array.isArray(a)) return compareArrays(a, b)
-    else if (isList(a)) return compareArrays(a.getInner(), b.getInner())
-    else if (typeof a === "object" && typeof b === "object") return compareObjects(a, b)
-  }
+  if (a === b) return 0
+  else if (typeof a.compare === "function") return a.compare(b)
+  else if (typeof a === "string" && typeof b === "string") return a.localeCompare(b)
+  else if (typeof a === "number" && typeof b === "number") return a - b
+  else if (a instanceof Date && b instanceof Date) return a.getTime() - b.getTime()
+  else if (Array.isArray(a)) return compareArrays(a, b)
+  else if (isList(a)) return compareArrays(a.getInner(), b.getInner())
+  else if (typeof a === "object" && typeof b === "object") return compareObjects(a, b)
+  else if (notDefined(a) && notDefined(b)) return 0
   return -1
 }
 
