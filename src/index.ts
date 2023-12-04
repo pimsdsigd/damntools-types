@@ -17,6 +17,8 @@ import {
   toSet
 } from "./utils"
 import {
+  abstractArrayToArray,
+  asNumber,
   compare,
   containsMethod,
   containsProperty,
@@ -24,6 +26,7 @@ import {
   equals,
   isDict,
   isList,
+  isNumber,
   isPresent,
   notDefined,
   requireDefined
@@ -56,9 +59,12 @@ export {
   isDict,
   isOptional,
   isPresent,
+  isNumber,
+  asNumber,
   toList,
   toSet,
   toArray,
   collectMin,
-  collectMax
+  collectMax,
+  abstractArrayToArray
 }
