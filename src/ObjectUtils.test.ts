@@ -145,4 +145,25 @@ describe("ObjectUtils", () => {
       expect(entries.size()).to.be.equals(0)
     })
   })
+  describe("pathModifier()", () => {
+    it("correctly creates nested", () => {
+      const obj = {}
+      ObjectUtils.pathModifier(obj, "path.test", 654)
+      // @ts-ignore
+      expect(obj.path.test).to.be.eq(654)
+    })
+    it("preserve existing", () => {
+      const obj = {
+        yolo: "",
+        path: {
+          ex: 54
+        }
+      }
+      ObjectUtils.pathModifier(obj, "path.test", 654)
+      expect(obj.yolo).to.be.eq("")
+      // @ts-ignore
+      expect(obj.path.test).to.be.eq(654)
+      expect(obj.path.ex).to.be.eq(54)
+    })
+  })
 })

@@ -86,6 +86,16 @@ export class ObjectUtils {
             separator
           )
         }
+      } else if (steps.length > 1) {
+        obj[current] = {}
+        ObjectUtils.pathModifier(
+          obj[current],
+          steps.slice(1).join("."),
+          value,
+          separator
+        )
+      } else if (steps.length === 1) {
+        obj[current] = value
       }
     }
   }
