@@ -15,12 +15,14 @@ export * from "./ObjectUtils"
 declare global {
   interface Array<T> {
     toList(): List<T>
+
     toSet(): List<T>
   }
 
   interface Promise<T> {
-    thenDo<TResult1 = T>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null): Promise<TResult1>;
-    onError<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    thenDo<TResult1 = T>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1> | void) | undefined | null): Promise<T>;
+
+    onError<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult> | void) | undefined | null): Promise<T>;
   }
 
   interface Object {
