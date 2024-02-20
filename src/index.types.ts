@@ -18,6 +18,10 @@ declare global {
     toSet(): List<T>
   }
 
+  interface Promise<T> {
+    thenDo<TResult1 = T>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null): Promise<TResult1>;
+  }
+
   interface Object {
     toDict<K extends string, V>(): Dict<K, V>
   }

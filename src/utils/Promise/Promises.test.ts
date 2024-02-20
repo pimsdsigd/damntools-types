@@ -1,7 +1,25 @@
 import {Promises} from "./Promises"
 import {expect} from "chai"
+import  "./index";
+import "../../index.types"
 
 const array = [1, 2, 6, 3, 6, 8]
+
+describe("Promise", () => {
+  describe("thenDo()", () => {
+    it("returns correct data", done => {
+      Promise.resolve(10)
+        .thenDo(value => console.log(value))
+        .catch(e => e)
+        .then(v => {
+          console.log("res=", v)
+          expect(v).to.be.eq(10)
+          done()
+        })
+
+    })
+  })
+})
 
 describe("Promises", () => {
   describe("allSuccess()", () => {
