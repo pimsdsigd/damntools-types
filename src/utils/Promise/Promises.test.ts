@@ -10,10 +10,26 @@ describe("Promise", () => {
     it("returns correct data", done => {
       Promise.resolve(10)
         .thenDo(value => console.log(value))
+        .thenDo(() => Promise.resolve(console.log("")))
+        .thenDo(() => console.log("non"))
         .catch(e => e)
         .then(v => {
           console.log("res=", v)
           expect(v).to.be.eq(10)
+          done()
+        })
+
+    })
+  })
+
+  describe("onError()", () => {
+    it("returns correct error", done => {
+      Promise.reject(Error("err"))
+        .onError(e => console.error(e))
+        .catch(e => e)
+        .then(v => {
+          console.log("res=", v)
+          expect(v.message).to.be.eq("err")
           done()
         })
 

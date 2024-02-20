@@ -12,3 +12,17 @@ Object.defineProperty(Promise.prototype, "thenDo", {
   },
   configurable: true
 })
+
+Object.defineProperty(Promise.prototype, "onError", {
+  value: function (onrejected?: ((reason: any) => any | PromiseLike<any>) | undefined | null) {
+    return this.catch(err => {
+      try {
+        onrejected(err)
+      } catch {
+        // NOTHING
+      }
+      return Promise.reject(err)
+    })
+  },
+  configurable: true
+})

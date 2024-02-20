@@ -20,6 +20,7 @@ declare global {
 
   interface Promise<T> {
     thenDo<TResult1 = T>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null): Promise<TResult1>;
+    onError<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
   }
 
   interface Object {
