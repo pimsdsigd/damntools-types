@@ -1,6 +1,7 @@
-import {ClassType, equals, Optionable} from "../../core"
+import {ClassType, equals, Optionable, Stream} from "../../core"
 import {Optional} from "./Optional"
 import {AbstractOptional} from "./AbstractOptional"
+import {ListStream} from "../../stream";
 
 export class ValueOptional<T> extends AbstractOptional<T> {
   constructor(value: T) {
@@ -91,5 +92,9 @@ export class ValueOptional<T> extends AbstractOptional<T> {
     if (other.isEmpty()) return false
     if (!equalityPredicate) equalityPredicate = equals
     return equalityPredicate(this.get(), other.get())
+  }
+
+  toStream(): Stream<T> {
+    return new ListStream<T>([this._value]);
   }
 }

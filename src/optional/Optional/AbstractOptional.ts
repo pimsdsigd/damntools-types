@@ -1,4 +1,4 @@
-import {ClassType, Optionable} from "../../core"
+import {ClassType, Optionable, Stream} from "../../core"
 
 export abstract class AbstractOptional<T> implements Optionable<T> {
   protected readonly _value: T | undefined
@@ -57,4 +57,6 @@ export abstract class AbstractOptional<T> implements Optionable<T> {
   abstract orElseUndefined(): T | undefined
 
   abstract peek(action: (value: T) => void): Optionable<T>
+
+  abstract toStream(): Stream<T>;
 }

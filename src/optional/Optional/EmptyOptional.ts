@@ -1,7 +1,8 @@
 import {EmptyOptionalAccessError} from "../../exceptions"
-import {Optionable} from "../../core"
+import {Optionable, Stream} from "../../core"
 import {Optional} from "./Optional"
 import {AbstractOptional} from "./AbstractOptional"
+import {ListStream} from "../../stream";
 
 export class EmptyOptional<T> extends AbstractOptional<T> {
   constructor(value: T) {
@@ -88,4 +89,9 @@ export class EmptyOptional<T> extends AbstractOptional<T> {
   ): boolean {
     return other.isEmpty()
   }
+
+  toStream(): Stream<T> {
+    return new ListStream<T>();
+  }
+
 }

@@ -1,4 +1,5 @@
 import {ClassType} from "../ClassType"
+import {Stream} from "../Stream";
 
 export interface Optionable<T> {
   get(): T
@@ -7,6 +8,10 @@ export interface Optionable<T> {
 
   filterClass<U extends T>(type: ClassType<U>): Optionable<U>
 
+  /**
+   * Returns an empty optional if action returns undefined value
+   * @param action
+   */
   map<U>(action: (value: T) => U): Optionable<U>
 
   mapEmpty(action: () => T): Optionable<T>
@@ -39,4 +44,6 @@ export interface Optionable<T> {
     other: Optionable<T | O>,
     equalityPredicate?: (a: T | O, b: T | O) => boolean
   ): boolean
+
+  toStream(): Stream<T>
 }
