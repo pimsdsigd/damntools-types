@@ -1,4 +1,4 @@
-import {asNumber, copyArrayInstance, isNumber, List} from "../../core"
+import {asNumber, copyArrayInstance, isNumber, List, StreamCollector} from "../../core"
 import {ArrayList, UniqueList} from "../../list"
 
 export abstract class Collectors {
@@ -40,6 +40,20 @@ export abstract class Collectors {
 
   static max<T>(items: Array<T>): number {
     return Math.max(...items.filter(isNumber).map(asNumber))
+  }
+
+  static joining<T, S>(separator: S): StreamCollector<T, List<T | S>> {
+    return (items: Array<T>) => {
+      const size = items.length
+      const res = new ArrayList<T | S>()
+      for (let i = 0; i < size; i++) {
+        res.push(items[i])
+        if (i < size - 1) {
+          res.push(separator)
+        }
+      }
+      return res
+    }
   }
 }
 
