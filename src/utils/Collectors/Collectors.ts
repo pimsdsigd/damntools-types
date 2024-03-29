@@ -1,6 +1,8 @@
 import {asNumber, copyArrayInstance, isNumber, List, StreamCollector} from "../../core"
 import {ArrayList, UniqueList} from "../../list"
 
+export type JoiningSeparatorFn<T, S> = (e: T, i: number) => S
+
 export abstract class Collectors {
   /**
    * Can be used to collect array in a List
@@ -42,14 +44,17 @@ export abstract class Collectors {
     return Math.max(...items.filter(isNumber).map(asNumber))
   }
 
-  static joining<T, S>(separator: S): StreamCollector<T, List<T | S>> {
+  static joining<T, S>(separator: S | JoiningSeparatorFn<T, S>): StreamCollector<T, List<T | S>> {
+    const isFunction = typeof separator === "function"
     return (items: Array<T>) => {
       const size = items.length
       const res = new ArrayList<T | S>()
       for (let i = 0; i < size; i++) {
         res.push(items[i])
         if (i < size - 1) {
-          res.push(separator)
+          if (isFunction) {
+            res.push((separator as JoiningSeparatorFn<T, S>)(items[i], i))
+          } else res.push(separator as S)
         }
       }
       return res
