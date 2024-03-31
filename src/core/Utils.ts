@@ -65,7 +65,14 @@ export const compareStrings: Comparator<string> = (a: string, b: string): number
   if (notDefined(a) && notDefined(b)) return 0
   if (notDefined(a)) return -1
   if (notDefined(b)) return 1
-  return a.localeCompare(b)
+  return a.trim().localeCompare(b.trim())
+}
+
+export const compareStringsIgnoreCase: Comparator<string> = (a: string, b: string): number => {
+  if (notDefined(a) && notDefined(b)) return 0
+  if (notDefined(a)) return -1
+  if (notDefined(b)) return 1
+  return a.trim().toLowerCase().localeCompare(b.trim().toLowerCase())
 }
 
 export const compare: Comparator<any> = (a: any, b: any): number => {
@@ -92,6 +99,7 @@ export const abstractArrayToArray = <T>(obj: AbstractedArray<T>): Array<T> => {
   else if (Array.isArray(obj)) return obj
   throw new InvalidArrayError("Object is not an Array or a List")
 }
+
 
 export const isNumber = (value: any): value is number => {
   return typeof value === "number"

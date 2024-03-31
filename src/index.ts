@@ -18,8 +18,12 @@ import {
 } from "./utils"
 import {
   abstractArrayToArray,
+  abstractArrayToList,
   asNumber,
   compare,
+  compareNumbers,
+  compareStrings,
+  compareStringsIgnoreCase,
   containsMethod,
   containsProperty,
   defined,
@@ -51,6 +55,9 @@ export {
   defined,
   notDefined,
   compare,
+  compareStringsIgnoreCase,
+  compareStrings,
+  compareNumbers,
   equals,
   containsProperty,
   containsMethod,
@@ -66,5 +73,6 @@ export {
   toArray,
   collectMin,
   collectMax,
-  abstractArrayToArray
+  abstractArrayToArray,
+  abstractArrayToList
 }
