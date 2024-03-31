@@ -14,11 +14,11 @@ import {
   Streams,
   toArray,
   toList,
-  toSet
+  toSet,
+  abstractArrayToList
 } from "./utils"
 import {
   abstractArrayToArray,
-  abstractArrayToList,
   asNumber,
   compare,
   compareNumbers,
