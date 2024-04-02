@@ -1,6 +1,6 @@
 import {expect} from "chai"
 import {
-  abstractArrayToArray,
+  abstractArrayToArray, compareStringsIgnoreCase,
   containsMethod,
   containsProperty,
   containsPrototypeMethod,
@@ -247,6 +247,24 @@ describe("Utils", () => {
         // @ts-ignore
         abstractArrayToArray(6546)
       }).to.throw(InvalidArrayError)
+    })
+  })
+
+  describe("compareStringsIgnoreCase()", () => {
+    it("with left undefined returns -1", () => {
+      expect(compareStringsIgnoreCase(undefined, "ze")).to.be.equals(-1)
+    })
+    it("with right undefined returns 1", () => {
+      expect(compareStringsIgnoreCase("ze", undefined)).to.be.equals(1)
+    })
+    it("with left and right undefined returns 0", () => {
+      expect(compareStringsIgnoreCase(undefined, undefined)).to.be.equals(0)
+    })
+    it("with left defined and right other returns throws", () => {
+      expect(() => compareStringsIgnoreCase("ez", 0 as any)).to.throw
+    })
+    it("with left other and right defined returns throws", () => {
+      expect(() => compareStringsIgnoreCase(0 as any, "ez")).to.throw
     })
   })
 })

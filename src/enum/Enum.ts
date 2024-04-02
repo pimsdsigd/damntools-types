@@ -3,26 +3,23 @@ import {List, Optionable} from "../core"
 import {Lists} from "../utils"
 import {Optional} from "../optional"
 
-export type EnumKey = string | number
 
 const invalidEnumSupplier = (type: any, value: any) => () =>
   new InvalidEnumKey(type, value)
-const fromValuePredicate = (value: any) => (e: Enum<any>) => e.key() === value
+const fromValuePredicate = (value: any) => (e: Enum<any>) => e.key().toLowerCase() === value
 
 const instanceReducer = (type: any) => v => type[v] instanceof type
 const instanceEnumMapper = (type: any) => v => type[v]
 
-const compareKeyFn = (a: EnumKey, b: EnumKey) => {
-  if (typeof a === "string" && typeof b === "string") return a.localeCompare(b)
-  if (typeof a === "number" && typeof b === "number") return a - b
-  return 0
+const compareKeyFn = (a: string, b: string) => {
+   return a.localeCompare(b)
 }
 
-const equalsKeyFn = (a: EnumKey, b: EnumKey) => {
+const equalsKeyFn = (a: string, b: string) => {
   return a === b
 }
 
-export abstract class Enum<K extends EnumKey> {
+export abstract class Enum<K extends string> {
   private static COUNTER = {
     counter: 0
   }
@@ -57,22 +54,24 @@ export abstract class Enum<K extends EnumKey> {
     )
   }
 
-  static fromValue<K extends EnumKey, T extends Enum<K>>(value: K): T {
+  static fromValue<K extends string, T extends Enum<K>>(value: K): T {
     if (!value || value === "") throw new InvalidEnumKey(this, value)
+    value = value.toLowerCase() as K
     return this.all<T>()
       .stream()
       .findOrThrow(fromValuePredicate(value), invalidEnumSupplier(this, value))
   }
 
-  static optionalFromValue<K extends EnumKey, T extends Enum<K>>(
+  static optionalFromValue<K extends string, T extends Enum<K>>(
     value: K
   ): Optionable<T> {
     if (!value || value === "") throw new InvalidEnumKey(this, value)
+    value = value.toLowerCase() as K
     const found = this.all<T>().stream().find(fromValuePredicate(value))
     return found ? Optional.of(found) : Optional.empty()
   }
 
-  static all<T extends Enum<EnumKey>>(): List<T> {
+  static all<T extends Enum<string>>(): List<T> {
     return Lists.from(
       Object.keys(this).filter(instanceReducer(this)).map(instanceEnumMapper(this))
     )

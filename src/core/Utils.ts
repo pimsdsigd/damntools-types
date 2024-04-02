@@ -70,8 +70,8 @@ export const compareStrings: Comparator<string> = (a: string, b: string): number
 
 export const compareStringsIgnoreCase: Comparator<string> = (a: string, b: string): number => {
   if (notDefined(a) && notDefined(b)) return 0
-  if (notDefined(a)) return -1
-  if (notDefined(b)) return 1
+  else if (notDefined(a)) return -1
+  else if (notDefined(b)) return 1
   return a.trim().toLowerCase().localeCompare(b.trim().toLowerCase())
 }
 
