@@ -216,6 +216,10 @@ export class ArrayList<T> implements List<T> {
     if (this.hasElements()) this.array.reverse()
     return this
   }
+  
+  double(): this {
+    return this.concat(this)
+  }
 
   protected getConcatArgs(...args: ConcatArgType<T>) {
     const container: Array<Array<T>> = args.filter(defined).map(abstractArrayToArray)

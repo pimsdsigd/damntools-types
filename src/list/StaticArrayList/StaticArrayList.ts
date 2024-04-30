@@ -64,6 +64,11 @@ export class StaticArrayList<T> extends ArrayList<T> {
     this.throwIllegalAccess()
     return this
   }
+  
+  double(): this {
+    this.throwIllegalAccess()
+    return this
+  }
 
   private throwIllegalAccess() {
     throw new IllegalAccessError("List is not modifiable !")

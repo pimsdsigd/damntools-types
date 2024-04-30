@@ -74,4 +74,6 @@ export interface List<T> {
   sub(start: number, end: number): this
 
   toString(): string
+
+  double(): this
 }
