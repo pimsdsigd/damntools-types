@@ -216,8 +216,10 @@ export class ArrayList<T> implements List<T> {
     if (this.hasElements()) this.array.reverse()
     return this
   }
-  
+
   double(): this {
+    if( this.isEmpty())
+      return this
     return this.concat(this)
   }
 
