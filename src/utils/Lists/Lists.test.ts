@@ -122,4 +122,52 @@ describe("Lists", () => {
     })
 
   })
+
+  describe("lengthSub", () => {
+    it("with 0 item 0 0 returns empty", () => {
+      expect(Lists.lengthSub(Lists.empty(), 0,0).size()).to.equals(0)
+    })
+    it("with 0 item 0 1 returns empty", () => {
+      expect(Lists.lengthSub(Lists.empty(), 0,1).size()).to.equals(0)
+    })
+    it("with 0 item 1 0 returns empty", () => {
+      expect(Lists.lengthSub(Lists.empty(), 1,0).size()).to.equals(0)
+    })
+
+    it("with 1 item and 0 1 returns same", () => {
+      expect(Lists.lengthSub(Lists.of("1"), 0, 1).size()).to.equals(1)
+    })
+    it("with 1 item and 1 0 returns empty", () => {
+      expect(Lists.lengthSub(Lists.of("1"), 1, 0).size()).to.equals(0)
+    })
+    it("with 1 item and 1 1 returns empty", () => {
+      expect(Lists.lengthSub(Lists.of("1"), 1, 1).size()).to.equals(0)
+    })
+
+    it("with multi item and 0 1 returns 1", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 0, 1)
+      expect(res.size()).to.equals(1)
+    })
+    it("with multi item and 1 0 returns empty", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 1, 0)
+      expect(res.size()).to.equals(0)
+    })
+    it("with multi item and 1 1 returns 1", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 1, 1)
+      expect(res.size()).to.equals(1)
+    })
+    it("with multi item and 1 2 returns 2", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 1,2)
+      expect(res.size()).to.equals(2)
+    })
+    it("with multi item and 1 3 returns 2 (overflow)", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 1,3)
+      expect(res.size()).to.equals(2)
+    })
+    it("with multi item and 0 3 returns 3 (full)", () => {
+      const res = Lists.lengthSub(Lists.of("1", "2", "3"), 0, 3)
+      expect(res.size()).to.equals(3)
+    })
+
+  })
 })
