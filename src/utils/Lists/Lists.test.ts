@@ -86,4 +86,40 @@ describe("Lists", () => {
       expect(list.get(0)[0]).to.equals(65)
     })
   })
+
+  describe("sub", () => {
+    it("with 0 item returns empty", () => {
+      expect(Lists.sub(Lists.empty(), 0).size()).to.equals(0)
+    })
+
+    it("with 1 item and 0 1 returns same", () => {
+      expect(Lists.sub(Lists.of("1"), 0).size()).to.equals(1)
+    })
+    it("with 1 item and 0 und returns same", () => {
+      expect(Lists.sub(Lists.of("1"), 0, 1).size()).to.equals(1)
+    })
+    it("with 1 item and 1 0 returns empty", () => {
+      expect(Lists.sub(Lists.of("1"), 1, 0).size()).to.equals(0)
+    })
+    it("with 1 item and 1 1 returns empty", () => {
+      expect(Lists.sub(Lists.of("1"), 1, 1).size()).to.equals(0)
+    })
+
+    it("with multi item and 0 1 returns 1", () => {
+      expect(Lists.sub(Lists.of("1", "2", "3"), 0, 1).size()).to.equals(1)
+    })
+    it("with multi item and 0 und returns same", () => {
+      expect(Lists.sub(Lists.of("1", "2", "3"), 0, undefined).size()).to.equals(3)
+    })
+    it("with multi item and 1 0 returns empty", () => {
+      expect(Lists.sub(Lists.of("1", "2", "3"), 1, 0).size()).to.equals(0)
+    })
+    it("with multi item and 1 1 returns empty", () => {
+      expect(Lists.sub(Lists.of("1", "2", "3"), 1, 1).size()).to.equals(0)
+    })
+    it("with multi item and 1 3 returns 2", () => {
+      expect(Lists.sub(Lists.of("1", "2", "3"), 1, 3).size()).to.equals(2)
+    })
+
+  })
 })

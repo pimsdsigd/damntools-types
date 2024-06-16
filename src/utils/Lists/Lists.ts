@@ -1,4 +1,4 @@
-import {AbstractedArray, List} from "../../core"
+import {AbstractedArray, defined, List} from "../../core"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -54,5 +54,17 @@ export abstract class Lists {
    */
   static singleton<T>(item: NonNullable<T>): List<T> {
     return new StaticArrayList<T>([item])
+  }
+
+  static sub<T>(list: List<T>, start: number, end?: number): List<T> {
+    if(start >= list.size()){
+      return new ArrayList()
+    }
+    end = typeof end === "undefined" ? list.size() : end
+    end = Math.min(end, list.size())
+    if( start >= end){
+      return new ArrayList()
+    }
+    return list.copy().sub(start, end)
   }
 }
