@@ -1,6 +1,28 @@
-import {Lists} from "./utils"
-import {containsMethod, containsProperty, List} from "./core"
-import {StaticArrayList} from "./list"
+import {Lists, toList} from "./utils"
+import {
+  containsMethod,
+  containsProperty,
+  Dict,
+  DictObjectEntry,
+  isDict,
+  isList,
+  List,
+  Optionable
+} from "./core"
+import {ArrayList, StaticArrayList} from "./list"
+import {Enum} from "./enum";
+import {isOptional} from "./optional";
+import {KV} from "./dict";
+import {DictUtils} from "./DictUtils";
+
+export type SimplifyAllowedObjects =
+  List<any>
+  | Dict<string, any>
+  | Array<any>
+  | Enum<any>
+  | Optionable<any>
+  | { [key: string]: any }
+
 
 export class ObjectUtils {
   /**
@@ -99,4 +121,44 @@ export class ObjectUtils {
       }
     }
   }
+
+  static simplifyObject<T>(obj: SimplifyAllowedObjects): T {
+    if (isList(obj)) {
+      return obj.copy().getInner() as T
+    } else if (isOptional(obj)) {
+      return obj.orElseUndefined() as T
+    } else if (isDict(obj)) {
+      return obj.collect() as T
+    } else if (obj instanceof Enum) {
+      return obj.key() as T
+    } else {
+      return obj as T
+    }
+  }
+
+  static simplifyObjectDeeply<T>(obj: SimplifyAllowedObjects): T {
+    if (isList(obj)) {
+      return obj.stream().map(ObjectUtils.simplifyObjectDeeply).collectArray() as T
+    } else if (isOptional(obj)) {
+      return ObjectUtils.simplifyObjectDeeply(obj.orElseUndefined()) as T
+    } else if (isDict(obj)) {
+      return DictUtils.fromEntries(obj.entries().stream().map(e => {
+        return {
+          ...e,
+          value: ObjectUtils.simplifyObjectDeeply(e.value)
+        } as DictObjectEntry<any, any>
+      }).collect(toList)).collect() as T
+    } else if (obj instanceof Enum) {
+      return obj.key() as T
+    } else if (Array.isArray(obj)) {
+      return obj.map(ObjectUtils.simplifyObjectDeeply) as T
+    } else if (typeof obj === "object") {
+      return ObjectUtils.simplifyObjectDeeply(KV.from(obj))
+    } else {
+      return obj
+    }
+  }
 }
+
+ObjectUtils.simplifyObject(new ArrayList([51]))
+ObjectUtils.simplifyObject([12])

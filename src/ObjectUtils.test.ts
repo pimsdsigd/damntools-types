@@ -2,6 +2,8 @@ import {expect} from "chai"
 import {ObjectUtils} from "./ObjectUtils"
 import {ArrayList} from "./list"
 import {Lists} from "./utils"
+import {KV} from "./dict";
+import {Optional} from "./optional";
 
 describe("ObjectUtils", () => {
   describe("containsProperty()", () => {
@@ -164,6 +166,15 @@ describe("ObjectUtils", () => {
       // @ts-ignore
       expect(obj.path.test).to.be.eq(654)
       expect(obj.path.ex).to.be.eq(54)
+    })
+  })
+
+  describe("simplifyDeeply()", () => {
+    it("correctly creates nested", () => {
+      const obj = Lists.of({
+        a: 6, b: KV.from({aa: Optional.of(5)})
+      });
+      console.log(ObjectUtils.simplifyObjectDeeply(obj))
     })
   })
 })
