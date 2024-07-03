@@ -174,7 +174,15 @@ describe("ObjectUtils", () => {
       const obj = Lists.of({
         a: 6, b: KV.from({aa: Optional.of(5)})
       });
-      console.log(ObjectUtils.simplifyObjectDeeply(obj))
+      console.log(ObjectUtils.simplifyDeeply(obj))
+
+      const test  = {
+        m: [{a: "1"}]
+      }
+      const test2  = {
+        m: {0: {a: "2"}}
+      }
+      console.log({...test, ...test2})
     })
   })
 })

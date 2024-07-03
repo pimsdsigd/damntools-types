@@ -122,7 +122,7 @@ export class ObjectUtils {
     }
   }
 
-  static simplifyObject<T>(obj: SimplifyAllowedObjects): T {
+  static simplify<T>(obj: SimplifyAllowedObjects): T {
     if (isList(obj)) {
       return obj.copy().getInner() as T
     } else if (isOptional(obj)) {
@@ -136,29 +136,33 @@ export class ObjectUtils {
     }
   }
 
-  static simplifyObjectDeeply<T>(obj: SimplifyAllowedObjects): T {
+  static simplifyDeeply<T>(obj: SimplifyAllowedObjects): T {
     if (isList(obj)) {
-      return obj.stream().map(ObjectUtils.simplifyObjectDeeply).collectArray() as T
+      return obj.stream().map(ObjectUtils.simplifyDeeply).collectArray() as T
     } else if (isOptional(obj)) {
-      return ObjectUtils.simplifyObjectDeeply(obj.orElseUndefined()) as T
+      return ObjectUtils.simplifyDeeply(obj.orElseUndefined()) as T
     } else if (isDict(obj)) {
       return DictUtils.fromEntries(obj.entries().stream().map(e => {
         return {
           ...e,
-          value: ObjectUtils.simplifyObjectDeeply(e.value)
+          value: ObjectUtils.simplifyDeeply(e.value)
         } as DictObjectEntry<any, any>
       }).collect(toList)).collect() as T
     } else if (obj instanceof Enum) {
       return obj.key() as T
     } else if (Array.isArray(obj)) {
-      return obj.map(ObjectUtils.simplifyObjectDeeply) as T
+      return obj.map(ObjectUtils.simplifyDeeply) as T
     } else if (typeof obj === "object") {
-      return ObjectUtils.simplifyObjectDeeply(KV.from(obj))
+      return ObjectUtils.simplifyDeeply(KV.from(obj))
     } else {
       return obj
     }
   }
+
+  static mergeDeeply<T extends object>(a: object, b: object): T {
+    return a  as T
+  }
 }
 
-ObjectUtils.simplifyObject(new ArrayList([51]))
-ObjectUtils.simplifyObject([12])
+ObjectUtils.simplify(new ArrayList([51]))
+ObjectUtils.simplify([12])

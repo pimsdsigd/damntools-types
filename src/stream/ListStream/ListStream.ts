@@ -48,7 +48,7 @@ export class ListStream<T> implements Stream<T> {
   }
 
   concat(stream: Stream<T>): Stream<T> {
-    return new ListStream(concatArray(this.array, stream.collectArray()))
+    return new ListStream(concatArray(copyArrayInstance(this.array), stream.collectArray()))
   }
 
   reverse(): Stream<T> {
