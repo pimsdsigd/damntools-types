@@ -1,4 +1,4 @@
-import {AbstractedArray, List} from "../../core"
+import {AbstractedArray, isList, List} from "../../core"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -75,5 +75,15 @@ export abstract class Lists {
     length = Math.min(length, list.size() - start)
     length = start + length
     return list.copy().sub(start, length)
+  }
+
+  static isEmpty<T>(list: List<T> | Array<T> | undefined): boolean {
+    if( !list)return false
+    if( isList(list)) return list.isEmpty()
+    return list.length === 0
+  }
+
+  static hasElements<T>(list: List<T> | Array<T> | undefined): boolean {
+    return !this.isEmpty(list)
   }
 }
