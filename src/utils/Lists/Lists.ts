@@ -77,13 +77,14 @@ export abstract class Lists {
     return list.copy().sub(start, length)
   }
 
-  static isEmpty<T>(list: List<T> | Array<T> | undefined): boolean {
+  static isEmpty<T extends List<any> | Array<any>>(list: T | undefined): boolean {
     if( !list)return false
+    if( Array.isArray(list)) return list.length === 0
     if( isList(list)) return list.isEmpty()
-    return list.length === 0
+    throw Error("Not an array or a list or undefined")
   }
 
-  static hasElements<T>(list: List<T> | Array<T> | undefined): boolean {
+  static hasElements<T extends List<any> | Array<any>>(list: T | undefined): list is T {
     return !this.isEmpty(list)
   }
 }
