@@ -176,13 +176,54 @@ describe("ObjectUtils", () => {
       });
       console.log(ObjectUtils.simplifyDeeply(obj))
 
-      const test  = {
+      const test = {
         m: [{a: "1"}]
       }
-      const test2  = {
+      const test2 = {
         m: {0: {a: "2"}}
       }
       console.log({...test, ...test2})
+    })
+  })
+
+  describe("flatten()", () => {
+    it("correctly creates nested", () => {
+      const obj = {
+        a: 5,
+        b: {
+          ba: "cgfdf",
+          bb: true,
+          bv: false,
+          bd: {
+            d: [1]
+          }
+        },
+        c: Lists.of(654, 655),
+        d: KV.from({yo: 654})
+      }
+      const flat = ObjectUtils.flatten(obj)
+      console.log(flat)
+    })
+  })
+
+  describe("mergeDeeply()", () => {
+    it("correctly creates nested", () => {
+      const obj = {
+        a: 5,
+        b: {
+          ba: "cgfdf",
+          bb: true,
+          bv: false,
+          bd: {
+            d: [1]
+          }
+        },
+        c: Lists.of(654, 655),
+        d: KV.from({yo: 654})
+      }
+      const mod = {a: 6, b: {bb: false, bd: {d: [2]}}}
+      const flat = ObjectUtils.mergeDeeply(obj, mod)
+      console.log(flat)
     })
   })
 })

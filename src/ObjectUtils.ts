@@ -159,8 +159,44 @@ export class ObjectUtils {
     }
   }
 
-  static mergeDeeply<T extends object>(a: object, b: object): T {
-    return a  as T
+  static flatten<T extends object>(obj: T): object {
+    const flat = {} as any
+    Object.keys(obj).forEach((key: string) => {
+      if (!obj[key] || isList(obj[key]) || Array.isArray(obj[key])) {
+        flat[key] = obj[key]
+        return
+      }
+      switch (typeof obj[key]) {
+        case "number":
+        case "string":
+        case "function":
+        case "boolean": {
+          flat[key] = obj[key]
+          break;
+        }
+        case "object": {
+          const flattened = this.flatten(isDict(obj[key]) ? (obj[key] as Dict<any, any>).collect() : obj[key])
+          Object.entries(flattened)
+            .forEach(([subKey, subValue]) => {
+              flat[`${key}.${subKey}`] = subValue
+            })
+          break
+        }
+      }
+    })
+    return flat
+  }
+
+  static mergeDeeply<T extends object>(a: T, b: T): T {
+    const flattened = this.flatten(a)
+    const unsetKey = "<<<UNSET>>>"
+    Object.keys(flattened).forEach((key: string) => {
+      const bVal = this.pathAccessor(b, key, unsetKey)
+      if( bVal !== unsetKey){
+        this.pathModifier(a, key, bVal)
+      }
+    })
+    return a as T
   }
 }
 
