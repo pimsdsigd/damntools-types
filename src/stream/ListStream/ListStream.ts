@@ -22,6 +22,7 @@ import {
   StreamCollector
 } from "../../core"
 import {Optional} from "../../optional"
+import {Streams} from "../../utils";
 
 const mapFn =
   <T>(action) =>
@@ -132,10 +133,14 @@ export class ListStream<T> implements Stream<T> {
   }
 
   every(predicate: SearchPredicate<T>): boolean {
+    if( this.array.length === 0)
+      return false
     return this.array.every((v, i, a) => predicate(v, i, a))
   }
 
   some(predicate: SearchPredicate<T>): boolean {
+    if( this.array.length === 0)
+      return false
     return this.array.some((v, i, a) => predicate(v, i, a))
   }
 
