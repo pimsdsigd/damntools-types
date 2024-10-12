@@ -1,4 +1,3 @@
-import {Lists, toList} from "./utils"
 import {
   containsMethod,
   containsProperty,
@@ -8,21 +7,20 @@ import {
   isList,
   List,
   Optionable
-} from "./core"
-import {ArrayList, StaticArrayList} from "./list"
-import {Enum} from "./enum";
-import {isOptional} from "./optional";
-import {KV} from "./dict";
-import {DictUtils} from "./DictUtils";
+} from "../core"
+import {ArrayList, StaticArrayList} from "../list"
+import {Enum} from "../enum"
+import {isOptional} from "../optional"
+import {KV} from "../dict"
+import {DictUtils} from "./DictUtils"
 
 export type SimplifyAllowedObjects =
-  List<any>
+  | List<any>
   | Dict<string, any>
   | Array<any>
   | Enum<any>
   | Optionable<any>
-  | { [key: string]: any }
-
+  | {[key: string]: any}
 
 export class ObjectUtils {
   /**
@@ -49,15 +47,15 @@ export class ObjectUtils {
   }
 
   static keys(obj: object): List<string> {
-    return Lists.from(Object.keys(obj))
+    return new StaticArrayList(Object.keys(obj))
   }
 
   static values<T>(obj: object): List<T> {
-    return Lists.from(Object.values(obj))
+    return new StaticArrayList(Object.values(obj))
   }
 
   static sortEntries(obj: object): List<any> {
-    return Lists.from(Object.entries(obj).sort(this.entrySorter))
+    return new ArrayList(Object.entries(obj).sort(this.entrySorter))
   }
 
   static entrySorter(a: Array<any>, b: Array<any>): number {
@@ -110,12 +108,7 @@ export class ObjectUtils {
         }
       } else if (steps.length > 1) {
         obj[current] = {}
-        ObjectUtils.pathModifier(
-          obj[current],
-          steps.slice(1).join("."),
-          value,
-          separator
-        )
+        ObjectUtils.pathModifier(obj[current], steps.slice(1).join("."), value, separator)
       } else if (steps.length === 1) {
         obj[current] = value
       }
@@ -142,12 +135,18 @@ export class ObjectUtils {
     } else if (isOptional(obj)) {
       return ObjectUtils.simplifyDeeply(obj.orElseUndefined()) as T
     } else if (isDict(obj)) {
-      return DictUtils.fromEntries(obj.entries().stream().map(e => {
-        return {
-          ...e,
-          value: ObjectUtils.simplifyDeeply(e.value)
-        } as DictObjectEntry<any, any>
-      }).collect(toList)).collect() as T
+      return DictUtils.fromEntries(
+        obj
+          .entries()
+          .stream()
+          .map(e => {
+            return {
+              ...e,
+              value: ObjectUtils.simplifyDeeply(e.value)
+            } as DictObjectEntry<any, any>
+          })
+          .collect(items => new ArrayList(items))
+      ).collect() as T
     } else if (obj instanceof Enum) {
       return obj.key() as T
     } else if (Array.isArray(obj)) {
@@ -172,14 +171,15 @@ export class ObjectUtils {
         case "function":
         case "boolean": {
           flat[key] = obj[key]
-          break;
+          break
         }
         case "object": {
-          const flattened = this.flatten(isDict(obj[key]) ? (obj[key] as Dict<any, any>).collect() : obj[key])
-          Object.entries(flattened)
-            .forEach(([subKey, subValue]) => {
-              flat[`${key}.${subKey}`] = subValue
-            })
+          const flattened = this.flatten(
+            isDict(obj[key]) ? (obj[key] as Dict<any, any>).collect() : obj[key]
+          )
+          Object.entries(flattened).forEach(([subKey, subValue]) => {
+            flat[`${key}.${subKey}`] = subValue
+          })
           break
         }
       }
@@ -192,7 +192,7 @@ export class ObjectUtils {
     const unsetKey = "<<<UNSET>>>"
     Object.keys(flattened).forEach((key: string) => {
       const bVal = this.pathAccessor(b, key, unsetKey)
-      if( bVal !== unsetKey){
+      if (bVal !== unsetKey) {
         this.pathModifier(a, key, bVal)
       }
     })

@@ -1,18 +1,18 @@
 import {InvalidEnumKey} from "../exceptions"
 import {List, Optionable} from "../core"
-import {Lists} from "../utils"
 import {Optional} from "../optional"
-
+import {ArrayList} from "../list"
 
 const invalidEnumSupplier = (type: any, value: any) => () =>
   new InvalidEnumKey(type, value)
-const fromValuePredicate = (value: any) => (e: Enum<any>) => e.key().toLowerCase() === value
+const fromValuePredicate = (value: any) => (e: Enum<any>) =>
+  e.key().toLowerCase() === value
 
 const instanceReducer = (type: any) => v => type[v] instanceof type
 const instanceEnumMapper = (type: any) => v => type[v]
 
 const compareKeyFn = (a: string, b: string) => {
-   return a.localeCompare(b)
+  return a.localeCompare(b)
 }
 
 const equalsKeyFn = (a: string, b: string) => {
@@ -62,9 +62,7 @@ export abstract class Enum<K extends string> {
       .findOrThrow(fromValuePredicate(value), invalidEnumSupplier(this, value))
   }
 
-  static optionalFromValue<K extends string, T extends Enum<K>>(
-    value: K
-  ): Optionable<T> {
+  static optionalFromValue<K extends string, T extends Enum<K>>(value: K): Optionable<T> {
     if (!value || value === "") throw new InvalidEnumKey(this, value)
     value = value.toLowerCase() as K
     const found = this.all<T>().stream().find(fromValuePredicate(value))
@@ -72,7 +70,7 @@ export abstract class Enum<K extends string> {
   }
 
   static all<T extends Enum<string>>(): List<T> {
-    return Lists.from(
+    return new ArrayList(
       Object.keys(this).filter(instanceReducer(this)).map(instanceEnumMapper(this))
     )
   }

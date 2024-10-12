@@ -58,5 +58,5 @@ export abstract class AbstractOptional<T> implements Optionable<T> {
 
   abstract peek(action: (value: T) => void): Optionable<T>
 
-  abstract toStream(): Stream<T>;
+  abstract toStream(): Stream<T>
 }

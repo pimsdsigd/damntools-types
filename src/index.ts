@@ -1,8 +1,5 @@
 import {ArrayList, StaticArrayList, UniqueList} from "./list"
 import {KV, StaticKV} from "./dict"
-import {DictUtils} from "./DictUtils"
-import {TypeUtils} from "./TypeUtils"
-import {ObjectUtils} from "./ObjectUtils"
 import {Enum} from "./enum"
 import {isOptional, Optional} from "./optional"
 import {
@@ -15,7 +12,10 @@ import {
   toArray,
   toList,
   toSet,
-  abstractArrayToList
+  abstractArrayToList,
+  DictUtils,
+  TypeUtils,
+  ObjectUtils
 } from "./utils"
 import {
   abstractArrayToArray,

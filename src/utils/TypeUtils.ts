@@ -1,4 +1,4 @@
-import {AbstractType, ClassType} from "./core"
+import {AbstractType, ClassType} from "../core"
 
 export class TypeUtils {
   static getClassName<T>(theClass: ClassType<T>): string {

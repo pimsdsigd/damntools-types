@@ -1,31 +1,30 @@
-import {expect} from "chai"
 import {ObjectUtils} from "./ObjectUtils"
-import {ArrayList} from "./list"
-import {Lists} from "./utils"
-import {KV} from "./dict";
-import {Optional} from "./optional";
+import {ArrayList} from "../list"
+import {KV} from "../dict"
+import {Optional} from "../optional"
+import {Lists} from "./Lists"
 
 describe("ObjectUtils", () => {
   describe("containsProperty()", () => {
     it("returns false", () => {
-      expect(ObjectUtils.containsProperty(undefined, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsProperty(undefined, null)).to.not.be.ok
-      expect(ObjectUtils.containsProperty(undefined, "")).to.not.be.ok
-      expect(ObjectUtils.containsProperty(undefined, "key")).to.not.be.ok
+      expect(ObjectUtils.containsProperty(undefined, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsProperty(undefined, null)).toBeFalsy()
+      expect(ObjectUtils.containsProperty(undefined, "")).toBeFalsy()
+      expect(ObjectUtils.containsProperty(undefined, "key")).toBeFalsy()
 
-      expect(ObjectUtils.containsProperty({}, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsProperty({}, null)).to.not.be.ok
-      expect(ObjectUtils.containsProperty({}, "")).to.not.be.ok
-      expect(ObjectUtils.containsProperty({}, "key")).to.not.be.ok
+      expect(ObjectUtils.containsProperty({}, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsProperty({}, null)).toBeFalsy()
+      expect(ObjectUtils.containsProperty({}, "")).toBeFalsy()
+      expect(ObjectUtils.containsProperty({}, "key")).toBeFalsy()
 
-      expect(ObjectUtils.containsProperty({key: "value"}, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsProperty({key: "value"}, null)).to.not.be.ok
-      expect(ObjectUtils.containsProperty({key: "value"}, "")).to.not.be.ok
-      expect(ObjectUtils.containsProperty({key: "value"}, "keyT")).to.not.be.ok
+      expect(ObjectUtils.containsProperty({key: "value"}, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsProperty({key: "value"}, null)).toBeFalsy()
+      expect(ObjectUtils.containsProperty({key: "value"}, "")).toBeFalsy()
+      expect(ObjectUtils.containsProperty({key: "value"}, "keyT")).toBeFalsy()
     })
 
     it("returns true", () => {
-      expect(ObjectUtils.containsProperty({key: "value"}, "key")).to.be.true
+      expect(ObjectUtils.containsProperty({key: "value"}, "key")).toBeTruthy()
       expect(
         ObjectUtils.containsProperty(
           {
@@ -35,26 +34,26 @@ describe("ObjectUtils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
   describe("containsMethod()", () => {
     it("returns false", () => {
-      expect(ObjectUtils.containsMethod(undefined, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsMethod(undefined, null)).to.not.be.ok
-      expect(ObjectUtils.containsMethod(undefined, "")).to.not.be.ok
-      expect(ObjectUtils.containsMethod(undefined, "key")).to.not.be.ok
+      expect(ObjectUtils.containsMethod(undefined, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsMethod(undefined, null)).toBeFalsy()
+      expect(ObjectUtils.containsMethod(undefined, "")).toBeFalsy()
+      expect(ObjectUtils.containsMethod(undefined, "key")).toBeFalsy()
 
-      expect(ObjectUtils.containsMethod({}, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsMethod({}, null)).to.not.be.ok
-      expect(ObjectUtils.containsMethod({}, "")).to.not.be.ok
-      expect(ObjectUtils.containsMethod({}, "key")).to.not.be.ok
+      expect(ObjectUtils.containsMethod({}, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsMethod({}, null)).toBeFalsy()
+      expect(ObjectUtils.containsMethod({}, "")).toBeFalsy()
+      expect(ObjectUtils.containsMethod({}, "key")).toBeFalsy()
 
-      expect(ObjectUtils.containsMethod({key: "value"}, undefined)).to.not.be.ok
-      expect(ObjectUtils.containsMethod({key: "value"}, null)).to.not.be.ok
-      expect(ObjectUtils.containsMethod({key: "value"}, "")).to.not.be.ok
-      expect(ObjectUtils.containsMethod({key: "value"}, "key")).to.not.be.ok
+      expect(ObjectUtils.containsMethod({key: "value"}, undefined)).toBeFalsy()
+      expect(ObjectUtils.containsMethod({key: "value"}, null)).toBeFalsy()
+      expect(ObjectUtils.containsMethod({key: "value"}, "")).toBeFalsy()
+      expect(ObjectUtils.containsMethod({key: "value"}, "key")).toBeFalsy()
     })
 
     it("returns true", () => {
@@ -67,7 +66,7 @@ describe("ObjectUtils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         ObjectUtils.containsMethod(
           {
@@ -77,7 +76,7 @@ describe("ObjectUtils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
@@ -85,74 +84,74 @@ describe("ObjectUtils", () => {
     it("returns correct", () => {
       const obj = {a: [{b: 1}]}
       const clone = ObjectUtils.cloneObject(obj)
-      // @ts-ignore
-      expect(clone.a.length).to.be.equals(1)
-      // @ts-ignore
-      expect(clone.a[0].b).to.be.equals(1)
+      // @ts-expect-error
+      expect(clone.a.length).toBe(1)
+      // @ts-expect-error
+      expect(clone.a[0].b).toBe(1)
     })
   })
 
   describe("entries()", () => {
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.entries({key: 5})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(1)
-      expect(entries.get(0)[0]).to.be.equals("key")
-      expect(entries.get(0)[1]).to.be.equals(5)
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(1)
+      expect(entries.get(0)[0]).toBe("key")
+      expect(entries.get(0)[1]).toBe(5)
     })
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.entries({})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(0)
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(0)
     })
   })
 
   describe("fromEntries()", () => {
     it("returns correct entries when not empty", () => {
       const obj = ObjectUtils.fromEntries(Lists.from([["key", 5]]))
-      expect(obj).to.be.instanceof(Object)
-      // @ts-ignore
-      expect(obj.key).to.be.equals(5)
+      expect(obj).toBeInstanceOf(Object)
+      // @ts-expect-error
+      expect(obj.key).toBe(5)
     })
     it("returns correct entries when empty", () => {
       const obj = ObjectUtils.fromEntries(Lists.from([]))
-      expect(obj).to.be.instanceof(Object)
+      expect(obj).toBeInstanceOf(Object)
     })
   })
 
   describe("keys()", () => {
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.keys({key: 5})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(1)
-      expect(entries.get(0)).to.be.equals("key")
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(1)
+      expect(entries.get(0)).toBe("key")
     })
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.keys({})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(0)
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(0)
     })
   })
 
   describe("values()", () => {
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.values({key: 5})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(1)
-      expect(entries.get(0)).to.be.equals(5)
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(1)
+      expect(entries.get(0)).toBe(5)
     })
     it("returns correct entries when not empty", () => {
       const entries = ObjectUtils.values({})
-      expect(entries).to.be.instanceof(ArrayList)
-      expect(entries.size()).to.be.equals(0)
+      expect(entries).toBeInstanceOf(ArrayList)
+      expect(entries.size()).toBe(0)
     })
   })
   describe("pathModifier()", () => {
     it("correctly creates nested", () => {
       const obj = {}
       ObjectUtils.pathModifier(obj, "path.test", 654)
-      // @ts-ignore
-      expect(obj.path.test).to.be.eq(654)
+      // @ts-expect-error
+      expect(obj.path.test).toBe(654)
     })
     it("preserve existing", () => {
       const obj = {
@@ -162,18 +161,19 @@ describe("ObjectUtils", () => {
         }
       }
       ObjectUtils.pathModifier(obj, "path.test", 654)
-      expect(obj.yolo).to.be.eq("")
-      // @ts-ignore
-      expect(obj.path.test).to.be.eq(654)
-      expect(obj.path.ex).to.be.eq(54)
+      expect(obj.yolo).toBe("")
+      // @ts-expect-error
+      expect(obj.path.test).toBe(654)
+      expect(obj.path.ex).toBe(54)
     })
   })
 
   describe("simplifyDeeply()", () => {
     it("correctly creates nested", () => {
       const obj = Lists.of({
-        a: 6, b: KV.from({aa: Optional.of(5)})
-      });
+        a: 6,
+        b: KV.from({aa: Optional.of(5)})
+      })
       console.log(ObjectUtils.simplifyDeeply(obj))
 
       const test = {

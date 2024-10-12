@@ -218,8 +218,7 @@ export class ArrayList<T> implements List<T> {
   }
 
   double(): this {
-    if( this.isEmpty())
-      return this
+    if (this.isEmpty()) return this
     return this.concat(this)
   }
 

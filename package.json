@@ -15,8 +15,8 @@
     "lint:fix": "eslint --fix --ext .js,.ts .  && npm run format",
     "format": "prettier --write \"**/*.+(js|ts|json|jsx|tsx|mjs|cjs)\"",
     "test": "npm run lint && npm run test:coverage:report",
-    "test:unit": "mocha",
-    "test:coverage:report": "c8 npm run test:unit",
+    "test:unit": "jest",
+    "test:coverage:report": "npm run test:unit",
     "test:local": "ts-node tests/test.ts",
     "test:perf": "ts-node perf/native.perftest.ts"
   },
@@ -26,7 +26,7 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "@damntools.fr/ts-lib": "^5.0.4",
+    "@damntools.fr/ts-lib": "^6.0.0",
     "@damntools.fr/performer": "1.2.11"
   }
 }

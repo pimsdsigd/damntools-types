@@ -44,7 +44,9 @@ export abstract class Collectors {
     return Math.max(...items.filter(isNumber).map(asNumber))
   }
 
-  static joining<T, S>(separator: S | JoiningSeparatorFn<T, S>): StreamCollector<T, List<T | S>> {
+  static joining<T, S>(
+    separator: S | JoiningSeparatorFn<T, S>
+  ): StreamCollector<T, List<T | S>> {
     const isFunction = typeof separator === "function"
     return (items: Array<T>) => {
       const size = items.length

@@ -1,6 +1,6 @@
-import {expect} from "chai"
 import {
-  abstractArrayToArray, compareStringsIgnoreCase,
+  abstractArrayToArray,
+  compareStringsIgnoreCase,
   containsMethod,
   containsProperty,
   containsPrototypeMethod,
@@ -14,7 +14,7 @@ import {InvalidArrayError, UndefinedError} from "../exceptions"
 import {List} from "./List"
 import {StaticArrayList} from "../list"
 
-// @ts-ignore
+// @ts-expect-error
 class DummyList implements List<any> {
   private readonly __iamList = true
   getInner(): Array<any> {
@@ -24,24 +24,24 @@ class DummyList implements List<any> {
 describe("Utils", () => {
   describe("containsProperty()", () => {
     it("returns false", () => {
-      expect(containsProperty(undefined, undefined)).to.not.be.ok
-      expect(containsProperty(undefined, null)).to.not.be.ok
-      expect(containsProperty(undefined, "")).to.not.be.ok
-      expect(containsProperty(undefined, "key")).to.not.be.ok
+      expect(containsProperty(undefined, undefined)).toBeFalsy()
+      expect(containsProperty(undefined, null)).toBeFalsy()
+      expect(containsProperty(undefined, "")).toBeFalsy()
+      expect(containsProperty(undefined, "key")).toBeFalsy()
 
-      expect(containsProperty({}, undefined)).to.not.be.ok
-      expect(containsProperty({}, null)).to.not.be.ok
-      expect(containsProperty({}, "")).to.not.be.ok
-      expect(containsProperty({}, "key")).to.not.be.ok
+      expect(containsProperty({}, undefined)).toBeFalsy()
+      expect(containsProperty({}, null)).toBeFalsy()
+      expect(containsProperty({}, "")).toBeFalsy()
+      expect(containsProperty({}, "key")).toBeFalsy()
 
-      expect(containsProperty({key: "value"}, undefined)).to.not.be.ok
-      expect(containsProperty({key: "value"}, null)).to.not.be.ok
-      expect(containsProperty({key: "value"}, "")).to.not.be.ok
-      expect(containsProperty({key: "value"}, "keyT")).to.not.be.ok
+      expect(containsProperty({key: "value"}, undefined)).toBeFalsy()
+      expect(containsProperty({key: "value"}, null)).toBeFalsy()
+      expect(containsProperty({key: "value"}, "")).toBeFalsy()
+      expect(containsProperty({key: "value"}, "keyT")).toBeFalsy()
     })
 
     it("returns true", () => {
-      expect(containsProperty({key: "value"}, "key")).to.be.true
+      expect(containsProperty({key: "value"}, "key")).toBeTruthy()
       expect(
         containsProperty(
           {
@@ -51,26 +51,26 @@ describe("Utils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
   describe("containsMethod()", () => {
     it("returns false", () => {
-      expect(containsMethod(undefined, undefined)).to.not.be.ok
-      expect(containsMethod(undefined, null)).to.not.be.ok
-      expect(containsMethod(undefined, "")).to.not.be.ok
-      expect(containsMethod(undefined, "key")).to.not.be.ok
+      expect(containsMethod(undefined, undefined)).toBeFalsy()
+      expect(containsMethod(undefined, null)).toBeFalsy()
+      expect(containsMethod(undefined, "")).toBeFalsy()
+      expect(containsMethod(undefined, "key")).toBeFalsy()
 
-      expect(containsMethod({}, undefined)).to.not.be.ok
-      expect(containsMethod({}, null)).to.not.be.ok
-      expect(containsMethod({}, "")).to.not.be.ok
-      expect(containsMethod({}, "key")).to.not.be.ok
+      expect(containsMethod({}, undefined)).toBeFalsy()
+      expect(containsMethod({}, null)).toBeFalsy()
+      expect(containsMethod({}, "")).toBeFalsy()
+      expect(containsMethod({}, "key")).toBeFalsy()
 
-      expect(containsMethod({key: "value"}, undefined)).to.not.be.ok
-      expect(containsMethod({key: "value"}, null)).to.not.be.ok
-      expect(containsMethod({key: "value"}, "")).to.not.be.ok
-      expect(containsMethod({key: "value"}, "key")).to.not.be.ok
+      expect(containsMethod({key: "value"}, undefined)).toBeFalsy()
+      expect(containsMethod({key: "value"}, null)).toBeFalsy()
+      expect(containsMethod({key: "value"}, "")).toBeFalsy()
+      expect(containsMethod({key: "value"}, "key")).toBeFalsy()
     })
 
     it("returns true", () => {
@@ -83,7 +83,7 @@ describe("Utils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         containsMethod(
           {
@@ -93,26 +93,26 @@ describe("Utils", () => {
           },
           "key"
         )
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
   describe("containsPrototypeMethod()", () => {
     it("returns false", () => {
-      expect(containsPrototypeMethod(undefined, undefined)).to.not.be.ok
-      expect(containsPrototypeMethod(undefined, null)).to.not.be.ok
-      expect(containsPrototypeMethod(undefined, "")).to.not.be.ok
-      expect(containsPrototypeMethod(undefined, "key")).to.not.be.ok
+      expect(containsPrototypeMethod(undefined, undefined)).toBeFalsy()
+      expect(containsPrototypeMethod(undefined, null)).toBeFalsy()
+      expect(containsPrototypeMethod(undefined, "")).toBeFalsy()
+      expect(containsPrototypeMethod(undefined, "key")).toBeFalsy()
 
-      expect(containsPrototypeMethod({}, undefined)).to.not.be.ok
-      expect(containsPrototypeMethod({}, null)).to.not.be.ok
-      expect(containsPrototypeMethod({}, "")).to.not.be.ok
-      expect(containsPrototypeMethod({}, "key")).to.not.be.ok
+      expect(containsPrototypeMethod({}, undefined)).toBeFalsy()
+      expect(containsPrototypeMethod({}, null)).toBeFalsy()
+      expect(containsPrototypeMethod({}, "")).toBeFalsy()
+      expect(containsPrototypeMethod({}, "key")).toBeFalsy()
 
-      expect(containsPrototypeMethod({key: "value"}, undefined)).to.not.be.ok
-      expect(containsPrototypeMethod({key: "value"}, null)).to.not.be.ok
-      expect(containsPrototypeMethod({key: "value"}, "")).to.not.be.ok
-      expect(containsPrototypeMethod({key: "value"}, "key")).to.not.be.ok
+      expect(containsPrototypeMethod({key: "value"}, undefined)).toBeFalsy()
+      expect(containsPrototypeMethod({key: "value"}, null)).toBeFalsy()
+      expect(containsPrototypeMethod({key: "value"}, "")).toBeFalsy()
+      expect(containsPrototypeMethod({key: "value"}, "key")).toBeFalsy()
       expect(
         containsPrototypeMethod(
           {
@@ -122,7 +122,7 @@ describe("Utils", () => {
           },
           "key"
         )
-      ).to.not.be.ok
+      ).toBeFalsy()
     })
 
     it("returns true", () => {
@@ -132,139 +132,139 @@ describe("Utils", () => {
         }
       }
 
-      expect(containsPrototypeMethod(new Tt(), "hey")).to.be.true
+      expect(containsPrototypeMethod(new Tt(), "hey")).toBeTruthy()
     })
   })
 
   describe("defined()", () => {
     it("returns false", () => {
-      expect(defined(undefined)).to.not.be.ok
-      expect(defined(null)).to.not.be.ok
+      expect(defined(undefined)).toBeFalsy()
+      expect(defined(null)).toBeFalsy()
     })
     it("returns true", () => {
-      expect(defined(true)).to.be.true
-      expect(defined(false)).to.be.true
-      expect(defined(0)).to.be.true
-      expect(defined("")).to.be.true
-      expect(defined({})).to.be.true
-      expect(defined([])).to.be.true
-      expect(defined("undefined")).to.be.true
+      expect(defined(true)).toBeTruthy()
+      expect(defined(false)).toBeTruthy()
+      expect(defined(0)).toBeTruthy()
+      expect(defined("")).toBeTruthy()
+      expect(defined({})).toBeTruthy()
+      expect(defined([])).toBeTruthy()
+      expect(defined("undefined")).toBeTruthy()
     })
   })
 
   describe("requireDefined()", () => {
     it("returns false", () => {
-      expect(() => requireDefined(undefined)).to.throw(UndefinedError)
-      expect(() => requireDefined(null)).to.throw(UndefinedError)
+      expect(() => requireDefined(undefined)).toThrow(UndefinedError)
+      expect(() => requireDefined(null)).toThrow(UndefinedError)
     })
     it("returns true", () => {
-      expect(() => requireDefined(true)).not.to.throw()
-      expect(() => requireDefined(false)).not.to.throw()
-      expect(() => requireDefined(0)).not.to.throw()
-      expect(() => requireDefined("")).not.to.throw()
-      expect(() => requireDefined({})).not.to.throw()
-      expect(() => requireDefined([])).not.to.throw()
-      expect(() => requireDefined("undefined")).not.to.throw()
+      expect(() => requireDefined(true)).not.toThrow()
+      expect(() => requireDefined(false)).not.toThrow()
+      expect(() => requireDefined(0)).not.toThrow()
+      expect(() => requireDefined("")).not.toThrow()
+      expect(() => requireDefined({})).not.toThrow()
+      expect(() => requireDefined([])).not.toThrow()
+      expect(() => requireDefined("undefined")).not.toThrow()
     })
   })
 
   describe("notDefined()", () => {
     it("returns true", () => {
-      expect(notDefined(undefined)).to.be.true
-      expect(notDefined(null)).to.be.true
+      expect(notDefined(undefined)).toBeTruthy()
+      expect(notDefined(null)).toBeTruthy()
     })
     it("returns false", () => {
-      expect(notDefined(true)).to.be.false
-      expect(notDefined(false)).to.be.false
-      expect(notDefined(0)).to.be.false
-      expect(notDefined("")).to.be.false
-      expect(notDefined({})).to.be.false
-      expect(notDefined([])).to.be.false
-      expect(notDefined("undefined")).to.be.false
+      expect(notDefined(true)).toBe(false)
+      expect(notDefined(false)).toBe(false)
+      expect(notDefined(0)).toBe(false)
+      expect(notDefined("")).toBe(false)
+      expect(notDefined({})).toBe(false)
+      expect(notDefined([])).toBe(false)
+      expect(notDefined("undefined")).toBe(false)
     })
   })
 
   describe("equals()", () => {
     it("returns true", () => {
-      expect(equals(undefined, undefined)).to.be.true
-      expect(equals(null, null)).to.be.true
-      expect(equals(0, 0)).to.be.true
-      expect(equals(1, 1)).to.be.true
-      expect(equals("", "")).to.be.true
-      expect(equals("t", "t")).to.be.true
-      expect(equals({equals: () => true}, {})).to.be.true
+      expect(equals(undefined, undefined)).toBeTruthy()
+      expect(equals(null, null)).toBeTruthy()
+      expect(equals(0, 0)).toBeTruthy()
+      expect(equals(1, 1)).toBeTruthy()
+      expect(equals("", "")).toBeTruthy()
+      expect(equals("t", "t")).toBeTruthy()
+      expect(equals({equals: () => true}, {})).toBeTruthy()
     })
     it("returns false", () => {
-      expect(equals(undefined, null)).to.be.false
-      expect(equals({}, {})).to.be.false
-      expect(equals([], [])).to.be.false
-      expect(equals(0, "0")).to.be.false
-      expect(equals({t: 1}, {t: 1})).to.be.false
-      expect(equals({t: 1}, {t: 2})).to.be.false
-      expect(equals([1], [1])).to.be.false
-      expect(equals([1], [2])).to.be.false
+      expect(equals(undefined, null)).toBe(false)
+      expect(equals({}, {})).toBe(false)
+      expect(equals([], [])).toBe(false)
+      expect(equals(0, "0")).toBe(false)
+      expect(equals({t: 1}, {t: 1})).toBe(false)
+      expect(equals({t: 1}, {t: 2})).toBe(false)
+      expect(equals([1], [1])).toBe(false)
+      expect(equals([1], [2])).toBe(false)
     })
   })
   describe("isList()", () => {
     it("undefined returns false", () => {
-      expect(isList(undefined)).to.be.false
+      expect(isList(undefined)).toBe(false)
     })
     it("array returns false", () => {
-      expect(isList(["a"])).to.be.false
+      expect(isList(["a"])).toBe(false)
     })
     it("object returns false", () => {
-      expect(isList({a: () => ({})})).to.be.false
+      expect(isList({a: () => ({})})).toBe(false)
     })
     it("sub returns true", () => {
-      expect(isList({getInner: () => ({})})).to.be.false
-      expect(isList(new DummyList())).to.be.true
+      expect(isList({getInner: () => ({})})).toBe(false)
+      expect(isList(new DummyList())).toBeTruthy()
     })
     it("other returns false", () => {
-      expect(isList(1)).to.be.false
-      expect(isList("")).to.be.false
-      expect(isList("1")).to.be.false
+      expect(isList(1)).toBe(false)
+      expect(isList("")).toBe(false)
+      expect(isList("1")).toBe(false)
     })
     it("sub returns ok", () => {
       console.log("")
       const list = new StaticArrayList([])
       console.log(list)
-      expect(isList(list)).to.be.true
+      expect(isList(list)).toBeTruthy()
     })
   })
 
   describe("abstractArrayToArray()", () => {
     it("returns inner if List", () => {
-      // @ts-ignore
+      // @ts-expect-error
       const a = abstractArrayToArray(new DummyList())
-      expect(a[0]).to.be.equals(5)
+      expect(a[0]).toBe(5)
     })
     it("returns array if array", () => {
       const a = abstractArrayToArray([5])
-      expect(a[0]).to.be.equals(5)
+      expect(a[0]).toBe(5)
     })
     it("throws if not list or array", () => {
       expect(() => {
-        // @ts-ignore
+        // @ts-expect-error
         abstractArrayToArray(6546)
-      }).to.throw(InvalidArrayError)
+      }).toThrow(InvalidArrayError)
     })
   })
 
   describe("compareStringsIgnoreCase()", () => {
     it("with left undefined returns -1", () => {
-      expect(compareStringsIgnoreCase(undefined, "ze")).to.be.equals(-1)
+      expect(compareStringsIgnoreCase(undefined, "ze")).toBe(-1)
     })
     it("with right undefined returns 1", () => {
-      expect(compareStringsIgnoreCase("ze", undefined)).to.be.equals(1)
+      expect(compareStringsIgnoreCase("ze", undefined)).toBe(1)
     })
     it("with left and right undefined returns 0", () => {
-      expect(compareStringsIgnoreCase(undefined, undefined)).to.be.equals(0)
+      expect(compareStringsIgnoreCase(undefined, undefined)).toBe(0)
     })
     it("with left defined and right other returns throws", () => {
-      expect(() => compareStringsIgnoreCase("ez", 0 as any)).to.throw
+      expect(() => compareStringsIgnoreCase("ez", 0 as any)).toThrow
     })
     it("with left other and right defined returns throws", () => {
-      expect(() => compareStringsIgnoreCase(0 as any, "ez")).to.throw
+      expect(() => compareStringsIgnoreCase(0 as any, "ez")).toThrow
     })
   })
 })

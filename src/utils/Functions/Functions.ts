@@ -1,6 +1,6 @@
-import {AbstractType} from "../../core"
-import {TypeUtils} from "../../TypeUtils"
-import {ObjectUtils} from "../../ObjectUtils"
+import {AbstractType, containsMethod, containsProperty} from "../../core"
+import {TypeUtils} from "../TypeUtils"
+import {ObjectUtils} from "../ObjectUtils"
 
 export abstract class Functions {
   static instanceOf<T>(className: AbstractType<T>): (value: T) => boolean {
@@ -8,11 +8,11 @@ export abstract class Functions {
   }
 
   static containsProperty(propertyName: string): (obj: object) => boolean {
-    return (obj: object) => ObjectUtils.containsProperty(obj, propertyName)
+    return (obj: object) => containsProperty(obj, propertyName)
   }
 
   static containsMethod(methodName: string): (obj: object) => boolean {
-    return (obj: object) => ObjectUtils.containsMethod(obj, methodName)
+    return (obj: object) => containsMethod(obj, methodName)
   }
 
   static pathAccessor<T>(

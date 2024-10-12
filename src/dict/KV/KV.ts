@@ -1,16 +1,16 @@
 import {
   containsProperty,
-  DictKeyType,
   Dict,
   DictEntryPredicate,
+  DictKeyType,
   DictLogFormatter,
   DictObject,
   DictObjectEntry,
   List,
   Optionable
 } from "../../core"
-import {Collectors, Lists} from "../../utils"
 import {Optional} from "../../optional"
+import {StaticArrayList} from "../../list"
 
 const fromEntryFn = <K extends DictKeyType, V>(
   entry: DictObjectEntry<K, V>
@@ -96,11 +96,11 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
   }
 
   keys(): List<K> {
-    return Lists.from(Object.keys(this._map)) as List<K>
+    return new StaticArrayList<K>(Object.keys(this._map) as Array<K>)
   }
 
   values(): List<V> {
-    return Lists.from(Object.values(this._map as object))
+    return new StaticArrayList<V>(Object.values(this._map) as Array<V>)
   }
 
   entries(): List<DictObjectEntry<K, V>> {
@@ -110,7 +110,7 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
         key,
         value: this._map[key]
       }))
-      .collect(Collectors.toList)
+      .collect(items => new StaticArrayList(items))
   }
 
   size(): number {
@@ -139,7 +139,7 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
       this.entries()
         .stream()
         .filter((entry): entry is DictObjectEntry<K, V> => predicate(entry))
-        .collect(Collectors.toList)
+        .collect(items => new StaticArrayList(items))
     )
   }
 

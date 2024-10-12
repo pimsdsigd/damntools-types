@@ -69,7 +69,7 @@ export abstract class Lists {
   }
 
   static lengthSub<T>(list: List<T>, start: number, length: number): List<T> {
-    if (start >= list.size() || length ===0) {
+    if (start >= list.size() || length === 0) {
       return new ArrayList()
     }
     length = Math.min(length, list.size() - start)
@@ -78,9 +78,9 @@ export abstract class Lists {
   }
 
   static isEmpty<T extends List<any> | Array<any>>(list: T | undefined): boolean {
-    if( !list)return false
-    if( Array.isArray(list)) return list.length === 0
-    if( isList(list)) return list.isEmpty()
+    if (!list) return false
+    if (Array.isArray(list)) return list.length === 0
+    if (isList(list)) return list.isEmpty()
     throw Error("Not an array or a list or undefined")
   }
 

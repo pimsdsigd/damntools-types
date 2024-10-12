@@ -1,8 +1,5 @@
-import {Optional} from "./Optional"
-import {expect} from "chai"
+import {EmptyOptional, Optional, ValueOptional} from "./Optional"
 import {EmptyOptionalAccessError, UndefinedError} from "../../exceptions"
-import {EmptyOptional} from "./EmptyOptional"
-import {ValueOptional} from "./ValueOptional"
 
 const PROVIDED = <T>(value: T) => Optional.of<T>(value)
 const EMPTY = <T>() => Optional.empty<T>()
@@ -11,80 +8,80 @@ describe("Optional", () => {
   describe("constructor()", () => {
     it("with undefined returns empty", () => {
       const op = new EmptyOptional(undefined)
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.true
-      // @ts-ignore
-      expect(op._value).to.be.equals(undefined)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBeTruthy()
+      // @ts-expect-error
+      expect(op._value).toBe(undefined)
     })
     it("with null returns empty", () => {
       const op = new EmptyOptional(null)
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.true
-      // @ts-ignore
-      expect(op._value).to.be.equals(null)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBeTruthy()
+      // @ts-expect-error
+      expect(op._value).toBe(null)
     })
     it("with zero returns not empty", () => {
       const op = new ValueOptional(0)
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.false
-      // @ts-ignore
-      expect(op._value).to.be.equals(0)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBe(false)
+      // @ts-expect-error
+      expect(op._value).toBe(0)
     })
     it("with false returns not empty", () => {
       const op = new ValueOptional(false)
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.false
-      // @ts-ignore
-      expect(op._value).to.be.equals(false)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBe(false)
+      // @ts-expect-error
+      expect(op._value).toBe(false)
     })
   })
 
   describe("of()", () => {
     it("with undefined throws", () => {
-      expect(() => Optional.of(undefined)).to.throw(UndefinedError)
-      expect(() => Optional.of(null)).to.throw(UndefinedError)
+      expect(() => Optional.of(undefined)).toThrow(UndefinedError)
+      expect(() => Optional.of(null)).toThrow(UndefinedError)
     })
 
     it("with provided returns not empty", () => {
       const op = new ValueOptional("efi")
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.false
-      // @ts-ignore
-      expect(op._value).to.be.equals("efi")
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBe(false)
+      // @ts-expect-error
+      expect(op._value).toBe("efi")
     })
   })
 
   describe("nullable()", () => {
     it("with undefined returns empty", () => {
-      expect(Optional.nullable(undefined).isEmpty()).to.be.true
-      expect(Optional.nullable(null).isEmpty()).to.be.true
+      expect(Optional.nullable(undefined).isEmpty()).toBeTruthy()
+      expect(Optional.nullable(null).isEmpty()).toBeTruthy()
     })
 
     it("with provided returns not empty", () => {
       const op = Optional.nullable(54)
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.false
-      // @ts-ignore
-      expect(op._value).to.be.equals(54)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBe(false)
+      // @ts-expect-error
+      expect(op._value).toBe(54)
     })
   })
 
   describe("empty()", () => {
     it("returns empty", () => {
       const op = Optional.empty()
-      expect(op).not.to.be.undefined
-      expect(op.isEmpty()).to.be.true
-      // @ts-ignore
-      expect(op._value).to.be.equals(undefined)
+      expect(op).toBeDefined()
+      expect(op.isEmpty()).toBeTruthy()
+      // @ts-expect-error
+      expect(op._value).toBe(undefined)
     })
   })
 
   describe("get()", () => {
     it("on empty throws", () => {
-      expect(() => EMPTY().get()).to.throw(EmptyOptionalAccessError)
+      expect(() => EMPTY().get()).toThrow(EmptyOptionalAccessError)
     })
     it("on not empty returns value", () => {
-      expect(PROVIDED(1).get()).to.be.equals(1)
+      expect(PROVIDED(1).get()).toBe(1)
     })
   })
 
@@ -94,21 +91,21 @@ describe("Optional", () => {
         EMPTY()
           .filter(() => true)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns if predicate is true", () => {
       expect(
         PROVIDED(1)
           .filter(() => true)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
     it("on not empty returns empty if predicate is false", () => {
       expect(
         PROVIDED(1)
           .filter(() => false)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
@@ -122,15 +119,17 @@ describe("Optional", () => {
     }
 
     it("on empty returns empty", () => {
-      expect(EMPTY<Error>().filterClass(SubError1).isEmpty()).to.be.true
+      expect(EMPTY<Error>().filterClass(SubError1).isEmpty()).toBeTruthy()
     })
     it("on not empty returns if value is not correct type", () => {
-      expect(Optional.of<Error>(new SubError1()).filterClass(SubError2).isEmpty()).to.be
-        .true
+      expect(Optional.of<Error>(new SubError1()).filterClass(SubError2).isEmpty()).toBe(
+        true
+      )
     })
     it("on not empty returns empty if value is correct type", () => {
-      expect(Optional.of<Error>(new SubError1()).filterClass(SubError1).isPresent()).to.be
-        .true
+      expect(Optional.of<Error>(new SubError1()).filterClass(SubError1).isPresent()).toBe(
+        true
+      )
     })
   })
 
@@ -140,31 +139,31 @@ describe("Optional", () => {
         EMPTY()
           .map(a => a)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns mapped when result is defined", () => {
       expect(
         PROVIDED(1)
           .map(a => a * 2)
           .get()
-      ).to.be.equals(2)
+      ).toBe(2)
       expect(
         PROVIDED(1)
           .map(() => 0)
           .get()
-      ).to.be.equals(0)
+      ).toBe(0)
     })
     it("on not empty returns empty when result is not defined", () => {
       expect(
         PROVIDED(1)
           .map(() => undefined)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         PROVIDED(1)
           .map(() => null)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
   })
 
@@ -174,43 +173,43 @@ describe("Optional", () => {
         EMPTY()
           .mapEmpty(() => 1)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
     it("on empty returns empty when result is not defined", () => {
       expect(
         EMPTY()
           .mapEmpty(() => undefined)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         EMPTY()
           .mapEmpty(() => null)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns mapped when result is defined", () => {
       expect(
         PROVIDED(1)
           .mapEmpty(() => 2)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
       expect(
         PROVIDED(1)
           .mapEmpty(() => 0)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
     it("on not empty returns mapped when result is not defined", () => {
       expect(
         PROVIDED(1)
           .mapEmpty(() => undefined)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
       expect(
         PROVIDED(1)
           .mapEmpty(() => null)
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
   })
 
@@ -220,62 +219,62 @@ describe("Optional", () => {
         EMPTY()
           .flatMap(() => Optional.of(2))
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns empty if result is not defined", () => {
       expect(
         PROVIDED(1)
           .flatMap(() => undefined)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         PROVIDED(1)
           .flatMap(() => null)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns empty if result is not preset", () => {
       expect(
         PROVIDED(1)
           .flatMap(() => Optional.empty())
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on not empty returns mapped", () => {
       expect(
         PROVIDED(1)
           .flatMap(a => Optional.of(a * 2))
           .get()
-      ).to.be.equals(2)
+      ).toBe(2)
     })
   })
 
   describe("orElseReturn()", () => {
     it("on empty returns other", () => {
-      expect(EMPTY().orElseReturn(2)).to.be.equals(2)
-      expect(EMPTY().orElseReturn(undefined)).to.be.equals(undefined)
+      expect(EMPTY().orElseReturn(2)).toBe(2)
+      expect(EMPTY().orElseReturn(undefined)).toBe(undefined)
     })
     it("on not empty returns value", () => {
-      expect(PROVIDED(1).orElseReturn(2)).to.be.equals(1)
+      expect(PROVIDED(1).orElseReturn(2)).toBe(1)
     })
   })
 
   describe("orElseUndefined()", () => {
     it("on empty returns undefined", () => {
-      expect(EMPTY().orElseUndefined()).to.be.equals(undefined)
+      expect(EMPTY().orElseUndefined()).toBe(undefined)
     })
     it("on not empty returns value", () => {
-      expect(PROVIDED(1).orElseUndefined()).to.be.equals(1)
+      expect(PROVIDED(1).orElseUndefined()).toBe(1)
     })
   })
 
   describe("orElseGet()", () => {
     it("on empty returns supplied", () => {
-      expect(EMPTY().orElseGet(() => 1)).to.be.equals(1)
-      expect(EMPTY().orElseGet(() => undefined)).to.be.equals(undefined)
+      expect(EMPTY().orElseGet(() => 1)).toBe(1)
+      expect(EMPTY().orElseGet(() => undefined)).toBe(undefined)
     })
     it("on not empty returns value", () => {
-      expect(PROVIDED(1).orElseGet(() => 2)).to.be.equals(1)
+      expect(PROVIDED(1).orElseGet(() => 2)).toBe(1)
     })
   })
 
@@ -285,38 +284,36 @@ describe("Optional", () => {
         EMPTY()
           .orElse(() => Optional.empty())
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
       expect(
         EMPTY()
           .orElse(() => undefined)
           .isEmpty()
-      ).to.be.true
+      ).toBeTruthy()
     })
     it("on empty returns supplied if supplied is not empty", () => {
       expect(
         EMPTY()
           .orElse(() => Optional.of(1))
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
     it("on not empty returns value", () => {
       expect(
         PROVIDED(1)
           .orElse(() => Optional.of(2))
           .get()
-      ).to.be.equals(1)
+      ).toBe(1)
     })
   })
 
   describe("orElseThrow()", () => {
     it("on empty throws", () => {
-      expect(() => EMPTY().orElseThrow(() => new Error())).to.throw(Error)
-      expect(() => EMPTY().orElseThrow(() => undefined)).to.throw(
-        EmptyOptionalAccessError
-      )
+      expect(() => EMPTY().orElseThrow(() => new Error())).toThrow(Error)
+      expect(() => EMPTY().orElseThrow(() => undefined)).toThrow(EmptyOptionalAccessError)
     })
     it("on not empty returns value", () => {
-      expect(PROVIDED(1).orElseThrow(() => new Error())).to.be.equals(1)
+      expect(PROVIDED(1).orElseThrow(() => new Error())).toBe(1)
     })
   })
 
@@ -324,12 +321,12 @@ describe("Optional", () => {
     it("on empty do nothing", () => {
       let cpt = 0
       EMPTY().ifPresentDo(() => cpt++)
-      expect(cpt).to.be.equals(0)
+      expect(cpt).toBe(0)
     })
     it("on not empty do action", () => {
       let cpt = 0
       PROVIDED(1).ifPresentDo(() => cpt++)
-      expect(cpt).to.be.equals(1)
+      expect(cpt).toBe(1)
     })
   })
 
@@ -340,7 +337,7 @@ describe("Optional", () => {
         () => (cpt = 1),
         () => (cpt = -1)
       )
-      expect(cpt).to.be.equals(-1)
+      expect(cpt).toBe(-1)
     })
     it("on not empty do action", () => {
       let cpt = 0
@@ -348,7 +345,7 @@ describe("Optional", () => {
         () => (cpt = 1),
         () => (cpt = -1)
       )
-      expect(cpt).to.be.equals(1)
+      expect(cpt).toBe(1)
     })
   })
 
@@ -356,34 +353,34 @@ describe("Optional", () => {
     it("on empty do nothing", () => {
       let cpt = 0
       EMPTY().peek(() => cpt++)
-      expect(cpt).to.be.equals(0)
+      expect(cpt).toBe(0)
     })
     it("on not empty do action", () => {
       let cpt = 0
       PROVIDED(1).peek(() => cpt++)
-      expect(cpt).to.be.equals(1)
+      expect(cpt).toBe(1)
     })
   })
 
   describe("equals()", () => {
     it("on empty and empty returns true", () => {
-      expect(EMPTY().equals(EMPTY())).to.be.true
+      expect(EMPTY().equals(EMPTY())).toBeTruthy()
     })
     it("on empty and not empty returns false", () => {
-      expect(EMPTY().equals(PROVIDED(1))).to.be.false
+      expect(EMPTY().equals(PROVIDED(1))).toBe(false)
     })
     it("on not empty and empty returns false", () => {
-      expect(PROVIDED(1).equals(EMPTY())).to.be.false
+      expect(PROVIDED(1).equals(EMPTY())).toBe(false)
     })
     it("on not empty and not empty returns true when value equals", () => {
-      expect(PROVIDED(1).equals(PROVIDED(1))).to.be.true
-      expect(PROVIDED(0).equals(PROVIDED(0))).to.be.true
+      expect(PROVIDED(1).equals(PROVIDED(1))).toBeTruthy()
+      expect(PROVIDED(0).equals(PROVIDED(0))).toBeTruthy()
     })
     it("on not empty and not empty returns false when value not equals", () => {
-      expect(PROVIDED(1).equals(PROVIDED(2))).to.be.false
-      expect(PROVIDED(2).equals(PROVIDED(1))).to.be.false
-      expect(PROVIDED("1").equals(PROVIDED(1))).to.be.false
-      expect(PROVIDED(0).equals(PROVIDED("0"))).to.be.false
+      expect(PROVIDED(1).equals(PROVIDED(2))).toBe(false)
+      expect(PROVIDED(2).equals(PROVIDED(1))).toBe(false)
+      expect(PROVIDED("1").equals(PROVIDED(1))).toBe(false)
+      expect(PROVIDED(0).equals(PROVIDED("0"))).toBe(false)
     })
   })
 })

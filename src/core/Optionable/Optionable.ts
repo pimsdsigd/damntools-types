@@ -1,5 +1,5 @@
 import {ClassType} from "../ClassType"
-import {Stream} from "../Stream";
+import {Stream} from "../Stream"
 
 export interface Optionable<T> {
   get(): T

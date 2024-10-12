@@ -1,10 +1,10 @@
-import {Lists} from "./utils"
-import {fromEntriesFn, KV} from "./dict"
-import {Dict, DictKeyType, DictObjectEntry, List} from "./core"
+import {fromEntriesFn, KV} from "../dict"
+import {Dict, DictKeyType, DictObjectEntry, List} from "../core"
+import {StaticArrayList} from "../list"
 
 export class DictUtils {
   static entries(obj: object): List<[string, any]> {
-    return Lists.from(Object.entries(obj))
+    return new StaticArrayList(Object.entries(obj))
   }
 
   static fromEntries<K extends DictKeyType, V>(
@@ -18,10 +18,10 @@ export class DictUtils {
   }
 
   static keys(obj: object): List<string> {
-    return Lists.from(Object.keys(obj))
+    return new StaticArrayList(Object.keys(obj))
   }
 
   static values(obj: object): List<any> {
-    return Lists.from(Object.values(obj))
+    return new StaticArrayList(Object.values(obj))
   }
 }

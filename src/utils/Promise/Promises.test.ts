@@ -1,6 +1,5 @@
 import {Promises} from "./Promises"
-import {expect} from "chai"
-import  "./index";
+import "./index"
 import "../../index.types"
 
 const array = [1, 2, 6, 3, 6, 8]
@@ -15,10 +14,9 @@ describe("Promise", () => {
         .catch(e => e)
         .then(v => {
           console.log("res=", v)
-          expect(v).to.be.eq(10)
+          expect(v).toBe(10)
           done()
         })
-
     })
   })
 
@@ -29,10 +27,9 @@ describe("Promise", () => {
         .catch(e => e)
         .then(v => {
           console.log("res=", v)
-          expect(v.message).to.be.eq("err")
+          expect(v.message).toBe("err")
           done()
         })
-
     })
   })
 })
@@ -45,12 +42,12 @@ describe("Promises", () => {
       })
       Promises.allSuccess(promises)
         .then(res => {
-          expect(res.getInner()).to.be.eql(array)
+          expect(res.getInner()).toBe(array)
           done()
         })
         .catch(err => {
           console.log(err)
-          expect(false).to.be.true
+          expect(true).toBeTruthy()
           done()
         })
     })
@@ -61,11 +58,11 @@ describe("Promises", () => {
       })
       Promises.allSuccess(promises)
         .then(() => {
-          expect(false).to.be.true
+          expect(false).toBeTruthy()
         })
         .catch(err => {
-          expect(err.size()).to.be.eq(1)
-          expect(err.first().get()).to.be.eq("error3")
+          expect(err.size()).toBe(1)
+          expect(err.first().get()).toBe("error3")
           done()
         })
     })
@@ -76,11 +73,11 @@ describe("Promises", () => {
       })
       Promises.allSuccess(promises)
         .then(() => {
-          expect(false).to.be.true
+          expect(false).toBeTruthy()
         })
         .catch(err => {
-          expect(err.size()).to.be.eq(2)
-          expect(err.first().get()).to.be.eq("error6")
+          expect(err.size()).toBe(2)
+          expect(err.first().get()).toBe("error6")
           done()
         })
     })

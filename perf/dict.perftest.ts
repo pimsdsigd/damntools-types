@@ -35,7 +35,7 @@ describe("KV", () => {
           compare: () => {
             let cpt = 0
             dataDict.keys.forEach((f: any) => {
-              // @ts-ignore
+              // @ts-expect-error
               cpt += dataDict.obj.get(f).id
             })
             console.log(cpt)

@@ -64,7 +64,7 @@ export class StaticArrayList<T> extends ArrayList<T> {
     this.throwIllegalAccess()
     return this
   }
-  
+
   double(): this {
     this.throwIllegalAccess()
     return this
