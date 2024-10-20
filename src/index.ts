@@ -3,19 +3,19 @@ import {KV, StaticKV} from "./dict"
 import {Enum} from "./enum"
 import {isOptional, Optional} from "./optional"
 import {
+  abstractArrayToList,
   collectMax,
   collectMin,
   Collectors,
+  DictUtils,
   Functions,
   Lists,
+  ObjectUtils,
   Streams,
   toArray,
   toList,
   toSet,
-  abstractArrayToList,
-  DictUtils,
-  TypeUtils,
-  ObjectUtils
+  TypeUtils
 } from "./utils"
 import {
   abstractArrayToArray,
@@ -35,6 +35,7 @@ import {
   notDefined,
   requireDefined
 } from "./core"
+import {Promises} from "./utils/Promise/Promises";
 
 export * from "./exceptions"
 export {
@@ -74,5 +75,6 @@ export {
   collectMin,
   collectMax,
   abstractArrayToArray,
-  abstractArrayToList
+  abstractArrayToList,
+  Promises
 }
