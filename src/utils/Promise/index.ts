@@ -29,3 +29,5 @@ Object.defineProperty(Promise.prototype, "onError", {
   },
   configurable: true
 })
+
+export * from "./Promises"

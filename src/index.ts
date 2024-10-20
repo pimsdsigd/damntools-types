@@ -35,7 +35,7 @@ import {
   notDefined,
   requireDefined
 } from "./core"
-import {Promises} from "./utils/Promise/Promises";
+import {Promises} from "./utils";
 
 export * from "./exceptions"
 export {
