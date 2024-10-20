@@ -69,4 +69,10 @@ export class Promises {
       }
     })
   }
+
+  static sequence(
+    promises: AbstractedArray<() => Promise<any>>): Promise<any> {
+    const p = isList(promises) ? promises.getInner() : promises
+    return p.reduce((previousValue, currentValue) => previousValue.then(() => currentValue()), Promise.resolve())
+  }
 }

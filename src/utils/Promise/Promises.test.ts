@@ -35,6 +35,41 @@ describe("Promise", () => {
 })
 
 describe("Promises", () => {
+  describe("sequence()", () => {
+    it("correct", done => {
+      const time = new Date().getTime()
+      const array = [
+        () => new Promise(resolve => {
+          console.log("constructing 1", new Date().getTime() - time)
+          setTimeout(() => {
+            console.log("timeout 1", new Date().getTime() - time)
+            resolve(new Date().getTime() - time);
+          }, 100);
+        }),
+        () => new Promise(resolve => {
+          console.log("constructing 2", new Date().getTime() - time)
+          setTimeout(() => {
+            console.log("timeout 2", new Date().getTime() - time)
+            resolve(new Date().getTime() - time);
+          }, 100);
+        }),
+        () => new Promise(resolve => {
+          console.log("constructing 3", new Date().getTime() - time)
+          setTimeout(() => {
+            console.log("timeout 3", new Date().getTime() - time)
+            resolve(new Date().getTime() - time);
+          }, 100);
+        }),
+      ]
+      Promises.sequence(array)
+        .then(res => {
+          expect(res).toBeGreaterThan(300)
+          done()
+        })
+
+    })
+  })
+
   describe("allSuccess()", () => {
     it("all success returns only data", done => {
       const promises = array.map(v => {
