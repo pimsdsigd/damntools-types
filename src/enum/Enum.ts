@@ -6,7 +6,7 @@ import {ArrayList} from "../list"
 const invalidEnumSupplier = (type: any, value: any) => () =>
   new InvalidEnumKey(type, value)
 const fromValuePredicate = (value: any) => (e: Enum<any>) =>
-  e.key().toLowerCase() === value
+  e.key() === value
 
 const instanceReducer = (type: any) => v => type[v] instanceof type
 const instanceEnumMapper = (type: any) => v => type[v]
@@ -56,7 +56,6 @@ export abstract class Enum<K extends string> {
 
   static fromValue<K extends string, T extends Enum<K>>(value: K): T {
     if (!value || value === "") throw new InvalidEnumKey(this, value)
-    value = value.toLowerCase() as K
     return this.all<T>()
       .stream()
       .findOrThrow(fromValuePredicate(value), invalidEnumSupplier(this, value))
@@ -64,7 +63,6 @@ export abstract class Enum<K extends string> {
 
   static optionalFromValue<K extends string, T extends Enum<K>>(value: K): Optionable<T> {
     if (!value || value === "") throw new InvalidEnumKey(this, value)
-    value = value.toLowerCase() as K
     const found = this.all<T>().stream().find(fromValuePredicate(value))
     return found ? Optional.of(found) : Optional.empty()
   }
