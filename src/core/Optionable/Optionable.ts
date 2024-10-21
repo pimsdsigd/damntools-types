@@ -12,11 +12,11 @@ export interface Optionable<T> {
    * Returns an empty optional if action returns undefined value
    * @param action
    */
-  map<U>(action: (value: T) => U): Optionable<U>
+  map<U>(action: (value: T) => U): Optionable<Exclude<U, null | undefined>>
 
   mapEmpty(action: () => T): Optionable<T>
 
-  flatMap<U>(action: (value: T) => Optionable<U>): Optionable<U>
+  flatMap<U>(action: (value: T) => Optionable<U>): Optionable<Exclude<U, null | undefined>>
 
   orElseReturn(other: T): T
 

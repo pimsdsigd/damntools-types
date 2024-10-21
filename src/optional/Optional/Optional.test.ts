@@ -1,5 +1,6 @@
 import {EmptyOptional, Optional, ValueOptional} from "./Optional"
 import {EmptyOptionalAccessError, UndefinedError} from "../../exceptions"
+import {Optionable} from "../../core";
 
 const PROVIDED = <T>(value: T) => Optional.of<T>(value)
 const EMPTY = <T>() => Optional.empty<T>()
@@ -164,6 +165,13 @@ describe("Optional", () => {
           .map(() => null)
           .isEmpty()
       ).toBeTruthy()
+    })
+    it("map null should remove undefined from type", () => {
+      let opt : Optionable<string> = Optional.empty()
+      const value : string | undefined = undefined
+      opt = Optional.of(5).map(() => value)
+      expect(opt.isEmpty()).toBeTruthy()
+
     })
   })
 
