@@ -142,8 +142,8 @@ export class ValueOptional<T> extends AbstractOptional<T> {
     return new ValueOptional(this._value)
   }
 
-  map<U>(action: (value: T) => Exclude<U, null | undefined>): Optionable<Exclude<U, null | undefined>> {
-    const value = action(this._value)
+  map<U>(action: (value: T) => U): Optionable<Exclude<U, null | undefined>> {
+    const value = action(this._value) as Exclude<U, null | undefined>
     if (AbstractOptional.isDefined(value)) return new ValueOptional(value)
     return Optional.empty()
   }
@@ -153,8 +153,8 @@ export class ValueOptional<T> extends AbstractOptional<T> {
     return Optional.empty<T>().mapEmpty(action)
   }
 
-  flatMap<U>(action: (value: T) => Optionable<Exclude<U, null | undefined>>): Optionable<Exclude<U, null | undefined>> {
-    const value = action(this._value)
+  flatMap<U>(action: (value: T) => Optionable<U>): Optionable<Exclude<U, null | undefined>> {
+    const value = action(this._value) as Optionable<Exclude<U, null | undefined>>
     if (AbstractOptional.isDefined(value)) return value
     return Optional.empty()
   }
