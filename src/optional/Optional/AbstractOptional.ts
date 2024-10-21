@@ -30,7 +30,7 @@ export abstract class AbstractOptional<T> implements Optionable<T> {
 
   abstract filterClass<U extends T>(type: ClassType<U>): Optionable<U>
 
-  abstract flatMap<U>(action: (value: T) => Optionable<U>): Optionable<U>
+  abstract flatMap<U>(action: (value: T) => Optionable<Exclude<U, null | undefined>>): Optionable<Exclude<U, null | undefined>>
 
   abstract get(): T
 
@@ -42,7 +42,7 @@ export abstract class AbstractOptional<T> implements Optionable<T> {
 
   abstract isPresent(): boolean
 
-  abstract map<U>(action: (value: T) => U): Optionable<U>
+  abstract map<U>(action: (value: T) => Exclude<U, null | undefined>): Optionable<Exclude<U, null | undefined>>
 
   abstract mapEmpty(action: () => T): Optionable<T>
 
