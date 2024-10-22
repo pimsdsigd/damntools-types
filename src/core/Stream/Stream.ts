@@ -1,6 +1,7 @@
 import {List, PeekFunction, SortFunction} from "../List"
 import {Optionable} from "../Optionable"
 import {ClassType} from "../ClassType"
+import {Dict, DictKeyType} from "../Dict";
 
 export type ReducerFunction<T, U> = (
   previousValue: U,
@@ -110,6 +111,8 @@ export interface Stream<T> {
   findLast(predicate: SearchPredicate<T>): Optionable<T>
 
   findLastIndex(): number
+
+  groupBy<K extends DictKeyType>(key: keyof T): Dict<K, List<T>>
 
   findLastIndex(predicate: SearchPredicate<T>): number
 
