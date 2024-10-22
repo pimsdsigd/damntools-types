@@ -25,8 +25,6 @@ import {
   StreamCollector
 } from "../../core"
 import {Optional} from "../../optional"
-import {KV} from "../../dict";
-import {ArrayList} from "../../list";
 
 const mapFn =
   <T>(action) =>
@@ -222,22 +220,7 @@ export class ListStream<T> implements Stream<T> {
   }
 
   groupBy<K extends DictKeyType>(key: keyof T): Dict<K, List<T>> {
-    if (this.array.length === 0)
-      return KV.empty()
-    const kv = KV.empty<K, List<T>>()
-    this.array.forEach(element => {
-      const value = element[key] as any
-      if (defined(value)) {
-        if (!kv.hasKey(value))
-          kv.put(value, new ArrayList())
-        kv.get(value).push(element)
-      } else {
-        if (!kv.hasKey("undefined" as K))
-          kv.put("undefined" as K, new ArrayList())
-        kv.get("undefined" as K).push(element)
-      }
-    })
-    return kv;
+    throw new Error("Not implemented")
   }
 
   count(predicate?: SearchPredicate<T>): number {
