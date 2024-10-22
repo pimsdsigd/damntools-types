@@ -112,7 +112,9 @@ export interface Stream<T> {
 
   findLastIndex(): number
 
-  groupBy<K extends DictKeyType>(key: keyof T): Dict<K, List<T>>
+  groupByKey<K extends DictKeyType>(key: keyof T): Dict<K, List<T>>
+
+  groupByFunction<K extends DictKeyType>(fn: (elem: T) => K): Dict<K, List<T>>
 
   findLastIndex(predicate: SearchPredicate<T>): number
 

@@ -219,7 +219,11 @@ export class ListStream<T> implements Stream<T> {
     }
   }
 
-  groupBy<K extends DictKeyType>(key: keyof T): Dict<K, List<T>> {
+  groupByKey<K extends DictKeyType>(key: keyof T): Dict<K, List<T>> {
+    throw new Error("Not implemented")
+  }
+
+  groupByFunction<K extends DictKeyType>(fn: (elem: T) => K): Dict<K, List<T>> {
     throw new Error("Not implemented")
   }
 
