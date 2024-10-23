@@ -60,7 +60,7 @@ Object.defineProperty(Promise.prototype, "logDuration", {
     name?: string
   ) {
     return this.then(v => {
-      console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - startTime}ms`, v)
+      console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - startTime}ms`)
       return Promise.resolve(v)
     })
   },
@@ -73,7 +73,7 @@ Object.defineProperty(Promise.prototype, "logTimer", {
   ) {
     return this.then(v => {
       if (TIMERS[name || "def"]) {
-        console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - TIMERS[name || "def"]}ms`, v)
+        console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - TIMERS[name || "def"]}ms`)
         return Promise.resolve(v)
       }
       return Promise.resolve(v)
