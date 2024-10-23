@@ -24,20 +24,20 @@ declare global {
         | null
     ): Promise<T>
 
-    log<T>(
+    log(
       name?: string
     ): Promise<T>
 
-    startTimer<T>(
+    startTimer(
       name?: string
     ): Promise<T>
 
-    logDuration<T>(
+    logDuration(
       startTime?: number,
       name?: string
     ): Promise<T>
 
-    logTimer<T>(
+    logTimer(
       name?: string
     ): Promise<T>
 
