@@ -32,6 +32,45 @@ describe("Promise", () => {
         })
     })
   })
+
+  describe("log()", () => {
+    it("returns correct error", done => {
+      Promise.resolve("text")
+        .log("prom")
+        .then(v => {
+          console.log("res=", v)
+          expect(v).toBe("text")
+          done()
+        })
+    })
+  })
+
+  describe("logDuration()", () => {
+    it("with manual start", done => {
+      const start = new Date().getTime()
+      Promise.resolve("text")
+        .then(r => new Promise(resolve => setTimeout(() => resolve(r), 200)))
+        .logDuration(start, "prom")
+        .then(v => {
+          console.log("res=", v)
+          expect(v).toBe("text")
+          done()
+        })
+    })
+  })
+  describe("logTimer()", () => {
+    it("with auto start", done => {
+      Promise.resolve("text")
+        .startTimer("prom")
+        .then(r => new Promise(resolve => setTimeout(() => resolve(r), 200)))
+        .logTimer("prom")
+        .then(v => {
+          console.log("res=", v)
+          expect(v).toBe("text")
+          done()
+        })
+    })
+  })
 })
 
 describe("Promises", () => {

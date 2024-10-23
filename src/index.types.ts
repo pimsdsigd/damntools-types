@@ -24,6 +24,23 @@ declare global {
         | null
     ): Promise<T>
 
+    log<T>(
+      name?: string
+    ): Promise<T>
+
+    startTimer<T>(
+      name?: string
+    ): Promise<T>
+
+    logDuration<T>(
+      startTime?: number,
+      name?: string
+    ): Promise<T>
+
+    logTimer<T>(
+      name?: string
+    ): Promise<T>
+
     onError<TResult = never>(
       onrejected?:
         | ((reason: any) => TResult | PromiseLike<TResult> | void)

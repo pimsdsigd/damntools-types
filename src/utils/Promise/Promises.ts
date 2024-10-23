@@ -24,6 +24,9 @@ const isFulfilled = <T>(result: PromiseResult<T>): result is FulfilledPromise<T>
 }
 
 export class Promises {
+  /**
+   * @deprecated use @damntools.fr/utils-simple
+   */
   static allSettled<T>(
     promises: AbstractedArray<Promise<T>>
   ): Promise<List<PromiseResult<T>>> {
@@ -45,6 +48,9 @@ export class Promises {
     })
   }
 
+  /**
+   * @deprecated use @damntools.fr/utils-simple
+   */
   static allSuccess<T>(
     promises: AbstractedArray<Promise<T>>,
     options?: PromiseSettlementOptions
@@ -70,6 +76,9 @@ export class Promises {
     })
   }
 
+  /**
+   * @deprecated use @damntools.fr/utils-simple
+   */
   static sequence(
     promises: AbstractedArray<() => Promise<any>>): Promise<any> {
     const p = isList(promises) ? promises.getInner() : promises
