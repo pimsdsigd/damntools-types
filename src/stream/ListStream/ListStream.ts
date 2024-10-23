@@ -1,7 +1,7 @@
 import {
   ClassType,
   compare,
-  concatArray,
+  concatArray, containsProperty,
   copyArrayInstance,
   defined,
   Dict,
@@ -38,6 +38,7 @@ const mapUndefinedFn = action => (value, index, arr) =>
 
 const flatMapFn = item => {
   if (isList(item)) return item.getInner()
+  if( containsProperty(item, "__iamStream")) return [].concat(item.array)
   return item
 }
 
@@ -45,6 +46,7 @@ const predicateFn = predicate => (v, i, a) => predicate(v, i, a)
 
 export class ListStream<T> implements Stream<T> {
   private readonly array: Array<T>
+  private readonly __iamStream = true
 
   constructor(array?: Array<T>) {
     this.array = array || []
