@@ -71,6 +71,20 @@ describe("Promise", () => {
         })
     })
   })
+  describe("zipWith()", () => {
+    it("with auto start", done => {
+      Promise.resolve("text")
+        .zipWith(Promise.resolve("prom"))
+        .zipWith(v => Promise.resolve( v[1].toUpperCase()))
+        .then(v => {
+          console.log("res=", v)
+          expect(v[0][0]).toBe("text")
+          expect(v[0][1]).toBe("prom")
+          expect(v[1]).toBe("PROM")
+          done()
+        })
+    })
+  })
 })
 
 describe("Promises", () => {

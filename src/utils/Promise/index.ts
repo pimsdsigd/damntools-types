@@ -32,6 +32,20 @@ Object.defineProperty(Promise.prototype, "onError", {
   configurable: true
 })
 
+Object.defineProperty(Promise.prototype, "zipWith", {
+  value: function <O, T>(
+    promise: Promise<O> | ((value?: T) => Promise<O>)
+  ) {
+    return this.then(v => {
+      if (typeof promise === "function") {
+        return promise(v).then(o => [v, o])
+      }
+      return promise.then(o => [v, o])
+    })
+  },
+  configurable: true
+})
+
 Object.defineProperty(Promise.prototype, "log", {
   value: function (name?: string
   ) {

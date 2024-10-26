@@ -41,6 +41,10 @@ declare global {
       name?: string
     ): Promise<T>
 
+    zipWith<O>(
+      promise: Promise<O> | ((value?: T) => Promise<O>)
+    ): Promise<[T, O]>
+
     onError<TResult = never>(
       onrejected?:
         | ((reason: any) => TResult | PromiseLike<TResult> | void)
