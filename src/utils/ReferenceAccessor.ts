@@ -1,12 +1,12 @@
 import {Comparator, compare, Optionable} from "../core"
 import {Optional} from "../optional"
 
-export class ReferenceAccessor<T, F extends keyof T, O extends T[F]> {
-  private readonly _field: F
-  private readonly _compareFn: (a: T[F], b: T[F]) => number
+export class ReferenceAccessor<T, O> {
+  private readonly _field: string
+  private readonly _compareFn: (a: any, b: any) => number
 
-  constructor(field: F, compareFn?: Comparator<T[F]>) {
-    this._field = field
+  constructor(field: keyof T, compareFn?: Comparator<O>) {
+    this._field = field as string
     this._compareFn = compareFn || compare
   }
 
@@ -39,10 +39,11 @@ export class ReferenceAccessor<T, F extends keyof T, O extends T[F]> {
     return previous
   }
 
-  private internalCompare(get: T[F], expected: O): boolean {
+  private internalCompare(get: O, expected: O): boolean {
     if (get === undefined && expected === undefined) return true
     if (get === null && expected === null) return true
-    if( get === null || get === undefined || expected === null || expected === undefined ) return false
+    if (get === null || get === undefined || expected === null || expected === undefined)
+      return false
     if (this._compareFn) return this._compareFn(get, expected) === 0
     return false
   }
