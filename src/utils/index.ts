@@ -9,6 +9,7 @@ export * from "./Functions"
 export * from "./Promise"
 export * from "./TypeUtils"
 export * from "./ObjectUtils"
+export * from "./Tuples"
 export * from "./DictUtils"
 export * from "./ReferenceAccessor"
 export const abstractArrayToList = <T>(obj: AbstractedArray<T>): List<T> => {

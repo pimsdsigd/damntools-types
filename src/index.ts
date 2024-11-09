@@ -14,7 +14,7 @@ import {
   Streams,
   toArray,
   toList,
-  toSet,
+  toSet, Tuples,
   TypeUtils
 } from "./utils"
 import {
@@ -38,6 +38,7 @@ import {
 import {Promises} from "./utils";
 export * from "./exceptions"
 export {
+  Tuples,
   ReferenceAccessor,
   Enum,
   Optional,
