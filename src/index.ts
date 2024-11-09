@@ -10,7 +10,7 @@ import {
   DictUtils,
   Functions,
   Lists,
-  ObjectUtils,
+  ObjectUtils, ReferenceAccessor,
   Streams,
   toArray,
   toList,
@@ -36,9 +36,9 @@ import {
   requireDefined
 } from "./core"
 import {Promises} from "./utils";
-
 export * from "./exceptions"
 export {
+  ReferenceAccessor,
   Enum,
   Optional,
   ArrayList,

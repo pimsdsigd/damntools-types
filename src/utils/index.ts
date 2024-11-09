@@ -10,6 +10,7 @@ export * from "./Promise"
 export * from "./TypeUtils"
 export * from "./ObjectUtils"
 export * from "./DictUtils"
+export * from "./ReferenceAccessor"
 export const abstractArrayToList = <T>(obj: AbstractedArray<T>): List<T> => {
   if (isList(obj)) return obj as List<T>
   else if (Array.isArray(obj)) return new ArrayList(obj)
