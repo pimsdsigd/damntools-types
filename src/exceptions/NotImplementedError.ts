@@ -1,5 +1,8 @@
 export class NotImplementedError extends Error {
-  constructor() {
-    super("Not implemented !")
+  constructor(...argSink: any) {
+    super(
+      "Not implemented !" +
+        (argSink && typeof argSink[0] === "string" ? " " + argSink[0] : "")
+    )
   }
 }
