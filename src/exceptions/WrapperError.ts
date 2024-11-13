@@ -1,8 +1,8 @@
 
 export class WrapperError extends Error {
-  private readonly _reason: Error | undefined;
+  private readonly _reason: Error;
 
-  constructor(message?: string, reason?: Error | undefined) {
+  constructor(reason: Error, message?: string) {
     super(message)
     this._reason = reason
   }
