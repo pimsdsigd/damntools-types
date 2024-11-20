@@ -5,7 +5,7 @@ export class ReferenceAccessor<T, O> {
   private readonly _field: string
   private readonly _compareFn: (a: any, b: any) => number
 
-  constructor(field: keyof T, compareFn?: Comparator<O>) {
+  constructor(field: keyof T | string, compareFn?: Comparator<O>) {
     this._field = field as string
     this._compareFn = compareFn || compare
   }
