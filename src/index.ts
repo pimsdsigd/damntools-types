@@ -10,11 +10,17 @@ import {
   DictUtils,
   Functions,
   Lists,
-  ObjectUtils, ReferenceAccessor,
+  ObjectUtils,
+  Promises,
+  ReferenceAccessor,
+  ReferenceBooleanAccessor,
+  ReferenceNumberAccessor,
+  ReferenceStringAccessor,
   Streams,
   toArray,
   toList,
-  toSet, Tuples,
+  toSet,
+  Tuples,
   TypeUtils
 } from "./utils"
 import {
@@ -35,11 +41,15 @@ import {
   notDefined,
   requireDefined
 } from "./core"
-import {Promises} from "./utils";
+
 export * from "./exceptions"
+
 export {
   Tuples,
   ReferenceAccessor,
+  ReferenceStringAccessor,
+  ReferenceNumberAccessor,
+  ReferenceBooleanAccessor,
   Enum,
   Optional,
   ArrayList,

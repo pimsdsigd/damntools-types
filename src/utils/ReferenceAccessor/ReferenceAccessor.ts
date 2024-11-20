@@ -1,13 +1,14 @@
-import {Comparator, compare, Optionable} from "../core"
-import {Optional} from "../optional"
+import {compare, Optionable} from "../../core"
+import {Optional} from "../../optional"
+import {EqualityComparator} from "../../core/Comparator"
 
 export class ReferenceAccessor<T, O> {
   private readonly _field: string
-  private readonly _compareFn: (a: any, b: any) => number
+  private readonly _compareFn: (a: any, b: any) => boolean
 
-  constructor(field: keyof T | string, compareFn?: Comparator<O>) {
+  constructor(field: keyof T | string, compareFn?: EqualityComparator<O>) {
     this._field = field as string
-    this._compareFn = compareFn || compare
+    this._compareFn = compareFn || ((a, b) => compare(a, b) === 0)
   }
 
   public compareAndSet(ref: T, expected: O, set: O) {
@@ -44,7 +45,7 @@ export class ReferenceAccessor<T, O> {
     if (get === null && expected === null) return true
     if (get === null || get === undefined || expected === null || expected === undefined)
       return false
-    if (this._compareFn) return this._compareFn(get, expected) === 0
+    if (this._compareFn) return this._compareFn(get, expected)
     return false
   }
 }
