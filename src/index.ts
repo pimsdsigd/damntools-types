@@ -6,6 +6,7 @@ import {
   abstractArrayToList,
   collectMax,
   collectMin,
+  collectMinMax,
   Collectors,
   DictUtils,
   Functions,
@@ -85,6 +86,7 @@ export {
   toArray,
   collectMin,
   collectMax,
+  collectMinMax,
   abstractArrayToArray,
   abstractArrayToList,
   Promises

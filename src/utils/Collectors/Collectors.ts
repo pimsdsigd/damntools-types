@@ -1,5 +1,6 @@
-import {asNumber, copyArrayInstance, isNumber, List, StreamCollector} from "../../core"
+import {copyArrayInstance, isNumber, List, StreamCollector} from "../../core"
 import {ArrayList, UniqueList} from "../../list"
+import {Tuple2, Tuples} from "../Tuples"
 
 export type JoiningSeparatorFn<T, S> = (e: T, i: number) => S
 
@@ -36,12 +37,22 @@ export abstract class Collectors {
     return copyArrayInstance(items)
   }
 
-  static min<T>(items: Array<T>): number {
-    return Math.min(...items.filter(isNumber).map(asNumber))
+  static min(items: Array<number>): number {
+    return Math.min(...items.filter(isNumber))
   }
 
-  static max<T>(items: Array<T>): number {
-    return Math.max(...items.filter(isNumber).map(asNumber))
+  static max(items: Array<number>): number {
+    return Math.max(...items.filter(isNumber))
+  }
+
+  static minMax(items: Array<number>): Tuple2<number, number> {
+    let min = Number.MAX_VALUE,
+      max = Number.MIN_VALUE
+    items.forEach(item => {
+      if (item < min) min = item
+      if (item > max) max = item
+    })
+    return Tuples.duo(min, max)
   }
 
   static joining<T, S>(
@@ -69,3 +80,4 @@ export const toSet = Collectors.toSet
 export const toArray = Collectors.toArray
 export const collectMin = Collectors.min
 export const collectMax = Collectors.max
+export const collectMinMax = Collectors.minMax
