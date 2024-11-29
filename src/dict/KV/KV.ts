@@ -121,10 +121,10 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
     return new KV<K, V>(this._map)
   }
 
-  mapValues<O>(mapper: (value: V) => O): Dict<K, O> {
+  mapValues<O>(mapper: (value: V, key?: K) => O): Dict<K, O> {
     const entries = this.entries()
       .stream()
-      .map(e => [e.key, mapper(e.value)])
+      .map(e => [e.key, mapper(e.value, e.key)])
       .collectArray()
     const obj = Object.fromEntries(entries)
     return new KV<K, O>(obj)

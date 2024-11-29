@@ -76,7 +76,7 @@ export interface Dict<K extends DictKeyType, V> {
 
   copy(): Dict<K, V>
 
-  mapValues<O>(mapper: (value: V) => O): Dict<K, O>
+  mapValues<O>(mapper: (value: V, key?: K) => O): Dict<K, O>
 
   mapKeys<NK extends DictKeyType>(mapper: (value: K) => NK): Dict<NK, V>
 
