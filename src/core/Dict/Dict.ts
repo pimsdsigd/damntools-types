@@ -76,6 +76,14 @@ export interface Dict<K extends DictKeyType, V> {
 
   copy(): Dict<K, V>
 
+  mapValues<O>(mapper: (value: V) => O): Dict<K, O>
+
+  mapKeys<NK extends DictKeyType>(mapper: (value: K) => NK): Dict<NK, V>
+
+  map<KO extends DictKeyType, O>(
+    mapper: (key: K, value: V) => DictObjectEntry<KO, O>
+  ): Dict<K, O>
+
   log(identifier?: string | number): this
 
   log(identifier?: string | number, entryFormatter?: DictLogFormatter<K, V>): this

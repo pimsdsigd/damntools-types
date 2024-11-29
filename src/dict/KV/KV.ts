@@ -11,6 +11,7 @@ import {
 } from "../../core"
 import {Optional} from "../../optional"
 import {StaticArrayList} from "../../list"
+import {toArray} from "../../utils"
 
 const fromEntryFn = <K extends DictKeyType, V>(
   entry: DictObjectEntry<K, V>
@@ -119,6 +120,38 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
 
   copy(): Dict<K, V> {
     return new KV<K, V>(this._map)
+  }
+
+  mapValues<O>(mapper: (value: V) => O): Dict<K, O> {
+    const entries = this.entries()
+      .stream()
+      .map(e => [e.key, mapper(e.value)])
+      .collect(toArray)
+    const obj = Object.fromEntries(entries)
+    return new KV<K, O>(obj)
+  }
+
+  mapKeys<NK extends DictKeyType>(mapper: (value: K) => NK): Dict<NK, V> {
+    const entries: [NK, V][] = this.entries()
+      .stream()
+      .map<[NK, V]>(e => [mapper(e.key), e.value])
+      .collect(toArray)
+    const obj = Object.fromEntries(entries)
+    return new KV<NK, V>(obj as any)
+  }
+
+  map<KO extends DictKeyType, O>(
+    mapper: (key: K, value: V) => DictObjectEntry<KO, O>
+  ): Dict<K, O> {
+    const entries = this.entries()
+      .stream()
+      .map<[KO, O]>(e => {
+        const mapped = mapper(e.key, e.value)
+        return  [mapped.key, mapped.value]
+      })
+      .collect(toArray)
+    const obj = Object.fromEntries(entries)
+    return new KV<K, O>(obj as any)
   }
 
   equals(other: Dict<K, V>): boolean {
