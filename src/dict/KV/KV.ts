@@ -11,7 +11,6 @@ import {
 } from "../../core"
 import {Optional} from "../../optional"
 import {StaticArrayList} from "../../list"
-import {toArray} from "../../utils"
 
 const fromEntryFn = <K extends DictKeyType, V>(
   entry: DictObjectEntry<K, V>
@@ -126,7 +125,7 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
     const entries = this.entries()
       .stream()
       .map(e => [e.key, mapper(e.value)])
-      .collect(toArray)
+      .collectArray()
     const obj = Object.fromEntries(entries)
     return new KV<K, O>(obj)
   }
@@ -135,7 +134,7 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
     const entries: [NK, V][] = this.entries()
       .stream()
       .map<[NK, V]>(e => [mapper(e.key), e.value])
-      .collect(toArray)
+      .collectArray()
     const obj = Object.fromEntries(entries)
     return new KV<NK, V>(obj as any)
   }
@@ -147,9 +146,9 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
       .stream()
       .map<[KO, O]>(e => {
         const mapped = mapper(e.key, e.value)
-        return  [mapped.key, mapped.value]
+        return [mapped.key, mapped.value]
       })
-      .collect(toArray)
+      .collectArray()
     const obj = Object.fromEntries(entries)
     return new KV<K, O>(obj as any)
   }
