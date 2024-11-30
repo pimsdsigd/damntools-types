@@ -3,7 +3,7 @@ import {
   abstractArrayToArray,
   AbstractedArray,
   ConcatArgType,
-  concatArray,
+  concatArray, defined,
   EqualityPredicate,
   equals,
   isList,
@@ -44,35 +44,35 @@ export class UniqueList<T> extends ArrayList<T> implements List<T> {
 
   insert(start: number, items?: AbstractedArray<T>): this {
     let array = abstractArrayToArray(items)
-    array = array.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
+    array = array.filter(item =>defined(item) && !this.array.find(i => this.equalityPredicate(i, item)))
     return super.insert(start, array)
   }
 
   replace(start: number, items?: AbstractedArray<T>): this {
     let array = abstractArrayToArray(items)
-    array = array.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
+    array = array.filter(item =>defined(item) && !this.array.find(i => this.equalityPredicate(i, item)))
     return super.replace(start, array)
   }
 
   replaceFrom(start: number, items?: AbstractedArray<T>): this {
     let array = abstractArrayToArray(items)
-    array = array.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
+    array = array.filter(item => defined(item) &&!this.array.find(i => this.equalityPredicate(i, item)))
     return super.replaceFrom(start, array)
   }
 
   push(...items: Array<T | undefined>): this {
-    items = items.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
+    items = items.filter(item => defined(item) && !this.array.find(i => this.equalityPredicate(i, item)))
     return super.push(...items)
   }
 
   concat(...items: ConcatArgType<T>): this {
     if (items) {
       const container: Array<Array<T>> = this.getConcatArgs(...items)
-      container.forEach(
+      container.filter(i => defined(i)).forEach(
         c =>
           (this.array = concatArray(
             this.array,
-            c.filter(item => !this.array.find(i => this.equalityPredicate(i, item)))
+            c.filter(item => defined(item) &&!this.array.find(i => this.equalityPredicate(i, item)))
           ))
       )
       this._size = this.array.length
