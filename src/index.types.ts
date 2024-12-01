@@ -24,6 +24,8 @@ declare global {
         | null
     ): Promise<T>
 
+    thenReturn<O>(value: O): Promise<O>
+
     log(
       name?: string
     ): Promise<T>

@@ -16,6 +16,15 @@ Object.defineProperty(Promise.prototype, "thenDo", {
   configurable: true
 })
 
+Object.defineProperty(Promise.prototype, "thenReturn", {
+  value: function <O>(value: O) {
+    return this.then(() => {
+      return value
+    })
+  },
+  configurable: true
+})
+
 Object.defineProperty(Promise.prototype, "onError", {
   value: function (
     onrejected?: ((reason: any) => any | PromiseLike<any>) | undefined | null
@@ -33,9 +42,7 @@ Object.defineProperty(Promise.prototype, "onError", {
 })
 
 Object.defineProperty(Promise.prototype, "zipWith", {
-  value: function <O, T>(
-    promise: Promise<O> | ((value?: T) => Promise<O>)
-  ) {
+  value: function <O, T>(promise: Promise<O> | ((value?: T) => Promise<O>)) {
     return this.then(v => {
       if (typeof promise === "function") {
         return promise(v).then(o => [v, o])
@@ -47,8 +54,7 @@ Object.defineProperty(Promise.prototype, "zipWith", {
 })
 
 Object.defineProperty(Promise.prototype, "log", {
-  value: function (name?: string
-  ) {
+  value: function (name?: string) {
     return this.then(v => {
       console.debug(`Promise."${name || "log"}"`, v)
       return Promise.resolve(v)
@@ -58,8 +64,7 @@ Object.defineProperty(Promise.prototype, "log", {
 })
 
 Object.defineProperty(Promise.prototype, "startTimer", {
-  value: function (name?: string
-  ) {
+  value: function (name?: string) {
     return this.then(v => {
       TIMERS[name || "def"] = new Date().getTime()
       return Promise.resolve(v)
@@ -69,12 +74,11 @@ Object.defineProperty(Promise.prototype, "startTimer", {
 })
 
 Object.defineProperty(Promise.prototype, "logDuration", {
-  value: function (
-    startTime: number,
-    name?: string
-  ) {
+  value: function (startTime: number, name?: string) {
     return this.then(v => {
-      console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - startTime}ms`)
+      console.debug(
+        `Promise."${name || "timer"}" : took ${new Date().getTime() - startTime}ms`
+      )
       return Promise.resolve(v)
     })
   },
@@ -82,12 +86,12 @@ Object.defineProperty(Promise.prototype, "logDuration", {
 })
 
 Object.defineProperty(Promise.prototype, "logTimer", {
-  value: function (
-    name?: string
-  ) {
+  value: function (name?: string) {
     return this.then(v => {
       if (TIMERS[name || "def"]) {
-        console.debug(`Promise."${name || "timer"}" : took ${new Date().getTime() - TIMERS[name || "def"]}ms`)
+        console.debug(
+          `Promise."${name || "timer"}" : took ${new Date().getTime() - TIMERS[name || "def"]}ms`
+        )
         return Promise.resolve(v)
       }
       return Promise.resolve(v)
@@ -95,6 +99,5 @@ Object.defineProperty(Promise.prototype, "logTimer", {
   },
   configurable: true
 })
-
 
 export * from "./Promises"
