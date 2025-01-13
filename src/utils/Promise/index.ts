@@ -1,5 +1,3 @@
-import {containsMethod} from "../../core"
-
 const TIMERS = {}
 
 Object.defineProperty(Promise.prototype, "thenDo", {
@@ -7,10 +5,11 @@ Object.defineProperty(Promise.prototype, "thenDo", {
     onfulfilled?: ((value: any) => any | PromiseLike<any>) | undefined | null
   ) {
     return this.then(v => {
-      const res = onfulfilled(v)
-      if (containsMethod(res, "then") && containsMethod(res, "catch"))
-        return res.then(() => v)
-      else return Promise.resolve(v)
+      if (typeof onfulfilled === "function") {
+        return Promise.resolve()
+          .then(() => onfulfilled(v))
+          .then(() => v)
+      } else return Promise.resolve(v)
     })
   },
   configurable: true

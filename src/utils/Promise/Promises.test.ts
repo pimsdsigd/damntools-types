@@ -1,7 +1,6 @@
 import "./index"
 import "../../index.types"
 
-
 describe("Promise", () => {
   describe("thenDo()", () => {
     it("returns correct data", done => {
@@ -13,6 +12,56 @@ describe("Promise", () => {
         .then(v => {
           console.log("res=", v)
           expect(v).toBe(10)
+          done()
+        })
+    })
+    it("verify execution order", done => {
+      const arr = []
+      Promise.resolve(10)
+        .thenDo(
+          value =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                arr.push(value)
+                resolve(true)
+              }, 100)
+            })
+        )
+        .thenDo(() =>
+          new Promise(resolve => {
+            setTimeout(() => {
+              arr.push(1)
+              resolve(true)
+            }, 100)
+          }))
+        .thenDo(() =>
+          new Promise(resolve => {
+            setTimeout(() => {
+              arr.push(2)
+              resolve(true)
+            }, 100)
+          }))
+        .then(() => {
+          console.log("res=", arr)
+          expect(arr[0]).toBe(10)
+          expect(arr[1]).toBe(1)
+          expect(arr[2]).toBe(2)
+          done()
+        })
+        .catch(done)
+    })
+  })
+  describe("thenReturn()", () => {
+    it("returns correct data", done => {
+      Promise.resolve(10)
+        .thenDo(value => console.log(value))
+        .thenDo(() => Promise.resolve(console.log("")))
+        .thenDo(() => console.log("non"))
+        .thenReturn(50)
+        .catch(e => e)
+        .then(v => {
+          console.log("res=", v)
+          expect(v).toBe(50)
           done()
         })
     })
