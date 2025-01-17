@@ -1,5 +1,9 @@
 import {ClassType, equals, Optionable, Stream} from "../../core"
-import {EmptyOptionalAccessError, UndefinedError} from "../../exceptions"
+import {
+  EmptyOptionalAccessError,
+  NotImplementedError,
+  UndefinedError
+} from "../../exceptions"
 import {AbstractOptional} from "./AbstractOptional"
 
 export abstract class Optional<T> extends AbstractOptional<T> {
@@ -119,7 +123,7 @@ export class EmptyOptional<T> extends AbstractOptional<T> {
   }
 
   toStream(): Stream<T> {
-    throw new Error("Undefined method")
+    throw new NotImplementedError()
   }
 }
 
@@ -215,7 +219,7 @@ export class ValueOptional<T> extends AbstractOptional<T> {
   }
 
   toStream(): Stream<T> {
-    throw new Error("Undefined method")
+    throw new NotImplementedError()
   }
 }
 

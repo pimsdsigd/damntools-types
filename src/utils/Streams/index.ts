@@ -1,5 +1,5 @@
 import {ListStream} from "../../stream"
-import {Optional} from "../../optional"
+import {EmptyOptional, Optional, ValueOptional} from "../../optional"
 import {KV} from "../../dict";
 import {defined} from "../../core";
 import {ArrayList} from "../../list";
@@ -13,7 +13,15 @@ Object.defineProperty(Array.prototype, "toStream", {
   configurable: true
 })
 
-Object.defineProperty(Optional.prototype, "toStream", {
+Object.defineProperty(EmptyOptional.prototype, "toStream", {
+  value: function () {
+    if (this.isEmpty()) return new ListStream()
+    return new ListStream([])
+  },
+  configurable: true
+})
+
+Object.defineProperty(ValueOptional.prototype, "toStream", {
   value: function () {
     if (this.isEmpty()) return new ListStream()
     return new ListStream([this.get()])
