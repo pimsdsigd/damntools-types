@@ -57,11 +57,11 @@ export const compareArrays: Comparator<Array<any>> = <T>(
   return a.length - b.length
 }
 
-export const compareNumbers: Comparator<number> = (a: number | undefined | null, b: number | undefined | null): number => {
+export const compareNumbers: Comparator<number | undefined | null> = (a: number | undefined | null, b: number | undefined | null): number => {
   return a - b
 }
 
-export const compareStrings: Comparator<string> = (a: string | undefined | null, b: string | undefined | null): number => {
+export const compareStrings: Comparator<string | undefined | null> = (a: string | undefined | null, b: string | undefined | null): number => {
   if (notDefined(a) && notDefined(b)) return 0
   if (notDefined(a)) return -1
   if (notDefined(b)) return 1
