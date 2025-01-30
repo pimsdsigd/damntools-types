@@ -14,17 +14,19 @@ export class TypeUtils {
     )
   }
 
+  /**
+   * Thanks to StefansArya
+   * https://stackoverflow.com/a/66120819
+   * @param theClass
+   */
   static isClass<T>(theClass: AbstractType<T>): theClass is ClassType<T> {
-    // Class constructor is also a function
     // @ts-ignore
     if(!(theClass && theClass.constructor === Function) || theClass.prototype === undefined)
       return false;
 
-    // This is a class that extends other class
     if(Function.prototype !== Object.getPrototypeOf(theClass))
       return true;
 
-    // Usually a function will only have 'constructor' in the prototype
     // @ts-ignore
     return Object.getOwnPropertyNames(theClass.prototype).length > 1;
   }
