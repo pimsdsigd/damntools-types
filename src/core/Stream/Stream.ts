@@ -25,6 +25,8 @@ export type MapDefinedFunction<T, U> = (value: T, index?: number, array?: Array<
 
 export type MapUndefinedFunction<T> = (index?: number, array?: Array<T>) => T
 
+export type LogEntryFormatter<T> =  (entry: T, index?: number, array?: Array<T>) => string
+
 export type FlatMapFunction<T, U> = (
   value: T,
   index?: number,
@@ -50,7 +52,7 @@ export interface Stream<T> {
 
   log(identifier?: string | number): Stream<T>
 
-  log(identifier?: string | number, entryFormatter?: (entry: T) => string): Stream<T>
+  log(identifier?: string | number, entryFormatter?: LogEntryFormatter<T>): Stream<T>
 
   map<U>(action: (value: T) => U): Stream<U>
 
@@ -83,6 +85,8 @@ export interface Stream<T> {
   filterPresent(): Stream<NonNullable<T>>
 
   unique(equalityPredicate?: EqualityPredicate<T, T>): Stream<T>
+
+  uniqueByKey(key: keyof T): Stream<T>
 
   every(predicate: SearchPredicate<T>): boolean
 

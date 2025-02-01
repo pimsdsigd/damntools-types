@@ -1,7 +1,8 @@
 import {
   ClassType,
   compare,
-  concatArray, containsProperty,
+  concatArray,
+  containsProperty,
   copyArrayInstance,
   defined,
   Dict,
@@ -38,7 +39,7 @@ const mapUndefinedFn = action => (value, index, arr) =>
 
 const flatMapFn = item => {
   if (isList(item)) return item.getInner()
-  if( containsProperty(item, "__iamStream")) return [].concat(item.array)
+  if (containsProperty(item, "__iamStream")) return [].concat(item.array)
   return item
 }
 
@@ -136,6 +137,10 @@ export class ListStream<T> implements Stream<T> {
         []
       )
     )
+  }
+
+  uniqueByKey(key: keyof T): Stream<T> {
+    return this.unique((a, b) => compare(a[key], b[key]) === 0)
   }
 
   every(predicate: SearchPredicate<T>): boolean {
@@ -268,7 +273,7 @@ export class ListStream<T> implements Stream<T> {
 
   log(
     identifier?: string | number,
-    entryFormatter?: (entry: T, index: number, array: Array<T>) => string
+    entryFormatter?: (entry: T, index?: number, array?: Array<T>) => string
   ): Stream<T> {
     const id = identifier || "ListLog"
     if (this.array.length === 0) console.debug(id, "Empty")
