@@ -3,6 +3,7 @@ import {EmptyOptional, ValueOptional} from "../../optional"
 import {KV} from "../../dict";
 import {defined} from "../../core";
 import {ArrayList} from "../../list";
+import {toList} from "../Collectors";
 
 export * from "./Streams"
 
@@ -70,6 +71,14 @@ Object.defineProperty(ListStream.prototype, "groupByFunction", {
       }
     })
     return kv;
+  },
+  configurable: true
+})
+
+
+Object.defineProperty(ListStream.prototype, "collectList", {
+  value: function () {
+    return this.collect(toList)
   },
   configurable: true
 })

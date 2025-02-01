@@ -25,7 +25,7 @@ export type MapDefinedFunction<T, U> = (value: T, index?: number, array?: Array<
 
 export type MapUndefinedFunction<T> = (index?: number, array?: Array<T>) => T
 
-export type LogEntryFormatter<T> =  (entry: T, index?: number, array?: Array<T>) => string
+export type LogEntryFormatter<T> = (entry: T, index?: number, array?: Array<T>) => string
 
 export type FlatMapFunction<T, U> = (
   value: T,
@@ -159,4 +159,6 @@ export interface Stream<T> {
   collect<R>(collector: StreamCollector<T, R>): R
 
   collectArray(): Array<T>
+
+  collectList(): List<T>
 }

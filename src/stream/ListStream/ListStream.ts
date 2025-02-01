@@ -26,6 +26,7 @@ import {
   StreamCollector
 } from "../../core"
 import {Optional} from "../../optional"
+import {NotImplementedError} from "../../exceptions";
 
 const mapFn =
   <T>(action) =>
@@ -284,5 +285,9 @@ export class ListStream<T> implements Stream<T> {
       )
     else console.debug(id, this.array)
     return this
+  }
+
+  collectList(): List<T> {
+    throw new NotImplementedError()
   }
 }
