@@ -1,5 +1,5 @@
 import {copyArrayInstance, isNumber, List, StreamCollector} from "../../core"
-import {ArrayList, UniqueList} from "../../list"
+import {ArrayList, StaticArrayList, UniqueList} from "../../list"
 import {Tuple2, Tuples} from "../Tuples"
 
 export type JoiningSeparatorFn<T, S> = (e: T, i: number) => S
@@ -11,6 +11,14 @@ export abstract class Collectors {
    */
   static toList<T>(items: Array<T>): List<T> {
     return new ArrayList(items)
+  }
+
+  /**
+   * Can be used to collect array in an unmodifiable List
+   * @param items
+   */
+  static toUnmodifiableList<T>(items: Array<T>): List<T> {
+    return new StaticArrayList(items)
   }
 
   /**
