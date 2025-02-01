@@ -20,6 +20,7 @@ import {
   Streams,
   toArray,
   toList,
+  toUnmodifiableList,
   toSet,
   Tuples,
   TypeUtils
@@ -83,6 +84,7 @@ export {
   asNumber,
   toList,
   toSet,
+  toUnmodifiableList,
   toArray,
   collectMin,
   collectMax,

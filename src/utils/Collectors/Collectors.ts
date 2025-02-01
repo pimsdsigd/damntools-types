@@ -84,6 +84,7 @@ export abstract class Collectors {
 }
 
 export const toList = Collectors.toList
+export const toUnmodifiableList = Collectors.toUnmodifiableList
 export const toSet = Collectors.toSet
 export const toArray = Collectors.toArray
 export const collectMin = Collectors.min
