@@ -28,7 +28,6 @@ export class TypeUtils {
    * @deprecated
    */
   static isClass<T>(theClass: AbstractType<T>): theClass is ClassType<T> {
-    console.log(theClass.name, theClass.new)
     // @ts-ignore
     if(!(theClass && theClass.constructor === Function) || theClass.prototype === undefined)
       return false;
