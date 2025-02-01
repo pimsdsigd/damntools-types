@@ -14,12 +14,21 @@ export class TypeUtils {
     )
   }
 
+  static subClassOf<T, I extends T = T>(theClass: AbstractType<I>, expected: AbstractType<T>): boolean {
+    if( theClass === expected )
+      return false
+    // @ts-expect-error prototype exists
+    return theClass.prototype instanceof expected
+  }
+
   /**
    * Thanks to StefansArya
    * https://stackoverflow.com/a/66120819
    * @param theClass
+   * @deprecated
    */
   static isClass<T>(theClass: AbstractType<T>): theClass is ClassType<T> {
+    console.log(theClass.name, theClass.new)
     // @ts-ignore
     if(!(theClass && theClass.constructor === Function) || theClass.prototype === undefined)
       return false;

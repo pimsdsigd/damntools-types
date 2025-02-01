@@ -16,47 +16,73 @@ class MyConcreteClass extends MyAbstractClass {
   key1_1: string
 }
 
-class MyConcreteClassWithCtor extends MyAbstractClass {
-  key1_2: string
-
-  constructor() {
-    super()
-    this.key1_2 = ""
-  }
-}
-
-class MyConcreteClassWithCtorFrom extends MyAbstractClassWithCtor {
-  key2_1: string
-
-  constructor() {
-    super()
-    this.key2_1 = ""
-  }
-}
 
 class MyConcreteClassFrom extends MyAbstractClassWithCtor {
 }
 
+class MyConcreteClassFromSub extends MyConcreteClassFrom {
+}
+
+
+class MyClassWithCtor {
+
+  key3: string
+
+  constructor() {
+    this.key3 = ""
+  }
+
+  met() {
+    return true
+  }
+}
+
 describe("TypeUtils", () => {
 
-  describe("isClass", () => {
-
-    it("abstract should return false", () => {
-      expect(TypeUtils.isClass(MyAbstractClassWithCtor)).toBeFalsy()
-      expect(TypeUtils.isClass(MyAbstractClass)).toBeFalsy()
+  describe("subClassOf", () => {
+    it("same parameter should return false", () => {
+      expect(TypeUtils.subClassOf(MyConcreteClass, MyConcreteClass))
+        .toBeFalsy()
     })
-
-    it("class should return true", () => {
-      expect(TypeUtils.isClass(MyConcreteClass)).toBeTruthy()
-      expect(TypeUtils.isClass(MyConcreteClassFrom)).toBeTruthy()
-      expect(TypeUtils.isClass(MyConcreteClassWithCtor)).toBeTruthy()
-      expect(TypeUtils.isClass(MyConcreteClassWithCtorFrom)).toBeTruthy()
+    it("unrelated native parameter should return false", () => {
+      expect(TypeUtils.subClassOf(Number, MyConcreteClass))
+        .toBeFalsy()
     })
-
-    it("instance should return false", () => {
-      // @ts-ignore
-      expect(TypeUtils.isClass(new MyConcreteClassWithCtor())).toBeFalsy()
+    it("unrelated parameter should return false", () => {
+      expect(TypeUtils.subClassOf(MyClassWithCtor, MyConcreteClass))
+        .toBeFalsy()
     })
-
+    it("same abstract parameter should return false", () => {
+      expect(TypeUtils.subClassOf(MyAbstractClass, MyAbstractClass))
+        .toBeFalsy()
+    })
+    it("subclass of expected should return true", () => {
+      expect(TypeUtils.subClassOf(MyConcreteClass, MyAbstractClass))
+        .toBeTruthy()
+    })
+    it("subclass of subclass of expected should return true", () => {
+      expect(TypeUtils.subClassOf(MyConcreteClassFromSub, MyAbstractClassWithCtor))
+        .toBeTruthy()
+    })
+    it("parent of expected should return false", () => {
+      expect(TypeUtils.subClassOf(MyConcreteClass, MyConcreteClassFromSub))
+        .toBeFalsy()
+    })
+    it("function should return false", () => {
+      expect(TypeUtils.subClassOf(Function, MyAbstractClass))
+        .toBeFalsy()
+    })
+    it("object should return false", () => {
+      expect(TypeUtils.subClassOf(new MyConcreteClass() as any, MyAbstractClass))
+        .toBeFalsy()
+    })
+    it("any of Object should return true", () => {
+      expect(TypeUtils.subClassOf(MyConcreteClass, Object))
+        .toBeTruthy()
+    })
+    it("object of object should return false", () => {
+      expect(TypeUtils.subClassOf({} as any, Object))
+        .toBeFalsy()
+    })
   })
 })

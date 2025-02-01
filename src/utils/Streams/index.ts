@@ -1,5 +1,5 @@
 import {ListStream} from "../../stream"
-import {EmptyOptional, Optional, ValueOptional} from "../../optional"
+import {EmptyOptional, ValueOptional} from "../../optional"
 import {KV} from "../../dict";
 import {defined} from "../../core";
 import {ArrayList} from "../../list";
