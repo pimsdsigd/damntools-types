@@ -1,6 +1,6 @@
 import {ClassType, equals, Optionable, Stream} from "../../core"
 import {
-  EmptyOptionalAccessError,
+  EmptyOptionalAccessError, NotAnOptionalError,
   NotImplementedError,
   UndefinedError
 } from "../../exceptions"
@@ -159,7 +159,10 @@ export class ValueOptional<T> extends AbstractOptional<T> {
 
   flatMap<U>(action: (value: T) => Optionable<U>): Optionable<Exclude<U, null | undefined>> {
     const value = action(this._value) as Optionable<Exclude<U, null | undefined>>
-    if (AbstractOptional.isDefined(value)) return value
+    if (AbstractOptional.isDefined(value)) {
+      if(!isOptional(value) ) throw new NotAnOptionalError()
+      return value
+    }
     return Optional.empty()
   }
 

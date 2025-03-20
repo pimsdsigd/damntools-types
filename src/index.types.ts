@@ -1,4 +1,5 @@
 import {Dict, List} from "./core"
+import {Tuple2} from "./utils";
 
 export * from "./exceptions"
 export * from "./core"
@@ -45,7 +46,7 @@ declare global {
 
     zipWith<O>(
       promise: Promise<O> | ((value?: T) => Promise<O>)
-    ): Promise<[T, O]>
+    ): Promise<Tuple2<T, O>>
 
     onError<TResult = never>(
       onrejected?:
