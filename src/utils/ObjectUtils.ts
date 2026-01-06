@@ -46,8 +46,8 @@ export class ObjectUtils {
     return Object.fromEntries(entries.getInner())
   }
 
-  static keys(obj: object): List<string> {
-    return new StaticArrayList(Object.keys(obj))
+  static keys<T>(obj: T): List<keyof T> {
+    return new StaticArrayList(Object.keys(obj) as Array<keyof T>)
   }
 
   static values<T>(obj: object): List<T> {
