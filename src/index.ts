@@ -43,8 +43,10 @@ import {
   notDefined,
   requireDefined
 } from "./core"
+import {AtomicBoolean} from "./utils/Atomic"
 
 export * from "./exceptions"
+
 
 export {
   Tuples,
@@ -91,5 +93,6 @@ export {
   collectMinMax,
   abstractArrayToArray,
   abstractArrayToList,
-  Promises
+  Promises,
+  AtomicBoolean
 }
