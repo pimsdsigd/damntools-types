@@ -4,6 +4,7 @@ import {Enum} from "./enum"
 import {isOptional, Optional} from "./optional"
 import {
   abstractArrayToList,
+  AtomicBoolean,
   collectMax,
   collectMin,
   collectMinMax,
@@ -20,8 +21,8 @@ import {
   Streams,
   toArray,
   toList,
-  toUnmodifiableList,
   toSet,
+  toUnmodifiableList,
   Tuples,
   TypeUtils
 } from "./utils"
@@ -43,10 +44,8 @@ import {
   notDefined,
   requireDefined
 } from "./core"
-import {AtomicBoolean} from "./utils/Atomic"
 
 export * from "./exceptions"
-
 
 export {
   Tuples,
