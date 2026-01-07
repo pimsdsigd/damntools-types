@@ -1,5 +1,6 @@
 import {
   containsProperty,
+  defined,
   Dict,
   DictEntryPredicate,
   DictKeyType,
@@ -39,6 +40,27 @@ export class KV<K extends DictKeyType, V> implements Dict<K, V> {
 
   static from<K extends DictKeyType, V>(map: DictObject<K, V>): Dict<K, V> {
     return new KV<K, V>(map)
+  }
+
+  static ofValues<K extends DictKeyType, V>(
+    key1: K,
+    value1: V,
+    key2?: K,
+    value2?: V,
+    key3?: K,
+    value3?: V,
+    key4?: K,
+    value4?: V,
+    key5?: K,
+    value5?: V
+  ): Dict<K, V> {
+    const dict = new KV<K, V>()
+    if (defined(key1)) dict.put(key1, value1)
+    if (defined(key2)) dict.put(key2, value2)
+    if (defined(key3)) dict.put(key3, value3)
+    if (defined(key4)) dict.put(key4, value4)
+    if (defined(key5)) dict.put(key5, value5)
+    return dict
   }
 
   static of<K extends DictKeyType, V>(map: Dict<K, V>): Dict<K, V> {
