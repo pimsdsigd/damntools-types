@@ -1,27 +1,8 @@
-export class AtomicBoolean {
-  private value: boolean
+import {AtomicReference} from "./AtomicReference"
 
+export class AtomicBoolean extends AtomicReference<boolean> {
   constructor(initialValue?: boolean) {
-    this.value = !!initialValue
-  }
-
-  set(value: boolean) {
-    this.value = value
-  }
-
-  get(): boolean {
-    return this.value
-  }
-
-  getAndSet(value: boolean) {
-    const get = this.value
-    this.value = value
-    return get
-  }
-
-  setAndGet(value: boolean) {
-    this.value = value
-    return this.value
+    super(!!initialValue)
   }
 
   toggle() {

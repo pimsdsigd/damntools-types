@@ -5,6 +5,9 @@ import {isOptional, Optional} from "./optional"
 import {
   abstractArrayToList,
   AtomicBoolean,
+  AtomicReference,
+  AtomicNumber,
+  AtomicString,
   collectMax,
   collectMin,
   collectMinMax,
@@ -93,5 +96,8 @@ export {
   abstractArrayToArray,
   abstractArrayToList,
   Promises,
+  AtomicReference,
+  AtomicNumber,
+  AtomicString,
   AtomicBoolean
 }

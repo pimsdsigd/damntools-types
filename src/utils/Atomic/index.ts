@@ -1,1 +1,4 @@
 export * from "./AtomicBoolean"
+export * from "./AtomicReference"
+export * from "./AtomicString"
+export * from "./AtomicNumber"
