@@ -5,18 +5,18 @@ export class AtomicBoolean extends AtomicReference<boolean> {
     super(!!initialValue)
   }
 
-  toggle() {
-    this.value = !this.value
+  toggle(): void {
+    this.value = this.value.map(v => !v)
   }
 
-  toggleAndGet() {
-    this.value = !this.value
-    return this.value
+  toggleAndGet(): boolean {
+    this.value = this.value.map(v => !v)
+    return this.value.orElseReturn(false)
   }
 
-  getAndToggle() {
-    const get = this.value
-    this.value = !this.value
+  getAndToggle(): boolean {
+    const get = this.value.orElseReturn(false)
+    this.value = this.value.map(v => !v)
     return get
   }
 }

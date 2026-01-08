@@ -10,6 +10,7 @@ import {
   AtomicNumber,
   AtomicString,
   AtomicOptional,
+  AtomicEnum,
   collectMax,
   collectMin,
   collectMinMax,
@@ -103,5 +104,6 @@ export {
   AtomicReference,
   AtomicNumber,
   AtomicString,
-  AtomicBoolean
+  AtomicBoolean,
+  AtomicEnum
 }

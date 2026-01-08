@@ -1,26 +1,33 @@
-export class AtomicReference<T> {
-  protected value: T
+import {Optionable} from "../../core"
+import {Optional} from "../../optional"
 
-  constructor(initialValue: T) {
-    this.value = initialValue
+export class AtomicReference<T> {
+  protected value: Optionable<T>
+
+  constructor(initialValue?: T) {
+    this.value = Optional.nullable(initialValue)
   }
 
-  set(value: T) {
-    this.value = value
+  set(value: T): void {
+    this.value = Optional.nullable(value)
   }
 
   get(): T {
+    return this.value.orElseUndefined()
+  }
+
+  getOptional(): Optionable<T> {
     return this.value
   }
 
-  getAndSet(value: T) {
+  getAndSet(value: T): T {
     const get = this.value
-    this.value = value
-    return get
+    this.value = Optional.nullable(value)
+    return get.orElseUndefined()
   }
 
-  setAndGet(value: T) {
-    this.value = value
-    return this.value
+  setAndGet(value: T): T {
+    this.value = Optional.nullable(value)
+    return this.value.orElseUndefined()
   }
 }
