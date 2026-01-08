@@ -25,3 +25,11 @@ export class DictUtils {
     return new StaticArrayList(Object.values(obj))
   }
 }
+
+export const dictEntry = <K extends DictKeyType, V>(
+  key: K,
+  value: V
+): DictObjectEntry<K, V> => ({
+  key,
+  value
+})

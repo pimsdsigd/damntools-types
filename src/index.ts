@@ -3,6 +3,7 @@ import {KV, StaticKV} from "./dict"
 import {Enum} from "./enum"
 import {isOptional, Optional} from "./optional"
 import {
+  dictEntry,
   abstractArrayToList,
   AtomicBoolean,
   AtomicReference,
@@ -52,6 +53,7 @@ import {
 export * from "./exceptions"
 
 export {
+  dictEntry,
   Tuples,
   ReferenceAccessor,
   ReferenceStringAccessor,
