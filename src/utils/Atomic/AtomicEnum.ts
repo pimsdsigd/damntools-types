@@ -1,8 +1,8 @@
 import {AtomicReference} from "./AtomicReference"
 import {Enum} from "../../enum"
 
-export class AtomicEnum<T extends string> extends AtomicReference<Enum<T>> {
-  constructor(initialValue?: Enum<T>) {
+export class AtomicEnum<T extends Enum<any>> extends AtomicReference<T> {
+  constructor(initialValue?: T) {
     super(initialValue)
   }
 }
