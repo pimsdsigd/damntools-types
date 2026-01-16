@@ -166,6 +166,19 @@ describe("ObjectUtils", () => {
       expect(obj.path.test).toBe(654)
       expect(obj.path.ex).toBe(54)
     })
+    it("with custom separator", () => {
+      const obj = {
+        yolo: "",
+        path: {
+          ex: 54
+        }
+      }
+      ObjectUtils.pathModifier(obj, "path@test@yolo@ppt.opp", 654, "@")
+      expect(obj.yolo).toBe("")
+      expect(obj.path.ex).toBe(54)
+      // @ts-expect-error
+      expect(obj.path.test.yolo["ppt.opp"]).toBe(654)
+    })
   })
 
   describe("simplifyDeeply()", () => {

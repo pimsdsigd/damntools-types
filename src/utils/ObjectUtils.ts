@@ -101,14 +101,19 @@ export class ObjectUtils {
         } else {
           ObjectUtils.pathModifier(
             obj[current],
-            steps.slice(1).join("."),
+            steps.slice(1).join(separator),
             value,
             separator
           )
         }
       } else if (steps.length > 1) {
         obj[current] = {}
-        ObjectUtils.pathModifier(obj[current], steps.slice(1).join("."), value, separator)
+        ObjectUtils.pathModifier(
+          obj[current],
+          steps.slice(1).join(separator),
+          value,
+          separator
+        )
       } else if (steps.length === 1) {
         obj[current] = value
       }
