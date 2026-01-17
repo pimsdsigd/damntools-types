@@ -53,6 +53,12 @@ export abstract class Collectors {
     return Math.max(...items.filter(isNumber))
   }
 
+  static avg(items: Array<number>): number {
+    const numbers = items.filter(isNumber)
+    const total = numbers.reduce((o, c) => o + c, 0)
+    return total / numbers.length
+  }
+
   static minMax(items: Array<number>): Tuple2<number, number> {
     let min = Number.MAX_VALUE,
       max = Number.MIN_VALUE
@@ -87,6 +93,7 @@ export const toList = Collectors.toList
 export const toUnmodifiableList = Collectors.toUnmodifiableList
 export const toSet = Collectors.toSet
 export const toArray = Collectors.toArray
+export const collectAvg = Collectors.avg
 export const collectMin = Collectors.min
 export const collectMax = Collectors.max
 export const collectMinMax = Collectors.minMax
