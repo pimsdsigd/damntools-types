@@ -1,21 +1,21 @@
-import {ArrayList, StaticArrayList, UniqueList} from "./list"
+import {ArrayList, BasicQueue, StaticArrayList, UniqueList} from "./list"
 import {KV, StaticKV} from "./dict"
 import {Enum} from "./enum"
 import {isOptional, Optional} from "./optional"
 import {
-  dictEntry,
   abstractArrayToList,
   AtomicBoolean,
-  AtomicReference,
-  AtomicNumber,
-  AtomicString,
-  AtomicOptional,
   AtomicEnum,
+  AtomicNumber,
+  AtomicOptional,
+  AtomicReference,
+  AtomicString,
+  collectAvg,
   collectMax,
   collectMin,
   collectMinMax,
-  collectAvg,
   Collectors,
+  dictEntry,
   DictUtils,
   Functions,
   Lists,
@@ -73,6 +73,7 @@ export {
   KV,
   StaticKV,
   DictUtils,
+  BasicQueue,
   TypeUtils,
   ObjectUtils,
   defined,
