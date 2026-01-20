@@ -2,6 +2,7 @@ import {Lists} from "./Lists"
 import {UniqueList} from "../../list"
 
 export * from "./Lists"
+export * from "./Queues"
 
 Object.defineProperty(Array.prototype, "toList", {
   value: function () {
