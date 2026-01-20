@@ -10,7 +10,7 @@ export interface Queue<T> {
 
   hasElements(): boolean;
 
-  pop(): void
+  pop(): T
 
   clear(): List<T>
 }

@@ -33,7 +33,9 @@ export class BasicQueue<T> implements Queue<T> {
 
   poll(): T {
     if (this.queue.hasElements()) {
-      return this.queue.get(0)
+      const get = this.queue.get(0)
+      this.queue.remove(0)
+      return get
     }
     throw new QueueEmptyError()
   }
@@ -42,9 +44,12 @@ export class BasicQueue<T> implements Queue<T> {
     this.queue.push(...items)
   }
 
-  pop(): void {
+  pop(): T {
     if (this.queue.hasElements()) {
-      this.queue.remove(this.queue.size() - 1)
+      const index = this.queue.size() - 1
+      const get = this.queue.get(index)
+      this.queue.remove(index)
+      return get
     }
   }
 
