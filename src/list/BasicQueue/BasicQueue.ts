@@ -58,4 +58,8 @@ export class BasicQueue<T> implements Queue<T> {
     this.queue.clear()
     return queue
   }
+
+  size(): number {
+    return this.queue.size()
+  }
 }

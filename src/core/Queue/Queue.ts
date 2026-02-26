@@ -13,4 +13,6 @@ export interface Queue<T> {
   pop(): T
 
   clear(): List<T>
+
+  size(): number
 }
