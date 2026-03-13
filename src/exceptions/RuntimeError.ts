@@ -8,7 +8,7 @@ function formatMessage(message?: string | Error): string {
 }
 
 export class RuntimeError extends Error {
-  private readonly reason: Error
+  private readonly _reason: Error
 
   constructor()
   constructor(message: string)
@@ -16,6 +16,10 @@ export class RuntimeError extends Error {
   constructor(reason: Error)
   constructor(message?: string | Error, reason?: Error) {
     super(formatMessage(message))
-    this.reason = reason
+    this._reason = reason
+  }
+
+  get reason(): Error {
+    return this._reason
   }
 }
