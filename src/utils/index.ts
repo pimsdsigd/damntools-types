@@ -13,8 +13,14 @@ export * from "./Tuples"
 export * from "./Atomic"
 export * from "./DictUtils"
 export * from "./ReferenceAccessor"
+
 export const abstractArrayToList = <T>(obj: AbstractedArray<T>): List<T> => {
   if (isList(obj)) return obj as List<T>
   else if (Array.isArray(obj)) return new ArrayList(obj)
   throw new InvalidArrayError("Object is not an Array or a List")
+}
+
+/** use this if you want to hide a thrown exception in a catch handler */
+export const replaceError = (error: Error) => {
+  throw error
 }
