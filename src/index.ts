@@ -32,7 +32,8 @@ import {
   toSet,
   toUnmodifiableList,
   Tuples,
-  TypeUtils
+  TypeUtils,
+  replaceError
 } from "./utils"
 import {
   abstractArrayToArray,
@@ -102,6 +103,7 @@ export {
   collectMax,
   collectMinMax,
   collectAvg,
+  replaceError,
   abstractArrayToArray,
   abstractArrayToList,
   Promises,
