@@ -24,6 +24,15 @@ Object.defineProperty(Promise.prototype, "thenReturn", {
   configurable: true
 })
 
+Object.defineProperty(Promise.prototype, "thenThrow", {
+  value: function <E extends Error>(error: E) {
+    return this.then(() => {
+      throw error
+    })
+  },
+  configurable: true
+})
+
 Object.defineProperty(Promise.prototype, "onError", {
   value: function (
     onrejected?: ((reason: any) => any | PromiseLike<any>) | undefined | null

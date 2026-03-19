@@ -26,6 +26,7 @@ declare global {
     ): Promise<T>
 
     thenReturn<O>(value: O): Promise<O>
+    thenThrow<E extends Error = Error>(error: E): Promise<T>
 
     log(
       name?: string
