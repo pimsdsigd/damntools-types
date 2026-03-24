@@ -26,7 +26,9 @@ Object.defineProperty(Promise.prototype, "thenReturn", {
 
 Object.defineProperty(Promise.prototype, "thenThrow", {
   value: function <E extends Error>(error: E) {
-    return this.then(() => {
+    return this.catch(() => {
+      throw error
+    }).then(() => {
       throw error
     })
   },
