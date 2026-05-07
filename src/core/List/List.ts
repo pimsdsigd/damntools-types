@@ -51,9 +51,9 @@ export interface List<T> {
 
   reverse(): this
 
-  sort(compareFn: Comparator<T>): this
+  sort(compareFn?: Comparator<T>): this
 
-  sortWith(key: keyof T): this
+  sortWith<K extends keyof T>(key: K, compareFn?: Comparator<T[K]>): this
 
   concat(...items: ConcatArgType<T>): this
 

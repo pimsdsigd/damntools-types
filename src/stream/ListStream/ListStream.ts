@@ -1,5 +1,6 @@
 import {
   ClassType,
+  Comparator,
   compare,
   concatArray,
   containsProperty,
@@ -21,17 +22,16 @@ import {
   ReducerFunction,
   SearchPredicate,
   SearchPredicateNarrowing,
-  SortFunction,
   Stream,
   StreamCollector
 } from "../../core"
 import {Optional} from "../../optional"
-import {NotImplementedError} from "../../exceptions";
+import {NotImplementedError} from "../../exceptions"
 
 const mapFn =
   <T>(action) =>
-    (value, index, arr): T =>
-      action(value, index, arr)
+  (value, index, arr): T =>
+    action(value, index, arr)
 const mapDefinedFn = action => (value, index, arr) =>
   defined(value) ? action(value, index, arr) : value
 
@@ -64,13 +64,15 @@ export class ListStream<T> implements Stream<T> {
     return new ListStream(copyArrayInstance(this.array).reverse())
   }
 
-  sort(compareFn?: SortFunction<T>): Stream<T> {
+  sort(compareFn?: Comparator<T>): Stream<T> {
+    compareFn = compareFn || compare
     return new ListStream(copyArrayInstance(this.array).sort(compareFn))
   }
 
-  sortWith(key: keyof T): Stream<T> {
+  sortWith<K extends keyof T>(key: K, compareFn?: Comparator<T[K]>): Stream<T> {
+    compareFn = compareFn || compare
     return new ListStream<T>(
-      copyArrayInstance(this.array).sort((a, b) => compare(a[key], b[key]))
+      copyArrayInstance(this.array).sort((a, b) => compareFn(a[key], b[key]))
     )
   }
 

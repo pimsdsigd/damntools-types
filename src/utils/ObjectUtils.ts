@@ -26,7 +26,7 @@ export class ObjectUtils {
   /**
    * Very slow, use carefully
    */
-  static cloneObject(obj: object): object {
+  static cloneObject<T extends object>(obj: T): T {
     return JSON.parse(JSON.stringify(obj))
   }
 
@@ -54,7 +54,7 @@ export class ObjectUtils {
     return new StaticArrayList(Object.values(obj))
   }
 
-  static sortEntries(obj: object): List<any> {
+  static sortEntries(obj: object): List<[string, any][]> {
     return new ArrayList(Object.entries(obj).sort(this.entrySorter))
   }
 

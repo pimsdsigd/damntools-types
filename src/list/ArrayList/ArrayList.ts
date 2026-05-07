@@ -202,13 +202,16 @@ export class ArrayList<T> implements List<T> {
     return this
   }
 
-  sort(compareFn: Comparator<T>): this {
+  sort(compareFn?: Comparator<T>): this {
+    compareFn = compareFn || compare
     if (this.hasElements()) this.array.sort(compareFn)
     return this
   }
 
-  sortWith(key: keyof T): this {
-    if (this.hasElements()) this.array.sort((a, b) => compare(a[key], b[key]))
+  sortWith<K extends keyof T>(key: keyof T, compareFn?: Comparator<T[K]>): this {
+    compareFn = compareFn || compare
+    if (this.hasElements())
+      this.array.sort((a, b) => compareFn(a[key] as T[K], b[key] as T[K]))
     return this
   }
 

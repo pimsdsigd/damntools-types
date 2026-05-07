@@ -1,7 +1,8 @@
-import {List, PeekFunction, SortFunction} from "../List"
+import {List, PeekFunction} from "../List"
 import {Optionable} from "../Optionable"
 import {ClassType} from "../ClassType"
-import {Dict, DictKeyType} from "../Dict";
+import {Dict, DictKeyType} from "../Dict"
+import {Comparator} from "../Comparator"
 
 export type ReducerFunction<T, U> = (
   previousValue: U,
@@ -42,9 +43,9 @@ export interface Stream<T> {
 
   sort(): Stream<T>
 
-  sort(compareFn?: SortFunction<T>): Stream<T>
+  sort(compareFn?: Comparator<T>): Stream<T>
 
-  sortWith(key: keyof T): Stream<T>
+  sortWith<K extends keyof T>(key: K, compareFn?: Comparator<T[K]>): Stream<T>
 
   peek(action: PeekFunction<T>): Stream<T>
 
