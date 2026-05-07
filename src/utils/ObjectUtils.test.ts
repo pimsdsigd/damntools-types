@@ -84,9 +84,7 @@ describe("ObjectUtils", () => {
     it("returns correct", () => {
       const obj = {a: [{b: 1}]}
       const clone = ObjectUtils.cloneObject(obj)
-      // @ts-expect-error
       expect(clone.a.length).toBe(1)
-      // @ts-expect-error
       expect(clone.a[0].b).toBe(1)
     })
   })
