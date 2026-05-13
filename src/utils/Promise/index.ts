@@ -1,3 +1,5 @@
+import {Tuple2, Tuples} from "../Tuples"
+
 const TIMERS = {}
 
 Object.defineProperty(Promise.prototype, "thenDo", {
@@ -55,9 +57,9 @@ Object.defineProperty(Promise.prototype, "zipWith", {
   value: function <O, T>(promise: Promise<O> | ((value?: T) => Promise<O>)) {
     return this.then(v => {
       if (typeof promise === "function") {
-        return promise(v).then(o => [v, o])
+        return promise(v).then(o => Tuples.duo(v, o))
       }
-      return promise.then(o => [v, o])
+      return promise.then(o => Tuples.duo(v, o))
     })
   },
   configurable: true
