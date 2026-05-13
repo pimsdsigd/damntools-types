@@ -122,12 +122,12 @@ describe("Promise", () => {
     it("with auto start", done => {
       Promise.resolve("text")
         .zipWith(Promise.resolve("prom"))
-        .zipWith(v => Promise.resolve(v[1].toUpperCase()))
+        .zipWith(v => Promise.resolve(v.getV2().toUpperCase()))
         .then(v => {
           console.log("res=", v)
-          expect(v[0][0]).toBe("text")
-          expect(v[0][1]).toBe("prom")
-          expect(v[1]).toBe("PROM")
+          expect(v.getV1().getV1()).toBe("text")
+          expect(v.getV1().getV2()).toBe("prom")
+          expect(v.getV2()).toBe("PROM")
           done()
         })
     })
