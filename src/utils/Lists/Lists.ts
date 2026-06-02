@@ -1,4 +1,11 @@
-import {AbstractedArray, isList, List} from "../../core"
+import {
+  abstractArrayToArray,
+  AbstractedArray,
+  defined,
+  isList,
+  List,
+  notDefined
+} from "../../core"
 import {
   InvalidArrayError,
   InvalidRangeEndError,
@@ -39,6 +46,15 @@ export abstract class Lists {
   static from<T>(array: NonNullable<AbstractedArray<T>>): List<T> {
     if (!array) throw new InvalidArrayError("Array should be provided !")
     return new StaticArrayList(array)
+  }
+
+  static concat<T>(...arrays: AbstractedArray<T>[]) {
+    if (notDefined(arrays)) arrays = []
+    const mapped = arrays.filter(defined).map(item => {
+      if (!isList(item) && !Array.isArray(item)) return [item]
+      return abstractArrayToArray(item)
+    })
+    return Lists.from([].concat(...mapped))
   }
 
   /**

@@ -4,6 +4,7 @@ import {
   InvalidRangeEndError,
   InvalidRangeStartError
 } from "../../exceptions"
+import {StaticArrayList} from "../../list"
 
 describe("Lists", () => {
   describe("range", () => {
@@ -57,6 +58,37 @@ describe("Lists", () => {
       const list = Lists.from([65])
       expect(list.getInner().length).toBe(1)
       expect(list.get(0)).toBe(65)
+    })
+  })
+
+  describe("concat", () => {
+    it("with undefined array returns empty", () => {
+      const res = Lists.concat(null)
+      expect(res).toBeInstanceOf(StaticArrayList)
+      expect(res.size()).toBe(0)
+    })
+
+    it("with empty array returns empty array", () => {
+      const res = Lists.concat(null)
+      expect(res).toBeInstanceOf(StaticArrayList)
+      expect(res.size()).toBe(0)
+    })
+
+    it("with one array returns array", () => {
+      const res = Lists.concat([1, 3])
+      expect(res).toBeInstanceOf(StaticArrayList)
+      expect(res.size()).toBe(2)
+      expect(res.get(0)).toBe(1)
+      expect(res.get(1)).toBe(3)
+    })
+
+    it("with multiples array returns array", () => {
+      const res = Lists.concat([1, 3], [2])
+      expect(res).toBeInstanceOf(StaticArrayList)
+      expect(res.size()).toBe(3)
+      expect(res.get(0)).toBe(1)
+      expect(res.get(1)).toBe(3)
+      expect(res.get(2)).toBe(2)
     })
   })
 
