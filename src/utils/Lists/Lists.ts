@@ -48,7 +48,7 @@ export abstract class Lists {
     return new StaticArrayList(array)
   }
 
-  static concat<T>(...arrays: AbstractedArray<T>[]) {
+  static concat<T>(...arrays: AbstractedArray<T>[]): List<T> {
     if (notDefined(arrays)) arrays = []
     const mapped = arrays.filter(defined).map(item => {
       if (!isList(item) && !Array.isArray(item)) return [item]
