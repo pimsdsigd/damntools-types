@@ -182,7 +182,6 @@ describe("ObjectUtils", () => {
     it("path do not exists deep", () => {
       const obj = {
         a: 56,
-        b: undefined
       } as any
       ObjectUtils.pathModifier(obj, "b.y.t", 654)
       expect(obj.b.y.t).toBe(654)

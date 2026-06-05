@@ -1,4 +1,4 @@
-import {Tuple2, Tuples} from "../Tuples"
+import {Tuples} from "../Tuples"
 
 const TIMERS = {}
 
