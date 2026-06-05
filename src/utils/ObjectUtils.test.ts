@@ -164,6 +164,7 @@ describe("ObjectUtils", () => {
       expect(obj.path.test).toBe(654)
       expect(obj.path.ex).toBe(54)
     })
+
     it("with custom separator", () => {
       const obj = {
         yolo: "",
@@ -176,6 +177,30 @@ describe("ObjectUtils", () => {
       expect(obj.path.ex).toBe(54)
       // @ts-expect-error
       expect(obj.path.test.yolo["ppt.opp"]).toBe(654)
+    })
+
+    it("path do not exists deep", () => {
+      const obj = {
+        a: 56,
+        b: undefined
+      } as any
+      ObjectUtils.pathModifier(obj, "b.y.t", 654)
+      expect(obj.b.y.t).toBe(654)
+    })
+  })
+
+  describe("pathDeletion", () => {
+    it("correctly deletes", () => {
+      const obj = {
+        a: 64,
+        b: {
+          c: 56
+        }
+      }
+      ObjectUtils.pathDeletion(obj, "b")
+      console.log(obj)
+      expect(obj.a).toBe(64)
+      expect(!ObjectUtils.containsProperty(obj, "b"))
     })
   })
 

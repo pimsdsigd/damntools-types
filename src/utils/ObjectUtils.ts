@@ -120,6 +120,30 @@ export class ObjectUtils {
     }
   }
 
+  static pathDeletion(obj: object, path: string, separator?: string) {
+    if (!separator) separator = "."
+    const steps = path.split(separator)
+    if (steps.length > 0) {
+      const current = steps[0].replace(/\?$/, "")
+      if (ObjectUtils.containsProperty(obj, current)) {
+        if (steps.length === 1) {
+          delete obj[current]
+        } else {
+          ObjectUtils.pathDeletion(
+            obj[current],
+            steps.slice(1).join(separator),
+            separator
+          )
+        }
+      } else if (steps.length > 1) {
+        obj[current] = {}
+        ObjectUtils.pathDeletion(obj[current], steps.slice(1).join(separator), separator)
+      } else if (steps.length === 1) {
+        delete obj[current]
+      }
+    }
+  }
+
   static simplify<T>(obj: SimplifyAllowedObjects): T {
     if (isList(obj)) {
       return obj.copy().getInner() as T
